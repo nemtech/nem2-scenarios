@@ -1,0 +1,12 @@
+{
+  "name": "nem2-scenarios",
+  "version": "0.1.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "cucumber-js"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "cucumber": "^5.0.2"
+  }
+}
