@@ -1,7 +1,7 @@
 Feature: Renew a space
   As Alice
   I want to renew my space rental
-  So that I can continue organizing and naming assets easily.
+  So that I can continue organizing and naming assets.
 
   Background:
     Given renewing a space costs 0.1 xem per block
@@ -16,8 +16,8 @@ Feature: Renew a space
     And her xem balance should decrease in <cost> units
 
     Examples:
-    | name      | seconds | cost |
-    | alice     | 60      | 0.4  |
+      | name      | seconds | cost |
+      | alice     | 60      | 0.4  |
 
   Scenario Outline: An account renews a space with an invalid duration
     Given Alice owns the active space <name>
@@ -26,11 +26,11 @@ Feature: Renew a space
     And her xem balance should remain intact
 
     Examples:
-    | name   | seconds  | error                                         |
-    | test3  | 0        | Failure_Namespace_Eternal_After_Nemesis_Block |
-    | test4  | -1       | Failure_Namespace_Invalid_Duration	          |
-    | test5  | 1        | Failure_Namespace_Invalid_Duration            |
-    | test6  | 47304000 | Failure_Namespace_Invalid_Duration            |
+      | name   | seconds  | error                                         |
+      | test3  | 0        | Failure_Namespace_Eternal_After_Nemesis_Block |
+      | test4  | -1       | Failure_Namespace_Invalid_Duration	          |
+      | test5  | 1        | Failure_Namespace_Invalid_Duration            |
+      | test6  | 47304000 | Failure_Namespace_Invalid_Duration            |
 
   Scenario Outline: An account rents a space which is already owned by another account
     Given Bob owns the active space <name>

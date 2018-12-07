@@ -1,7 +1,7 @@
 Feature: Create a subspace
   As Alice
   I want to create a subspace
-  So that I can organize and name assets easily.
+  So that I can organize and name assets.
 
   Background:
     Given creating a subspace costs 10 xem
@@ -18,9 +18,9 @@ Feature: Create a subspace
     And her xem balance should decrease in <cost> units
 
     Examples:
-    | name   |  subspace-name       | cost |
-    | one    | one.two              | 10   |
-    | one.two| one.two.three        | 10   |
+      | name   |  subspace-name       | cost |
+      | one    | one.two              | 10   |
+      | one.two| one.two.three        | 10   |
 
   Scenario Outline: An account creates a subspace with an invalid name
     Given Bob owns the active space <parent-name>
@@ -29,9 +29,9 @@ Feature: Create a subspace
     And her xem balance should remain intact
 
     Examples:
-    | parent-name | subspace-name                                                             | error                         |
-    | valid1      | valid1.?€!                                                                | Failure_Namespace_Invalid_Name |
-    | valid2      | valid2.this_is_a_really_long_space_name_this_is_a_really_long_space_name  | Failure_Namespace_Invalid_Name |
+      | parent-name | subspace-name                                                             | error                         |
+      | valid1      | valid1.?€!                                                                | Failure_Namespace_Invalid_Name |
+      | valid2      | valid2.this_is_a_really_long_space_name_this_is_a_really_long_space_name  | Failure_Namespace_Invalid_Name |
 
   Scenario Outline: An account creates a subspace with a parent space owned by another account
     Given Bob owns the active space <parent-name>
@@ -40,8 +40,8 @@ Feature: Create a subspace
     And her xem balance should remain intact
 
     Examples:
-    | parent-name  | subspace-name   | error                            |
-    | bob          | bob.subspace    | Failure_Namespace_Owner_Conflict |
+      | parent-name  | subspace-name   | error                            |
+      | bob          | bob.subspace    | Failure_Namespace_Owner_Conflict |
 
 
   Scenario Outline: An account creates a subspace and exceeds the number of allowed nested levels
@@ -51,8 +51,8 @@ Feature: Create a subspace
     And her xem balance should remain intact
 
     Examples:
-    | parent-name     | subspace-name      | error                          |
-    | one.two.three   | one.two.three.four |   Failure_Namespace_Too_Deep   |
+      | parent-name     | subspace-name      | error                          |
+      | one.two.three   | one.two.three.four |   Failure_Namespace_Too_Deep   |
 
   Scenario Outline: An account creates a subspace that already exists
     Given Alice owns an active space named <parent-name>
@@ -61,8 +61,8 @@ Feature: Create a subspace
     And her xem balance should remain intact
 
     Examples:
-    | parent-name | subspace-name      | error                            |
-    | one.two     | one.two            | Failure_Namespace_Already_Exists |
+      | parent-name | subspace-name      | error                            |
+      | one.two     | one.two            | Failure_Namespace_Already_Exists |
 
   Scenario Outline: An account creates a subspace with parent space expired
     Given Alice owns the expired space <parent-name>
@@ -71,8 +71,8 @@ Feature: Create a subspace
     And her xem balance should remain intact
 
     Examples:
-    | parent-name  | subspace-name   | error                     |
-    | alice        | alice.subspace  | Failure_Namespace_Expired |
+      | parent-name  | subspace-name   | error                     |
+      | alice        | alice.subspace  | Failure_Namespace_Expired |
 
   Scenario Outline: An account creates a subspace with an unknown parent space
     When Alice creates a subspace named <name>
@@ -80,8 +80,8 @@ Feature: Create a subspace
     And her xem balance should remain intact
 
     Examples:
-    | name                | error                         |
-    | unknown.subspace | Failure_Namespace_Parent_Unknown |
+      | name                | error                         |
+      | unknown.subspace | Failure_Namespace_Parent_Unknown |
 
 
   Scenario Outline: An account does not have enough funds
