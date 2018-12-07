@@ -1,4 +1,4 @@
-Feature: Create a new asset
+Feature: Create an asset
   As Alice
   I want to create an asset
   So that I can send one unit to Bob.
