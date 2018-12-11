@@ -15,81 +15,55 @@ Feature: Create a subspace
     Given Alice owns an active space named <parent-name>
     When Alice creates a subspace named <subspace-name>
     Then she should become the owner of the new subspace <name>
-    And her xem balance should decrease in <cost> units
+    And her xem balance should decrease in 10 units
 
     Examples:
-      | name   |  subspace-name       | cost |
-      | one    | one.two              | 10   |
-      | one.two| one.two.three        | 10   |
+      | parent-name   |  subspace-name |
+      | one           | one.two        |
+      | one.two       | one.two.three  |
 
   Scenario Outline: An account tries to create a subspace with an invalid name
-    Given Bob owns the active space <parent-name>
+    Given Alice owns an active space named "alice"
     When Alice creates a space named <subspace-name>
-    Then she should receive the error "<error>"
+    Then she should receive the error "Failure_Namespace_Invalid_Name"
     And her xem balance should remain intact
 
     Examples:
-      | parent-name | subspace-name                                                             | error                         |
-      | valid1      | valid1.?€!                                                                | Failure_Namespace_Invalid_Name |
-      | valid2      | valid2.this_is_a_really_long_space_name_this_is_a_really_long_space_name  | Failure_Namespace_Invalid_Name |
+       | subspace-name                                                                 |
+       | alice.?€!                                                                     |
+       | alice.this_is_a_really_long_subspace_name_this_is_a_really_long_subspace_name |
 
-  Scenario Outline: An account tries to create a subspace with a parent space owned by another account
-    Given Bob owns the active space <parent-name>
-    When Alice creates a subspace named <subspace-name>
-    Then she should receive the error "<error>"
+  Scenario: An account tries to create a subspace with a parent space owned by another account
+    Given Bob owns the active space "bob"
+    When Alice creates a subspace named "bob.subspace"
+    Then she should receive the error "Failure_Namespace_Owner_Conflict"
     And her xem balance should remain intact
 
-    Examples:
-      | parent-name  | subspace-name   | error                            |
-      | bob          | bob.subspace    | Failure_Namespace_Owner_Conflict |
-
-
-  Scenario Outline: An account tries to create a subspace and exceeds the number of allowed nested levels
-    Given Alice owns an active space named <parent-name>
-    When Alice creates a subspace named <subspace-name>
-    Then she should receive the error "<error>"
+  Scenario: An account tries to create a subspace and exceeds the number of allowed nested levels
+    Given Alice owns an active space named "one.two.three"
+    When Alice creates a subspace named "one.two.three.four"
+    Then she should receive the error "Failure_Namespace_Too_Deep"
     And her xem balance should remain intact
 
-    Examples:
-      | parent-name     | subspace-name      | error                          |
-      | one.two.three   | one.two.three.four |   Failure_Namespace_Too_Deep   |
-
-  Scenario Outline: An account tries to create a subspace that already exists
-    Given Alice owns an active space named <parent-name>
-    When Alice creates a subspace named <subspace-name>
-    Then she should receive the error "<error>"
+  Scenario: An account tries to create a subspace that already exists
+    Given Alice owns an active space named "one.two"
+    When Alice creates a subspace named "one.two"
+    Then she should receive the error "Failure_Namespace_Already_Exists"
     And her xem balance should remain intact
 
-    Examples:
-      | parent-name | subspace-name      | error                            |
-      | one.two     | one.two            | Failure_Namespace_Already_Exists |
-
-  Scenario Outline: An account tries to create a subspace with parent space expired
-    Given Alice owns the expired space <parent-name>
-    When Alice creates a subspace named <subspace-name>
-    Then she should receive the error "<error>"
+  Scenario: An account tries to create a subspace with parent space expired
+    Given Alice owns the expired space "alice"
+    When Alice creates a subspace named "alice.subspace"
+    Then she should receive the error "Failure_Namespace_Expired"
     And her xem balance should remain intact
 
-    Examples:
-      | parent-name  | subspace-name   | error                     |
-      | alice        | alice.subspace  | Failure_Namespace_Expired |
-
-  Scenario Outline: An account tries to create a subspace with an unknown parent space
-    When Alice creates a subspace named <name>
-    Then she should receive the error "<error>"
+  Scenario: An account tries to create a subspace with an unknown parent space
+    When Alice creates a subspace named "unknown.subspace"
+    Then she should receive the error "Failure_Namespace_Parent_Unknown"
     And her xem balance should remain intact
 
-    Examples:
-      | name                | error                         |
-      | unknown.subspace | Failure_Namespace_Parent_Unknown |
-
-
-  Scenario Outline: An account tries to create a subspace but does not have enough funds
-    Given Alice owns the expired space <parent-name>
+  Scenario: An account tries to create a subspace but does not have enough funds
+    Given Alice owns the expired space "alice"
     And  she has spent all her xem
-    When Alice rents a space named <subspace-name> for <seconds> seconds
-    Then she should receive the error "<error>"
-
-    Examples:
-      | parent-name  | subspace-name  | seconds | error                             |
-      | alice        | alice.subspace |  15     | Failure_Core_Insufficient_Balance |
+    When Alice creates a subspace named "alice.subspace"
+    Then she should receive the error "Failure_Core_Insufficient_Balance"

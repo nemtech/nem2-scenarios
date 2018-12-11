@@ -6,48 +6,35 @@ Feature: Renew a space
   Background:
     Given renewing a space costs 0.1 xem per block
     And the mean block generation time is 15 seconds
-    And the maximum space duration is one year
+    And the maximum space duration is 1 year
     And Alice has 10000000 xem in her account
 
-  Scenario Outline: An account renews a space
-    Given Alice owns the active space <name>
-    When Alice renews the space named <name> for <seconds> seconds
-    Then the space rental should be extended in <seconds> seconds
-    And her xem balance should decrease in <cost> units
-
-    Examples:
-      | name      | seconds | cost |
-      | alice     | 60      | 0.4  |
+  Scenario: An account renews a space
+    Given Alice owns the active space "alice"
+    When Alice renews the space named "alice" for 15 seconds
+    Then the space rental should be extended in 15 seconds
+    And her xem balance should decrease in 0.1 units
 
   Scenario Outline: An account tries to renew a space with an invalid duration
-    Given Alice owns the active space <name>
-    When Alice renews the space named <name> for <seconds> seconds
+    Given Alice owns the active space "alice"
+    When Alice renews the space named "alice" for <time> seconds
     Then she should receive the error "<error>"
     And her xem balance should remain intact
 
     Examples:
-      | name   | seconds  | error                                         |
-      | test3  | 0        | Failure_Namespace_Eternal_After_Nemesis_Block |
-      | test4  | -1       | Failure_Namespace_Invalid_Duration	          |
-      | test5  | 1        | Failure_Namespace_Invalid_Duration            |
-      | test6  | 47304000 | Failure_Namespace_Invalid_Duration            |
+      | time    | error                                          |
+      | 0       | Failure_Namespace_Eternal_After_Nemesis_Block  |
+      | -1      | Failure_Namespace_Invalid_Duration             |
+      | 3000000 | Failure_Namespace_Invalid_Duration             |
 
-  Scenario Outline: An account tries to renew a space which is already owned by another account
-    Given Bob owns the active space <name>
-    When Alice renews the space named <name> for <seconds> seconds
-    Then she should receive the error "<error>"
+  Scenario: An account tries to renew a space which is already owned by another account
+    Given Bob owns the active space "bob"
+    When Alice renews the space named "bob" for 1 day
+    Then she should receive the error "Failure_Namespace_Owner_Conflict"
     And her xem balance should remain intact
 
-    Examples:
-      | name    | seconds |  error                           |
-      | bob     | 60      | Failure_Namespace_Owner_Conflict |
-
-  Scenario Outline: An account tries to renew a space but does not have enough funds
-    Given Alice owns the active space <name>
+  Scenario: An account tries to renew a space but does not have enough funds
+    Given Alice owns the active space "alice"
     And   she has spent all her xem
-    When  Alice rents a space named <name> for <seconds> seconds
-    Then  she should receive the error "<error>"
-
-    Examples:
-      | name  |seconds | error                             |
-      | alice | 15     | Failure_Core_Insufficient_Balance |
+    When  Alice renews the space named "alice" for 1 day
+    Then  she should receive the error "Failure_Core_Insufficient_Balance"
