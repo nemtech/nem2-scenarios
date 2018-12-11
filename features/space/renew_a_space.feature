@@ -19,7 +19,7 @@ Feature: Renew a space
       | name      | seconds | cost |
       | alice     | 60      | 0.4  |
 
-  Scenario Outline: An account renews a space with an invalid duration
+  Scenario Outline: An account tries to renew a space with an invalid duration
     Given Alice owns the active space <name>
     When Alice renews the space named <name> for <seconds> seconds
     Then she should receive the error "<error>"
@@ -32,7 +32,7 @@ Feature: Renew a space
       | test5  | 1        | Failure_Namespace_Invalid_Duration            |
       | test6  | 47304000 | Failure_Namespace_Invalid_Duration            |
 
-  Scenario Outline: An account rents a space which is already owned by another account
+  Scenario Outline: An account tries to renew a space which is already owned by another account
     Given Bob owns the active space <name>
     When Alice renews the space named <name> for <seconds> seconds
     Then she should receive the error "<error>"
@@ -42,7 +42,7 @@ Feature: Renew a space
       | name    | seconds |  error                           |
       | bob     | 60      | Failure_Namespace_Owner_Conflict |
 
-  Scenario Outline: An account does not have enough funds
+  Scenario Outline: An account tries to renew a space but does not have enough funds
     Given Alice owns the active space <name>
     And   she has spent all her xem
     When  Alice rents a space named <name> for <seconds> seconds

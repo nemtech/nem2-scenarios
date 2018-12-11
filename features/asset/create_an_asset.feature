@@ -33,7 +33,7 @@ Feature: Create an asset
       | cost |
       | 5000 |
 
-  Scenario Outline: An account creates an asset for an invalid duration
+  Scenario Outline: An account tries to create an asset for an invalid duration
     When Alice creates an asset for <seconds> seconds
     Then she should receive the error "<error>"
     And her xem balance should remain intact
@@ -44,7 +44,7 @@ Feature: Create an asset
       | 1        | Failure_Mosaic_Invalid_Duration |
       | 47304000 | Failure_Mosaic_Invalid_Duration |
 
-  Scenario Outline: An account creates an asset with a valid initial supply
+  Scenario Outline: An account tries to create an asset with a valid initial supply
     When Alice creates an asset with an initial supply of <supply> for one day
     Then she should become the owner of the new asset
     And it should have a supply of <supply>
@@ -54,7 +54,7 @@ Feature: Create an asset
       | 1          |
       | 9000000000 |
 
-  Scenario Outline: An account creates an asset with an invalid initial supply
+  Scenario Outline: An account tries to create an asset with an invalid initial supply
     When Alice creates an asset with an initial supply of <supply> for one day
     Then she should receive the error <error>
     And her xem balance should remain intact
@@ -84,7 +84,7 @@ Feature: Create an asset
     Then she should become the owner of the new asset
     And it should be identifiable
 
-  Scenario Outline: An account creates an asset with an invented property
+  Scenario Outline: An account tries to create an asset with an invented property
     When Alice creates a squared asset for one day
     Then she should receive the error "<error>"
     And her xem balance should remain intact
@@ -93,7 +93,7 @@ Feature: Create an asset
       | error |
       | Failure_Mosaic_Invalid_Property |
 
-  Scenario Outline: An account creates an asset with a valid divisibility
+  Scenario Outline: An account tries to create an asset with a valid divisibility
     When Alice creates an asset with divisibility <divisibility> for one day
     Then she should become the owner of the new asset
     And the asset should handle up to <divisibility> decimals
@@ -103,7 +103,7 @@ Feature: Create an asset
       | 0            |
       | 6            |
 
-  Scenario Outline: An account creates an asset with an invalid divisibility
+  Scenario Outline: An account tries to create an asset with an invalid divisibility
     When Alice creates an asset with divisibility <number> for one day
     Then she should receive the error "<error>"
     And her xem balance should remain intact
@@ -113,7 +113,7 @@ Feature: Create an asset
       | -1     | Failure_Mosaic_Invalid_Property |
       | 7      | Failure_Mosaic_Invalid_Property |
 
-  Scenario Outline: An account does not have enough funds
+  Scenario Outline: An account tries to create an asset but does not have enough funds
     Given Alice has spent all her xem
     When Alice creates an asset for <seconds> seconds
     Then she should receive the error "<error>"

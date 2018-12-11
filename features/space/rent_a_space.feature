@@ -33,7 +33,7 @@ Feature: Rent a space
       | test1 | 60      | 0.4  |
       | test2 | 120     | 0.8  |
 
-  Scenario Outline: An account rents a space with an invalid duration
+  Scenario Outline: An account tries to rent a space with an invalid duration
     When Alice rents a space named <name> for <seconds> seconds
     Then she should receive the error "<error>"
     And her xem balance should remain intact
@@ -45,7 +45,7 @@ Feature: Rent a space
       | test5  | 1        | Failure_Namespace_Invalid_Duration            |
       | test6  | 47304000 | Failure_Namespace_Invalid_Duration            |
 
-  Scenario Outline: An account rents a space with an invalid name
+  Scenario Outline: An account tries to rent a space with an invalid name
     When Alice rents a space named <name> for <seconds> seconds
     Then she should receive the error "<error>"
     And her xem balance should remain intact
@@ -55,7 +55,7 @@ Feature: Rent a space
       | ?€!                                                                | 60      | Failure_Namespace_Invalid_Name |
       | this_is_a_really_long_space_name_this_is_a_really_long_space_name  | 60      | Failure_Namespace_Invalid_Name |
 
-  Scenario Outline: An account rents a space with a reserved name
+  Scenario Outline: An account tries to rent a space with a reserved name
     When Alice rents a space named <name> for <seconds> seconds
     Then she should receive the error "<error>"
     And her xem balance should remain intact
@@ -65,7 +65,7 @@ Feature: Rent a space
       | xem     | 60      | Failure_Namespace_Root_Name_Reserved |
       | gov     | 60      | Failure_Namespace_Root_Name_Reserved |
 
-  Scenario Outline: An account rents a space which is already owned by another account
+  Scenario Outline: An account tries to rent a space which is already owned by another account
     Given Bob owns the active space <name>
     When Alice rents a space named <name> for <seconds> seconds
     Then she should receive the error "<error>"
@@ -76,7 +76,7 @@ Feature: Rent a space
       | bob     | 60      | Failure_Namespace_Owner_Conflict |
 
 
-  Scenario Outline: An account does not have enough funds
+  Scenario Outline: An account tries to rent a space but not have enough funds
     Given Alice has spent all her xem
     When Alice rents a space named <name> for <seconds> seconds
     Then she should receive the error "<error>"
