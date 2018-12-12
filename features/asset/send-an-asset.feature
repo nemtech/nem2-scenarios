@@ -7,11 +7,14 @@ Feature: Send an asset
     Given the mean block generation time is 15 seconds
     And the address "SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5" is named "bob"
     And the address "SAPUUH-GL6DYO-ZHTCAE-ORM2MB-KBXOI5-UZILYE-6RV4" is named "ticket-vendor"
-    And "ticket-vendor" created the asset "3576016194"  named "concert.ticket" with an initial supply of 1000 units and non-divisible
-    And "ticket-vendor" created the asset "3576016195" named "reward.point" with an initial supply of 1000 units and divisible up to 2 decimals
-    And "ticket-vendor" created the non-transferable asset "3576016196" named "event.organizer" with an initial supply of 1000 units and non-divisible
-    And Alice has the following mosaics in her account:
-      | asset-name      | amount |
+    And "ticket vendor" has registered the following assets:
+      |asset-id  | asset-alias     | transferable | supply | divisibility |
+      |3576016194| concert.ticket  | true         | 1000   | 0            |
+      |3576016195| reward.point    | false        | 1000   | 2            |
+      |3576016196| event.organizer | true         | 1000   | 0            |
+
+    And Alice has the following assets in her account:
+      | asset-alias     | amount |
       | concert.ticket  | 100    |
       | reward.point    | 100    |
       | event.organizer | 2      |
@@ -62,13 +65,13 @@ Feature: Send an asset
       | 0.5      | concert.ticket |
       | 0.000005 | reward.point   |
 
-  Scenario: An account that created a non-transferable asset sends it to another account
+  Scenario: An account that registered a non-transferable asset sends it to another account
     When The ticket vendor sends 1 "event.organizer" to "bob"
     Then "bob" should receive 1 "event.organizer"
     And the ticket vendor "event.organizer" balance should decrease in 1 unit(s)
     And the ticket vendor should receive a confirmation message
 
-  Scenario: An account sends a non-transferable asset to the account that created the asset
+  Scenario: An account sends a non-transferable asset to the account that registered the asset
     When Alice sends 1 "event.organizer" to "ticket-vendor"
     Then "ticket-vendor" should receive 1 "event.organizer"
     And  her "event.organizer" balance should decrease in 1 unit(s)
