@@ -15,6 +15,7 @@ Feature: Renew a space
     When Alice renews the space named "alice" for 1 day
     Then the space rental should be extended in 1 day
     And her xem balance should decrease in 576 units
+    And she should receive a confirmation message
 
   Scenario Outline: An account tries to renew a space with an invalid duration
     Given Alice owns the active space "alice"
@@ -45,6 +46,7 @@ Feature: Renew a space
     When Alice renews the namespace named "alice" for 1 day
     Then the namespace rental should be extended in 1 day
     And her xem balance should decrease in 576 units
+    And she should receive a confirmation message
 
   Scenario: An account tries to renew a namespace under redemption period but the account is not the owner of the namespace
     Given Bob owns the namespace "bob" which is under redemption period

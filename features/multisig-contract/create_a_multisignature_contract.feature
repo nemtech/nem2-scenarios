@@ -13,7 +13,8 @@ Feature: Create a multisignature contract
     And she adds "computer" as a cosignatory
     And publishes the contract
     Then she should not be able to announce transactions from her account
-    And her "phone" or "computer" cosignature should be required to announce transactions from her account.
+    And her "phone" or "computer" cosignature should be required to announce transactions from her account
+    And she should receive a confirmation message
 
   Scenario: An account creates an N-of-N contract
     When Alice defines a 2 of 2 multisignature contract
@@ -21,7 +22,8 @@ Feature: Create a multisignature contract
     And she adds "computer" as a cosignatory
     And publishes the contract
     Then she should not be able to announce transactions from her account
-    And her "phone" and "computer" cosignatures should be required to announce transactions from her account.
+    And her "phone" and "computer" cosignatures should be required to announce transactions from her account
+    And she should receive a confirmation message
 
   Scenario: An account tries to create an N-of-M contract
     When Alice defines a 2 of 1 multisignature contract
@@ -36,9 +38,9 @@ Feature: Create a multisignature contract
     And she adds "computer" as a cosignatory
     And publishes the contract
     Then she should not be able to announce transactions from her account
-    Then she should receive the error "Failure_Multisig_Modify_Min_Setting_Out_Of_Range"
+    And she should receive the error "Failure_Multisig_Modify_Min_Setting_Out_Of_Range"
 
-  Scenario Outline: An account tries to create a multisignature contract setting an invalid number of minimum required cosignatures to remove a cosignatory
+  Scenario Outline: An account tries to create a multisignature contract, setting an invalid minimum of cosignatures to remove a cosignatory
     When Alice defines a 1 of 2 multisignature contract
     And she adds "phone" as a cosignatory
     And she adds "computer" as a cosignatory
@@ -47,10 +49,10 @@ Feature: Create a multisignature contract
     Then she should receive the error "<error>"
 
     Examples:
-     | minimum-removal | error                                                             |
-     | 0               | Failure_Multisig_Modify_Min_Setting_Out_Of_Range                  |
-     | -1              | Failure_Multisig_Modify_Min_Setting_Out_Of_Range                  |
-     | 3               | Failure_Multisig_Modify_Min_Setting_Larger_Than_Num_Cosignatories |
+      | minimum-removal | error                                                             |
+      | 0               | Failure_Multisig_Modify_Min_Setting_Out_Of_Range                  |
+      | -1              | Failure_Multisig_Modify_Min_Setting_Out_Of_Range                  |
+      | 3               | Failure_Multisig_Modify_Min_Setting_Larger_Than_Num_Cosignatories |
 
   Scenario: An account tries to create a multisignature contract adding twice the same cosignatory
     When Alice defines a 1 of 1 multisignature contract
@@ -58,7 +60,6 @@ Feature: Create a multisignature contract
     And she adds "phone" as a cosignatory
     And publishes the contract
     Then she should receive the error "Failure_Multisig_Modify_Redundant_Modifications"
-
 
   Scenario: An account tries to create a multisignature contract with more than 10 cosignatories
     When Alice defines a 1 of 11 multisignature contract
@@ -79,7 +80,7 @@ Feature: Create a multisignature contract
     And publishes the contract
     Then she should receive the error "Failure_Multisig_Modify_Loop"
 
-  Scenario: An account tries  create a multisignature contract, adding as a cosignatory another multisignature contract where the account is a cosignatory.
+  Scenario: An account tries to create a multisignature contract, adding a multisig cosignatory where the account is a cosignatory.
     Given Alice is cosignatory of a deposit multisignature contract
     When Alice defines a 1 of 1 multisignature contract
     And she adds "deposit" as a cosignatory

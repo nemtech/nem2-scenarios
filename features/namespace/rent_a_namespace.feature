@@ -27,7 +27,7 @@ Feature: Rent a namespace
     Then she should become the owner of the new namespace <name>
     And it should be rented for <time> seconds
     And her xem balance should decrease in <cost> units
-
+    And she should receive a confirmation message
     Examples:
       | name  | time  | cost |
       | test1 | 15    | 0.1  |

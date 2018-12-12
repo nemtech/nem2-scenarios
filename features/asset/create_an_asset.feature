@@ -17,6 +17,7 @@ Feature: Create an asset
     Then she should become the owner of the new asset
     And it should be registered for <seconds> seconds
     And her xem balance should decrease in <cost> units
+    And she should receive a confirmation message
 
     Examples:
       |seconds| cost |
@@ -25,9 +26,9 @@ Feature: Create an asset
 
   Scenario: An account creates a non-expiring asset
     When Alice creates a non-expiring asset
-    Then she should become the owner of the new asset
-    And it should be non-expiring
+    Then she should become the owner of the non-expiring asset
     And her xem balance should decrease in 5000 xem
+    And she should receive a confirmation message
 
   Scenario Outline: An account tries to create an asset for an invalid duration
     When Alice creates an asset for <seconds> seconds
@@ -45,6 +46,7 @@ Feature: Create an asset
     When Alice creates an asset with an initial supply of <supply> for 1 day
     Then she should become the owner of the new asset
     And it should have a supply of <supply>
+    And she should receive a confirmation message
 
     Examples:
       |supply      |
@@ -66,6 +68,7 @@ Feature: Create an asset
     When Alice creates a "<property>" asset for 1 day
     Then she should become the owner of the new asset
     And it should have the property "<property>"
+    And she should receive a confirmation message
 
     Examples:
       | property         |
@@ -76,11 +79,6 @@ Feature: Create an asset
       | levy mutable     |
       | levy immutable   |
 
-  Scenario: An account creates a non-fungible asset
-    When Alice creates a non-fungible asset
-    Then she should become the owner of the new asset
-    And it should be identifiable
-
   Scenario: An account tries to create an asset with an invented property
     When Alice creates a "squared" asset for 1 day
     Then she should receive the error "Failure_Mosaic_Invalid_Property"
@@ -90,6 +88,7 @@ Feature: Create an asset
     When Alice creates an asset with divisibility <divisibility> for 1 day
     Then she should become the owner of the new asset
     And the asset should handle up to <divisibility> decimals
+    And she should receive a confirmation message
 
     Examples:
       | divisibility |

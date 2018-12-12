@@ -14,6 +14,7 @@ Feature: Alter an asset supply
     And she still owns 20 units
     When Alice decides to "<direction>" the asset supply in <delta> units
     Then the balance of the asset in her account should "<direction>" in <delta> units
+    And she should receive a confirmation message
 
     Examples:
       | property         | direction | delta |
@@ -39,7 +40,7 @@ Feature: Alter an asset supply
     Given Alice is the creator of a <property> asset with an initial supply of 20 units
     And she still owns 20 units
     When Alice decides to "<direction>" the asset supply in 0 units
-    Then she should receive the error "<error>"
+    Then she should receive the error "Failure_Mosaic_Invalid_Supply_Change_Amount"
 
     Examples:
       | property         | direction |

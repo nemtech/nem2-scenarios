@@ -11,7 +11,8 @@ Feature: Send a message
   Scenario Outline: An account sends a message to another account
 
     When Alice sends "<message>" to "<recipient>"
-    Then "<recipient>" should receive the message "<message>"
+    Then she should receive a confirmation message
+    And "<recipient>" should receive the message "<message>"
 
     Examples:
       |message| recipient                                      |
@@ -37,4 +38,6 @@ Feature: Send a message
   Scenario: An account sends an encrypted message to another account
 
     When Alice sends the encrypted message "Hello" to "bob"
-    Then "bob" should be the only one capable of reading the original message
+    Then Alic should a notification saying the message was sent
+    And "bob" should receive the encrypted message
+    And  "he should be the only one capable of reading the original message

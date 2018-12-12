@@ -16,6 +16,7 @@ Feature: Create a subnamespace
     When Alice creates a subnamespace named "<subnamespace-name>"
     Then she should become the owner of the new subnamespace "<subnamespace-name>"
     And her xem balance should decrease in 10 units
+    And she should receive a confirmation message
 
     Examples:
       | parent-name   |  subnamespace-name |
@@ -29,9 +30,9 @@ Feature: Create a subnamespace
     And her xem balance should remain intact
 
     Examples:
-       | subnamespace-name                                                                     |
-       | alice.?€!                                                                             |
-       | alice.this_is_a_really_long_subnamespace_name_this_is_a_really_long_subnamespace_name |
+      | subnamespace-name                                                                     |
+      | alice.?€!                                                                             |
+      | alice.this_is_a_really_long_subnamespace_name_this_is_a_really_long_subnamespace_name |
 
   Scenario: An account tries to create a subnamespace with a parent namespace owned by another account
     Given Bob owns the active namespace "bob"
