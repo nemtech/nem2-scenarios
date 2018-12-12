@@ -46,7 +46,7 @@ Feature: Rent a namespace
       | 3000000  | Failure_Namespace_Invalid_Duration            |
 
   Scenario Outline: An account tries to rent a namespace with an invalid name
-    When Alice rents a namespace named <name> for 1 day
+    When Alice rents a namespace named "<name>" for 1 day
     Then she should receive the error "Failure_Namespace_Invalid_Name"
     And her xem balance should remain intact
 

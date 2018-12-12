@@ -17,9 +17,9 @@ Feature: Send an asset
       | event.organizer | 2      |
 
   Scenario Outline: An account sends an asset to another account
-    When Alice sends <amount> <asset> to "bob"
-    Then "bob" should receive <amount> <asset>
-    And  her <asset> balance should decrease in <amount> unit
+    When Alice sends  <amount> "<asset>" to "bob"
+    Then "bob" should receive  <amount> "<asset>"
+    And  her "<asset>" balance should decrease in <amount> unit
 
     Examples:
       | amount | asset          |
@@ -29,7 +29,7 @@ Feature: Send an asset
 
   Scenario Outline: An account tries to send an asset to an invalid account
     When Alice sends 1 "concert.ticket" to <recipient>
-    Then she should receive the error <error>
+    Then she should receive the error "<error>"
     And her "concert.ticket" balance should remain intact
 
     Examples:
@@ -40,9 +40,9 @@ Feature: Send an asset
 
   Scenario Outline: An account tries to send assets that it does not have
 
-    When Alice sends <amount> <asset> to "bob"
-    Then she should receive the error <error>
-    And her <asset> balance should remain intact
+    When Alice sends <amount> "<asset>" to "bob"
+    Then she should receive the error "<error>"
+    And her "<asset>" balance should remain intact
 
     Examples:
       | amount | asset          | error                            |
@@ -52,9 +52,9 @@ Feature: Send an asset
       | 105    | concert.ticket | Failure_Core_Insufficient_Balance|
 
   Scenario Outline: An account tries to split an asset that can't be split
-    When Alice sends <amount> <asset> to "bob"
+    When Alice sends  <amount> "<asset>" to "bob"
     Then "bob" should not receive any asset
-    And her <asset> balance should remain intact
+    And her "<asset>" balance should remain intact
 
     Examples:
       | amount  | asset          |
@@ -83,9 +83,9 @@ Feature: Send an asset
     And  her "reward.point" balance should decrease in 2 unit(s)
 
   Scenario Outline: An account tries to send multiple assets to another account, but there is an error in at least one of the attached assets
-    When Alice sends <amount-1> <asset-1> and 1 reward.point to "bob"
+    When Alice sends <amount-1> "<asset-1>" and 1 reward.point to "bob"
     Then she should receive the error "<error>"
-    And her <asset-1> balance should remain intact
+    And her "<asset-1>" balance should remain intact
     And her "reward.point" balance should remain intact
 
     Examples:

@@ -53,7 +53,7 @@ Feature: Create an asset
 
   Scenario Outline: An account tries to create an asset with an invalid initial supply
     When Alice creates an asset with an initial supply of <supply> for 1 day
-    Then she should receive the error <error>
+    Then she should receive the error "<error>"
     And her xem balance should remain intact
 
     Examples:
@@ -63,9 +63,9 @@ Feature: Create an asset
       | 9000000001 | Failure_Mosaic_Supply_Exceeded              |
 
   Scenario Outline: An account creates an asset with a valid property
-    When Alice creates a <property> asset for 1 day
+    When Alice creates a "<property>" asset for 1 day
     Then she should become the owner of the new asset
-    And it should have the property <property>
+    And it should have the property "<property>"
 
     Examples:
       | property         |
@@ -82,7 +82,7 @@ Feature: Create an asset
     And it should be identifiable
 
   Scenario: An account tries to create an asset with an invented property
-    When Alice creates a squared asset for 1 day
+    When Alice creates a "squared" asset for 1 day
     Then she should receive the error "Failure_Mosaic_Invalid_Property"
     And her xem balance should remain intact
 

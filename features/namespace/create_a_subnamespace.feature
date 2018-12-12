@@ -12,9 +12,9 @@ Feature: Create a subnamespace
 
   Scenario Outline: An account creates a subnamespace
 
-    Given Alice owns an active namespace named <parent-name>
-    When Alice creates a subnamespace named <subnamespace-name>
-    Then she should become the owner of the new subnamespace <name>
+    Given Alice owns an active namespace named "<parent-name>"
+    When Alice creates a subnamespace named "<subnamespace-name>"
+    Then she should become the owner of the new subnamespace "<subnamespace-name>"
     And her xem balance should decrease in 10 units
 
     Examples:
@@ -24,13 +24,13 @@ Feature: Create a subnamespace
 
   Scenario Outline: An account tries to create a subnamespace with an invalid name
     Given Alice owns an active namespace named "alice"
-    When Alice creates a namespace named <subnamespace-name>
+    When Alice creates a namespace named "<subnamespace-name>"
     Then she should receive the error "Failure_Namespace_Invalid_Name"
     And her xem balance should remain intact
 
     Examples:
-       | subnamespace-name                                                                 |
-       | alice.?€!                                                                     |
+       | subnamespace-name                                                                     |
+       | alice.?€!                                                                             |
        | alice.this_is_a_really_long_subnamespace_name_this_is_a_really_long_subnamespace_name |
 
   Scenario: An account tries to create a subnamespace with a parent namespace owned by another account
