@@ -15,9 +15,9 @@ Feature: Create a subnamespace
     Given Alice registered the namespace "one"
     And  the namespace is registered for a week
     When Alice creates a subnamespace named "one.two"
-    Then she should become the owner of the new subnamespace "one.two"
+    Then she should receive a confirmation message
+    And she should become the owner of the new subnamespace "one.two"
     And her xem balance should decrease in 10 units
-    And she should receive a confirmation message
 
   Scenario Outline: An account tries to create a subnamespace with an invalid name
     Given Alice registered the namespace "alice"

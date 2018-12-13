@@ -13,9 +13,9 @@ Feature: Extend an asset registration period
     Given Alice registered an asset
     And  the asset is registered for a week
     When Alice extends the registration of the asset for <time> seconds
-    Then the asset registration period should be extended in at least <time> seconds
+    Then she should receive a confirmation message
+    And the asset registration period should be extended in at least <time> seconds
     And her xem balance should decrease in <cost> units
-    And she should receive a confirmation message
 
     Examples:
       | time  | cost |

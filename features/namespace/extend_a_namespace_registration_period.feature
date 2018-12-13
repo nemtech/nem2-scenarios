@@ -14,9 +14,9 @@ Feature: Extend a namespace registration period
     Given Alice registered the namespace "alice"
     And  the namespace is registered for a week
     When Alice extends the registration of the namespace named "alice" for <time> seconds
-    Then the namespace registration period should be extended for at least <time> seconds
+    Then she should receive a confirmation message
+    And the namespace registration period should be extended for at least <time> seconds
     And her xem balance should decrease in <cost> units
-    And she should receive a confirmation message
 
     Examples:
       | time  | cost |
@@ -48,9 +48,9 @@ Feature: Extend a namespace registration period
     Given Alice registered the namespace "alice"
     And   the namespace is under redemption period
     When Alice extends the registration of the namespace named "alice" for 1 day
-    Then the namespace registration period should be extended for at least 1 day
+    Then she should receive a confirmation message
+    And the namespace registration period should be extended for at least 1 day
     And her xem balance should decrease in 576 units
-    And she should receive a confirmation message
 
   Scenario: An account tries to extend a namespace registration period, this is under redemption but the account didn't created it
     Given Bob registered the namespace "bob"

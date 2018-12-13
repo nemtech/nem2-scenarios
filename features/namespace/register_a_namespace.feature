@@ -24,10 +24,11 @@ Feature: Register a namespace
 
   Scenario Outline: An account registers a namespace
     When Alice registers a namespace named <name> for <time> seconds
-    Then she should become the owner of the new namespace <name>
+    Then she should receive a confirmation message
+    And she should become the owner of the new namespace <name>
     And it should be registered for at least <time> seconds
     And her xem balance should decrease in <cost> units
-    And she should receive a confirmation message
+
     Examples:
       | name  | time  | cost |
       | test1 | 15    | 0.1  |

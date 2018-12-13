@@ -14,10 +14,10 @@ Feature: Register an asset
 
   Scenario Outline: An account registers an expiring asset
     When Alice registers an asset for <seconds> seconds
-    Then she should become the owner of the new asset
+    Then she should receive a confirmation message
+    And she should become the owner of the new asset
     And it should be registered for at least <seconds> seconds
     And her xem balance should decrease in <cost> units
-    And she should receive a confirmation message
 
     Examples:
       |seconds| cost |
@@ -27,9 +27,9 @@ Feature: Register an asset
 
   Scenario: An account registers a non-expiring asset
     When Alice registers a non-expiring asset
-    Then she should become the owner of the non-expiring asset
+    Then she should receive a confirmation message
+    And she should become the owner of the non-expiring asset
     And her xem balance should decrease in 5000 xem
-    And she should receive a confirmation message
 
   Scenario Outline: An account tries to register an asset for an invalid duration
     When Alice registers an asset for <seconds> seconds
@@ -45,9 +45,9 @@ Feature: Register an asset
 
   Scenario Outline: An account tries to register an asset with a valid initial supply
     When Alice registers an asset with an initial supply of <supply> for 1 day
-    Then she should become the owner of the new asset
+    Then she should receive a confirmation message
+    And she should become the owner of the new asset
     And it should have a supply of <supply>
-    And she should receive a confirmation message
 
     Examples:
       |supply      |
@@ -67,9 +67,9 @@ Feature: Register an asset
 
   Scenario Outline: An account registers an asset with a valid property
     When Alice registers a "<property>" asset for 1 day
-    Then she should become the owner of the new asset
+    Then she should receive a confirmation message
+    And she should become the owner of the new asset
     And it should have the property "<property>"
-    And she should receive a confirmation message
 
     Examples:
       | property         |
@@ -87,9 +87,9 @@ Feature: Register an asset
 
   Scenario Outline: An account tries to register an asset with a valid divisibility
     When Alice registers an asset with divisibility <divisibility> for 1 day
-    Then she should become the owner of the new asset
+    Then she should receive a confirmation message
+    And she should become the owner of the new asset
     And the asset should handle up to <divisibility> decimals
-    And she should receive a confirmation message
 
     Examples:
       | divisibility |

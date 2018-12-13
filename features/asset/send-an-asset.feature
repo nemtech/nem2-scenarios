@@ -21,9 +21,10 @@ Feature: Send an asset
 
   Scenario Outline: An account sends an asset to another account
     When Alice sends  <amount> "<asset>" to "bob"
-    Then "bob" should receive  <amount> "<asset>"
+    Then she should receive a confirmation message
+    And "bob" should receive a confirmation message
+    And "bob" should receive  <amount> "<asset>"
     And her "<asset>" balance should decrease in <amount> unit
-    And she should receive a confirmation message
 
     Examples:
       | amount | asset          |
@@ -67,15 +68,17 @@ Feature: Send an asset
 
   Scenario: An account that registered a non-transferable asset sends it to another account
     When The ticket vendor sends 1 "event.organizer" to "bob"
-    Then "bob" should receive 1 "event.organizer"
+    Then "ticket-vendor" should receive a confirmation message
+    And "bob" should receive a confirmation message
+    And "bob" should receive 1 "event.organizer"
     And the ticket vendor "event.organizer" balance should decrease in 1 unit(s)
-    And the ticket vendor should receive a confirmation message
 
   Scenario: An account sends a non-transferable asset to the account that registered the asset
     When Alice sends 1 "event.organizer" to "ticket-vendor"
-    Then "ticket-vendor" should receive 1 "event.organizer"
+    Then she should receive a confirmation message
+    And  "ticket-vendor" should receive a confirmation message
+    And "ticket-vendor" should receive 1 "event.organizer"
     And  her "event.organizer" balance should decrease in 1 unit(s)
-    And  she should receive a confirmation message
 
   Scenario: An account tries to send a non-transferable asset to another account
     When Alice sends  1 "event.organizer" to "bob"
@@ -84,10 +87,11 @@ Feature: Send an asset
 
   Scenario: An account sends multiple assets to another account
     When Alice sends 1 "concert.ticket" and 2 "reward.point" to "bob"
-    Then "bob" should receive 1 "concert.ticket" and 2 "reward.point"
+    Then she should receive a confirmation message
+    And "bob" should receive a confirmation message
+    And "bob" should receive 1 "concert.ticket" and 2 "reward.point"
     And  her "concert.ticket" balance should decrease in 1 unit(s)
     And  her "reward.point" balance should decrease in 2 unit(s)
-    And  she should receive a confirmation message
 
   Scenario Outline: An account tries to send multiple assets to another account, but at least one of the attached assets can't be sent
     When Alice sends <amount-1> "<asset-1>" and 1 reward.point to "bob"

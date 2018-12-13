@@ -12,8 +12,8 @@ Feature: Alter an asset supply
     Given Alice has registered a <property> asset with an initial supply of 20 units
     And she still owns 20 units
     When Alice decides to "<direction>" the asset supply in <amount> units
-    Then the balance of the asset in her account should "<direction>" in <amount> units
-    And she should receive a confirmation message
+    Then she should receive a confirmation message
+    And the balance of the asset in her account should "<direction>" in <amount> units
 
     Examples:
       | property         | direction | amount |

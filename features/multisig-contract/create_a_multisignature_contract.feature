@@ -12,18 +12,18 @@ Feature: Create a multisignature contract
     And she adds "phone" as a cosignatory
     And she adds "computer" as a cosignatory
     And publishes the contract
-    Then she should not be able to announce transactions from her account
+    Then she should receive a confirmation message
+    And she should not be able to announce transactions from her account
     And her "phone" or "computer" cosignature should be required to announce transactions from her account
-    And she should receive a confirmation message
 
   Scenario: An account creates an N-of-N contract
     When Alice defines a 2 of 2 multisignature contract
     And she adds "phone" as a cosignatory
     And she adds "computer" as a cosignatory
     And publishes the contract
-    Then she should not be able to announce transactions from her account
+    Then she should receive a confirmation message
+    And she should not be able to announce transactions from her account
     And her "phone" and "computer" cosignatures should be required to announce transactions from her account
-    And she should receive a confirmation message
 
   Scenario: An account tries to create an N-of-M contract
     When Alice defines a 2 of 1 multisignature contract
