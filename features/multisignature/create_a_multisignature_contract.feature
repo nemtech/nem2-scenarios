@@ -94,4 +94,4 @@ Feature: Create a multisignature contract
     And publishes the contract
     Then she should receive the error "Failure_Multisig_Modify_Unknown_Multisig_Account"
 
-  # To do: Failure_Multisig_Modify_Unsupported_Modification_Type
+  # Todo: Failure_Multisig_Modify_Unsupported_Modification_Type

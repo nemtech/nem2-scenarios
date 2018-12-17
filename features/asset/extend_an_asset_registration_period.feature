@@ -43,12 +43,12 @@ Feature: Extend an asset registration period
     Then she should receive the error "Failure_Mosaic_Owner_Conflict"
     And her xem balance should remain intact
 
-  #TODO: The error message is not implemented yet, so it could change
   Scenario: An account tries to extend an the duration of a non-expirable asset
     Given Alice registered a non-expirable asset
     When Alice extends the registration of the asset for 1 day
     Then she should receive the error "Failure_Mosaic_Already_Non_Expirable"
     And her xem balance should remain intact
+  # Todo: The error message is not implemented yet. It may change.
 
   Scenario: An account tries to extend an asset registration period but does not have enough funds
     Given Alice registered an asset
