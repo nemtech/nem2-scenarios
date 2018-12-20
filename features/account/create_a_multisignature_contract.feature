@@ -28,7 +28,7 @@ Feature: Create a multisignature contract
 
   Scenario: An account tries to create an (-M)-of-N contract
     When Alice defines a -1 of 2 multisignature contract
-    And she should receive the error "Failure_Multisig_Modify_Min_Setting_Out_Of_Range"
+    Then she should receive the error "Failure_Multisig_Modify_Min_Setting_Out_Of_Range"
 
   Scenario Outline: An account tries to create a multisignature contract, setting an invalid minimum of cosignatures to remove a cosignatory
     When Alice defines a 1 of 2 multisignature contract
