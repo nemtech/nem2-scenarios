@@ -10,8 +10,7 @@ Feature: Extend an asset registration period
     And Alice has 10000000 xem in her account
 
   Scenario Outline: An account extends an asset registration period
-    Given Alice registered an asset
-    And  the asset is registered for a week
+    Given Alice registered an asset for a week
     When Alice extends the registration of the asset for <time> seconds
     Then she should receive a confirmation message
     And the asset registration period should be extended in at least <time> seconds
@@ -24,8 +23,7 @@ Feature: Extend an asset registration period
       | 30    | 100  |
 
   Scenario Outline: An account tries to extend an asset registration for an invalid period
-    Given Alice registered an asset
-    And  the asset is registered for a week
+    Given Alice registered an asset for a week
     When Alice extends the registration of the asset for <time> seconds
     Then she should receive the error "<error>"
     And her xem balance should remain intact
@@ -37,8 +35,7 @@ Feature: Extend an asset registration period
       | 40000000000 | Failure_Mosaic_Invalid_Duration |
 
   Scenario: An account tries to extend an asset registration period but another account registered it
-    Given Bob registered an asset
-    And  the asset is registered for a week
+    Given Bob registered an asset for a week
     When Alice extends the registration of the asset for 1 day
     Then she should receive the error "Failure_Mosaic_Owner_Conflict"
     And her xem balance should remain intact
@@ -51,7 +48,7 @@ Feature: Extend an asset registration period
   # Todo: The error message is not implemented yet. It may change.
 
   Scenario: An account tries to extend an asset registration period but does not have enough funds
-    Given Alice registered an asset
+    Given Alice registered an asset for a week
     And  she has spent all her xem
     When Alice extends the registration of the asset for 1 day
     Then  she should receive the error "Failure_Core_Insufficient_Balance"

@@ -6,7 +6,6 @@ Feature: Send a message
   Background:
     Given the mean block generation time is 15 seconds
     And the maximum message length is 1024
-    And the address "SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5" is named "bob"
 
   Scenario Outline: An account sends a message to another account
 
@@ -17,7 +16,7 @@ Feature: Send a message
     Examples:
       |message| recipient                                      |
       | Hello | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 |
-      | Hello | bob                                            |
+      | Hello | Bob                                            |
 
   Scenario Outline: An account tries to send a message to an invalid account
 
@@ -32,12 +31,12 @@ Feature: Send a message
 
   Scenario: An account  tries to send a message to another account, but the message is too large
 
-    When Alice sends a long message to "bob" containing 1025 characters
+    When Alice sends a really long message to Bob
     Then she should receive the error "Failure_Transfer_Message_Too_Large"
 
   Scenario: An account sends an encrypted message to another account
 
-    When Alice sends the encrypted message "Hello" to "bob"
+    When Alice sends the encrypted message "Hello" to "Bob"
     Then she should receive a confirmation message
-    And "bob" should receive the encrypted message
+    And Bob should receive the encrypted message
     And he should be the only one capable of reading the original message

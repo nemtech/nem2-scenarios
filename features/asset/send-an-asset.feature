@@ -5,8 +5,6 @@ Feature: Send an asset
 
   Background:
     Given the mean block generation time is 15 seconds
-    And the address "SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5" is named "bob"
-    And the address "SAPUUH-GL6DYO-ZHTCAE-ORM2MB-KBXOI5-UZILYE-6RV4" is named "ticket-vendor"
     And "ticket vendor" has registered the following assets:
       |asset-id  | asset-alias     | transferable | supply | divisibility |
       |3576016194| concert.ticket  | true         | 1000   | 0            |
@@ -20,11 +18,10 @@ Feature: Send an asset
       | event.organizer | 2      |
 
   Scenario Outline: An account sends an asset to another account
-    When Alice sends  <amount> "<asset>" to "bob"
-    Then she should receive a confirmation message
-    And "bob" should receive a confirmation message
-    And "bob" should receive  <amount> "<asset>"
-    And her "<asset>" balance should decrease in <amount> unit
+    When "Alice" sends  <amount> "<asset>" to "Bob"
+    Then "Alice" should receive a confirmation message
+    And "Bob" should receive <amount> "<asset>"
+    And her "<asset>" balance should decrease in <amount> unit(s)
 
     Examples:
       | amount | asset          |
@@ -33,7 +30,7 @@ Feature: Send an asset
       | 0.5    | reward.point   |
 
   Scenario Outline: An account tries to send an asset to an invalid account
-    When Alice sends 1 "concert.ticket" to <recipient>
+    When "Alice" sends 1 "concert.ticket" to "<recipient>"
     Then she should receive the error "<error>"
     And her "concert.ticket" balance should remain intact
 
@@ -45,7 +42,7 @@ Feature: Send an asset
 
   Scenario Outline: An account tries to send assets that it does not have
 
-    When Alice sends <amount> "<asset>" to "bob"
+    When "Alice" sends <amount> "<asset>" to "Bob"
     Then she should receive the error "<error>"
     And her "<asset>" balance should remain intact
 
@@ -57,8 +54,8 @@ Feature: Send an asset
       | 105    | concert.ticket | Failure_Core_Insufficient_Balance |
 
   Scenario Outline: An account tries to split an asset that can't be split
-    When Alice sends  <amount> "<asset>" to "bob"
-    Then "bob" should not receive any asset
+    When "Alice" sends <amount> "<asset>" to "Bob"
+    Then "Bob" should not receive any asset
     And her "<asset>" balance should remain intact
 
     Examples:
@@ -67,34 +64,31 @@ Feature: Send an asset
       | 0.000005 | reward.point   |
 
   Scenario: An account that registered a non-transferable asset sends it to another account
-    When The ticket vendor sends 1 "event.organizer" to "bob"
-    Then "ticket-vendor" should receive a confirmation message
-    And "bob" should receive a confirmation message
-    And "bob" should receive 1 "event.organizer"
+    When "Ticket vendor" sends 1 "event.organizer" to "Bob"
+    Then "Ticket vendor" should receive a confirmation message
+    And "Bob" should receive 1 "event.organizer"
     And the ticket vendor "event.organizer" balance should decrease in 1 unit(s)
 
   Scenario: An account sends a non-transferable asset to the account that registered the asset
-    When Alice sends 1 "event.organizer" to "ticket-vendor"
+    When "Alice" sends 1 "event.organizer" to "Ticket vendor"
     Then she should receive a confirmation message
-    And  "ticket-vendor" should receive a confirmation message
-    And "ticket-vendor" should receive 1 "event.organizer"
+    And "Ticket vendor" should receive 1 "event.organizer"
     And  her "event.organizer" balance should decrease in 1 unit(s)
 
   Scenario: An account tries to send a non-transferable asset to another account
-    When Alice sends  1 "event.organizer" to "bob"
+    When "Alice" sends 1 "event.organizer" to "Bob"
     Then she should receive the error "Failure_Mosaic_Non_Transferable"
     And her "event.organizer" balance should remain intact
 
   Scenario: An account sends multiple assets to another account
-    When Alice sends 1 "concert.ticket" and 2 "reward.point" to "bob"
+    When "Alice" sends 1 "concert.ticket" and 2 "reward.point" to "Bob"
     Then she should receive a confirmation message
-    And "bob" should receive a confirmation message
-    And "bob" should receive 1 "concert.ticket" and 2 "reward.point"
+    And "Bob" should receive 1 "concert.ticket" and 2 "reward.point"
     And  her "concert.ticket" balance should decrease in 1 unit(s)
     And  her "reward.point" balance should decrease in 2 unit(s)
 
   Scenario Outline: An account tries to send multiple assets to another account, but at least one of the attached assets can't be sent
-    When Alice sends <amount-1> "<asset-1>" and 1 reward.point to "bob"
+    When "Alice" sends <amount-1> "<asset-1>" and 1 reward.point to "Bob"
     Then she should receive the error "<error>"
     And her "<asset-1>" balance should remain intact
     And her "reward.point" balance should remain intact

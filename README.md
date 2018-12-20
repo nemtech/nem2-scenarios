@@ -11,9 +11,13 @@ Catapult behavior validation using scenarios.
 
 ``npm install``
 
-## Runt tests
+## Run tests
 
 ``npm test``
+
+## Run linter
+
+``gherkin-lint``
 
 ## Write an scenario
 

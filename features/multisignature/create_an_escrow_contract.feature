@@ -8,46 +8,43 @@ Feature: Create an escrow contract
     And the maximum number of transactions per escrow contract is 1000
     And each escrow contract requires to lock at least 10 "xem" to guarantee that the contract will conclude
     And an escrow contract is active up to 2 days
+    And the mean block generation time is 15 seconds
     And a contract concludes when all the involved cosignatories have signed it
 
   Scenario: An account creates an escrow contract
-    When Alice defines an escrow contract
-    And she states that "Alice" will send 1 "concert.ticket" to "Bob"
-    And she states that "Bob" will send 20 "euros" to "Alice"
+    When Alice defines the following escrow contract:
+    | sender | recipient | type          | data            |
+    | Alice  | Bob       | send-an-asset | 1 concert.ticket|
+    | Bob    | Alice     | send-an-asset | 20 euros        |
     And she locks 10 "xem" to guarantee that the contract will conclude in less than 2 days
     And she publishes the contract
     Then Alice should receive a confirmation message
-    And "Bob" should receive a notification informing it's cosignature is required
+    And all sender participants should receive a notification to cosign the transaction
 
   Scenario: An account creates an escrow contract adding a new participant
-    Given Exchange is a multisig contract
-    When Alice defines an escrow contract
-    And she states that "Alice" will send 1 "concert.ticket" to "Bob"
-    And she states that "Bob" will send 20 "xem" to "Exchange"
-    And she states that "Exchange" will send 20 "euros" to "Alice"
+    When Alice defines the following escrow contract:
+      | sender  | recipient | type          | data            |
+      | Alice   | Bob       | send-an-asset | 1 concert.ticket|
+      | Bob     | Exchange  | send-an-asset | 20 xem          |
+      | Exchange| Alice     | send-an-asset | 20 euros        |
     And she locks 10 "xem" to guarantee that the contract will conclude in less than 2 days
     And she publishes the contract
-    Then Alice should receive a confirmation message
-    And "Bob" should receive a notification informing it's cosignature is required
-    And "Exchange" should receive a notification informing it's cosignature is required
+    Then all sender participants should receive a notification to cosign the transaction
 
-  Scenario: An account creates an escrow contract with multiple types of transactions
-    When Alice defines an escrow contract
-    And she states that "Alice" will register the namespace "alice"
-    And she states that "Bob" will create a multisig contract adding her as a cosignatory
+  Scenario: An account creates an escrow contract using other types of transactions
+    When Alice defines the following escrow contract:
+      | sender  | type                             | data                      |
+      | Alice   | register-a-namespace             | alice                     |
+      |  Bob    | create-a-multisignature-contract | 1-of-1, cosignatory:alice |
     And she locks 10 "xem" to guarantee that the contract will conclude in less than 2 days
     And she publishes the contract
-    Then Alice should receive a confirmation message
-    And "Bob" should receive a notification informing it's cosignature is required
+    Then all sender participants should receive a notification to cosign the transaction
 
   Scenario: An account creates an escrow contract and another account locks the funds for that contract
-    When Alice defines an escrow contract
-    And she states that "Alice" will register the namespace "alice"
-    And she states that "Bob" will create a multisig contract adding her as a cosignatory
-    And Bob locks 10 "xem" to guarantee that the contract will conclude in less than 2 days
+    Given Alice defined a valid escrow contract
+    When Bob locks 10 "xem" to guarantee that the contract will conclude in less than 2 days
     And she publishes the contract
-    Then Alice should receive a confirmation message
-    And "Bob" should receive a notification informing it's cosignature is required
+    Then all sender participants should receive a notification to cosign the transaction
 
   Scenario: An account creates an escrow contract locking more than 10 xem for that contract
     Given Alice defined a valid escrow contract
