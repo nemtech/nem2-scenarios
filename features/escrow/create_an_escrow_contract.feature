@@ -121,4 +121,20 @@ Feature: Create an escrow contract
       | 0      |
       | 3      |
 
+  Scenario: An account tries to create an escrow contract, but it has not allowed sending "AGGREGATE" transactions
+    Given Alice only allowed sending "TRANSFER" transactions
+    And Alice defined a valid escrow contract
+    And "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
+    When she publishes the contract
+    Then she should receive the error "error"
+    #Todo: Define status error in Catapult REST
+
+  Scenario: An account tries to create an escrow contract, but it has blocked sending "AGGREGATE" transactions
+    Given Alice blocked sending "AGGREGATE" transactions
+    And Alice defined a valid escrow contract
+    And  "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
+    When she publishes the contract
+    Then she should receive the error "error"
+    #Todo: Define status error in Catapult REST
+
 # Todo: Failure_Aggregate_Redundant_Cosignatures

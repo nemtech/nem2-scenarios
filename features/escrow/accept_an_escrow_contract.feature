@@ -64,6 +64,7 @@ Feature: Accept an escrow contract
     Then every sender participant should receive a confirmation notification
 
   Scenario: Every sender participant has accepted the contract but this presents some validation error
+    # It applies to any restriction (e.g. Account properties filters)
     Given Alice does not own 1 concert.ticket
     And the following contract is pending to be accepted by Bob:
       | sender | recipient | type          | data            |
@@ -92,3 +93,6 @@ Feature: Accept an escrow contract
     Given an escrow contract has expired
     When Alice accepts it
     Then she should receive the error "Failure_Lock_Inactive_Hash"
+
+
+#TODO: Review if cosignature transactions can be blocked

@@ -55,7 +55,7 @@ Feature: Exchange assets across different blockchains
   Scenario: An exchange of assets doesn't conclude because the second participant decides not locking the assets
     Given Alice derived the secret from the seed using "SHA_512"
     And "Alice" locked the following asset units using the previous secret:
-      | amount | asset       | recipient | network  | days |
+      | amount | asset       | recipient | network  | hours|
       | 10     | alice.token | Bob       | MIJIN    | 96   |
     When "Bob" decides not locking the assets
     Then "Alice" should receive 10 "alice.token" in "MIJIN" after 96 hours
@@ -63,10 +63,10 @@ Feature: Exchange assets across different blockchains
   Scenario: An exchange of assets doesn't conclude because the first participant decides not to prove to know the secret's seed
     Given Alice derived the secret from the seed using "SHA_512"
     And "Alice" locked the following asset units using the previous secret:
-      | amount | asset       | recipient | network  | days |
+      | amount | asset       | recipient | network  | hours |
       | 10     | alice.token | Bob       | MIJIN    | 96   |
     And "Bob" locked the following asset units using the previous secret:
-      | amount | asset       | recipient | network  | days |
+      | amount | asset       | recipient | network  | hours|
       | 10     | bob.token   | Alice     | MAIN_NET | 84   |
     When "Alice" decides not to prove to know the secret's seed
     Then "Alice" should receive 10 "alice.token" in "MIJIN" after 96 hours
@@ -75,10 +75,10 @@ Feature: Exchange assets across different blockchains
   Scenario: An exchange of assets doesn't conclude because the second participant didn't prove that knows the secret's seed
     Given Alice derived the secret from the seed using "SHA_512"
     And "Alice" locked the following asset units using the previous secret:
-      | amount | asset       | recipient | network  | days |
+      | amount | asset       | recipient | network  | hours|
       | 10     | alice.token | Bob       | MIJIN    | 96   |
     And "Bob" locked the following asset units using the previous secret:
-      | amount | asset       | recipient | network  | days |
+      | amount | asset       | recipient | network  | hours|
       | 10     | bob.token   | Alice     | MAIN_NET | 84   |
     And Alice proved knowing the secret's seed in "MAIN_NET" receiving 10 bob.token
     When "Bob" decides not to prove to know the secret's seed
@@ -87,10 +87,10 @@ Feature: Exchange assets across different blockchains
   Scenario: An exchange of assets doesn't conclude because there is not enough time
     Given Alice derived the secret from the seed using "SHA_512"
     And "Alice" locked the following asset units using the previous secret:
-      | amount | asset       | recipient | network  | days |
+      | amount | asset       | recipient | network  | hours|
       | 10     | alice.token | Bob       | MIJIN    | 10   |
     And "Bob" locked the following asset units using the previous secret:
-      | amount | asset       | recipient | network  | days |
+      | amount | asset       | recipient | network  | hours|
       | 10     | bob.token   | Alice     | MAIN_NET | 20   |
     And "Alice" proved knowing the secret's seed in "MAIN_NET" after 12 hours
     When "Bob" proves knowing the secret's seed in "MAIN_NET" after 12 hours
@@ -99,7 +99,7 @@ Feature: Exchange assets across different blockchains
   Scenario: An account tries to lock assets using an unimplemented algorithm
     Given Alice derived the secret from the seed using "MD5"
     When "Alice" Alice locks the following asset units using the previous secret:
-      | amount | asset       | recipient | network  | days |
+      | amount | asset       | recipient | network  | hours|
       | 10     | alice.token | Bob       | MIJIN    | 10   |
     Then she should receive the error "Failure_Lock_Invalid_Hash_Algorithm"
 
@@ -118,11 +118,11 @@ Feature: Exchange assets across different blockchains
   Scenario: An account tries to lock assets using a used secret
     Given Alice derived the secret from the seed using "SHA_512"
     And "Alice" locked the following asset units using the previous secret:
-      | amount | asset       | recipient | network  | days|
-      | 10     | alice.token | Bob       | MIJIN    | 2   |
+      | amount | asset       | recipient | network  | hours|
+      | 10     | alice.token | Bob       | MIJIN    | 2    |
     When "Alice" locks the following asset units using the previous secret:
-      | amount | asset       | recipient | network  | days|
-      | 10     | alice.token | Bob       | MIJIN    | 2   |
+      | amount | asset       | recipient | network  | hours|
+      | 10     | alice.token | Bob       | MIJIN    | 2    |
     Then she should receive the error "Failure_Lock_Secret_Already_Used"
 
   Scenario: An account tries to prove knowing a secret's seed that has not been used
@@ -133,8 +133,8 @@ Feature: Exchange assets across different blockchains
   Scenario: An account tries to unlock assets but the secret doesn't equal the hashed seed
     Given Alice derived the secret from the seed using "SHA_512"
     And "Alice" locked the following asset units using the previous secret:
-      | amount | asset       | recipient | network  | days|
-      | 10     | alice.token | Bob       | MIJIN    | 2   |
+      | amount | asset       | recipient | network  | hours|
+      | 10     | alice.token | Bob       | MIJIN    | 2    |
     When Alice proves knowing the secret's seed in "MIJIN" but it was copied partially
     Then she should receive the error "Failure_Lock_Secret_Mismatch"
 
@@ -142,8 +142,8 @@ Feature: Exchange assets across different blockchains
     Given Alice generated a <length> character length seed
     And  "Alice" derived the secret from the seed using "SHA_512"
     And "Alice" locked the following asset units using the previous secret:
-      | amount | asset       | recipient | network  | days|
-      | 10     | alice.token | Bob       | MIJIN    | 2   |
+      | amount | asset       | recipient | network  | hours|
+      | 10     | alice.token | Bob       | MIJIN    | 2    |
     When Alice proves knowing seed in "MIJIN"
     Then she should receive the error "Failure_Lock_Proof_Size_Out_Of_Bounds"
 
@@ -155,10 +155,83 @@ Feature: Exchange assets across different blockchains
   Scenario: An account tries to unlock assets using a different algorithm
     Given "Alice" derived the secret using "SHA_512"
     And "Alice" locked the following asset units using the previous secret:
-      | amount | asset       | recipient | network  | days |
+      | amount | asset       | recipient | network  | hours|
       | 10     | alice.token | Bob       | MIJIN    | 96   |
     When Alice proves knowing the secret's seed in "MIJIN" selecting "Keccak" as the hashing algorithm
     Then she should receive the error "Failure_Lock_Hash_Not_Implemented"
 
-# Todo: Failure_Lock_Missing_Secret_Padding
-# Todo: Failure_Lock_Hash_Algorithm_Mismatch
+  Scenario: An account tries to lock assets, but the recipient does not allow this asset
+    Given Bob only allowed receiving "xem" assets
+    And Alice derived the secret from the seed using "SHA_512"
+    When "Alice" locks the following asset units using the previous secret:
+      | amount | asset       | recipient | network  | hours |
+      | 10     | alice.token | Bob       | MIJIN    | 96    |
+    Then she should receive the error "error"
+    #Todo: Define status error in Catapult REST
+
+  Scenario: An account tries to lock assets, but the recipient has blocked this asset
+    Given Bob blocked receiving "alice.token" assets
+    And Alice derived the secret from the seed using "SHA_512"
+    When "Alice" locks the following asset units using the previous secret:
+      | amount | asset       | recipient | network  | hours |
+      | 10     | alice.token | Bob       | MIJIN    | 96    |
+    Then she should receive the error "error"
+
+  Scenario: An account tries to lock assets, but the recipient account does not allow receiving transactions from it
+    Given Bob only allowed receiving transactions from Carol
+    And Alice derived the secret from the seed using "SHA_512"
+    When "Alice" locks the following asset units using the previous secret:
+      | amount | asset       | recipient | network  | hours |
+      | 10     | alice.token | Bob       | MIJIN    | 96    |
+    Then she should receive the error "error"
+    #Todo: Define status error in Catapult REST
+
+  Scenario: An account tries to lock assets, but the recipient has blocked it
+    Given Bob blocked receiving transactions from Alice
+    And Alice derived the secret from the seed using "SHA_512"
+    When "Alice" locks the following asset units using the previous secret:
+      | amount | asset       | recipient | network  | hours |
+      | 10     | alice.token | Bob       | MIJIN    | 96    |
+    Then she should receive the error "error"
+    #Todo: Define status error in Catapult REST
+
+  Scenario: An account tries to lock assets, but it has not allowed sending "LOCK_SECRET" transactions
+    Given Alice only allowed sending "TRANSFER" transactions
+    And Alice derived the secret from the seed using "SHA_512"
+    When "Alice" locks the following asset units using the previous secret:
+      | amount | asset       | recipient | network  | hours |
+      | 10     | alice.token | Bob       | MIJIN    | 96    |
+    Then she should receive the error "error"
+    #Todo: Define status error in Catapult REST
+
+  Scenario: An account tries to lock assets, but it has blocked sending "LOCK_SECRET" transactions
+    Given Alice blocked sending "LOCK_SECRET" transactions
+    And Alice derived the secret from the seed using "SHA_512"
+    When "Alice" locks the following asset units using the previous secret:
+      | amount | asset       | recipient | network  | hours |
+      | 10     | alice.token | Bob       | MIJIN    | 96    |
+    Then she should receive the error "error"
+    #Todo: Define status error in Catapult REST
+
+  Scenario: An account tries to unlock assets, but it has not allowed sending "SECRET_PROOF" transactions
+    Given Alice only allowed sending "SECRET_PROOF" transactions
+    And Bob derived the secret from the seed using "SHA_512"
+    And "Bob" locked the following asset units using the previous secret:
+      | amount | asset       | recipient | network  | hours |
+      | 10     | bob.token   | Alice     | MAIN_NET | 84    |
+    When "Alice" proved knowing the secret's seed in "MAIN_NET"
+    Then she should receive the error "error"
+    #Todo: Define status error in Catapult REST
+
+  Scenario: An account tries to unlock assets, but it has blocked sending "SECRET_PROOF" transactions
+    Given Alice blocked sending "SECRET_PROOF" transactions
+    And Bob derived the secret from the seed using "SHA_512"
+    And "Bob" locked the following asset units using the previous secret:
+      | amount | asset       | recipient | network  | hours |
+      | 10     | bob.token   | Alice     | MAIN_NET | 84    |
+    When "Alice" proved knowing the secret's seed in "MAIN_NET"
+    Then she should receive the error "error"
+    #Todo: Define status error in Catapult REST
+
+  # Todo: Failure_Lock_Missing_Secret_Padding
+  # Todo: Failure_Lock_Hash_Algorithm_Mismatch

@@ -43,28 +43,6 @@ Feature: Register an asset
       | 1          |
       | 40000000000|
 
-  Scenario Outline: An account tries to register an asset with a valid initial supply
-    When Alice registers an asset with an initial supply of <supply> for 1 day
-    Then she should receive a confirmation message
-    And she should become the owner of the new asset
-    And it should have a supply of <supply>
-
-    Examples:
-      |supply      |
-      | 1          |
-      | 9000000000 |
-
-  Scenario Outline: An account tries to register an asset with an invalid initial supply
-    When Alice registers an asset with an initial supply of <supply> for 1 day
-    Then she should receive the error "<error>"
-    And her xem balance should remain intact
-
-    Examples:
-      | supply     | error                                       |
-      | -1         | Failure_Mosaic_Supply_Negative              |
-      | 0          | Failure_Mosaic_Invalid_Supply_Change_Amount |
-      | 9000000001 | Failure_Mosaic_Supply_Exceeded              |
-
   Scenario Outline: An account registers an asset with a valid property
     When Alice registers a "<property>" asset for 1 day
     Then she should receive a confirmation message
@@ -110,5 +88,17 @@ Feature: Register an asset
     Given Alice has spent all her xem
     When Alice registers an asset for 1 day
     Then she should receive the error "Failure_Core_Insufficient_Balance"
+
+  Scenario: An account tries to register an asset, but it has not allowed sending "MOSAIC_DEFINITION" transactions
+    Given Alice only allowed sending "TRANSFER" transactions
+    When Alice registers an asset for 2 seconds
+    Then she should receive the error "error"
+    #Todo: Define status error in Catapult REST
+
+  Scenario: An account tries to register an asset, but it has blocked sending "MOSAIC_DEFINITION" transactions
+    Given Alice blocked sending "MOSAIC_DEFINITION" transactions
+    When Alice registers an asset for 2 seconds
+    Then she should receive the error "error"
+    #Todo: Define status error in Catapult REST
 
   # Todo: Failure_Mosaic_Invalid_Flags

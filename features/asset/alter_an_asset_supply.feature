@@ -59,4 +59,18 @@ Feature: Alter an asset supply
       | increase  |
       | decrease  |
 
+  Scenario: An account tries to alter an asset supply, but it has not allowed sending "MOSAIC_SUPPLY_CHANGE" transactions
+    Given Alice only allowed sending "TRANSFER" transactions
+    And Alice has registered a "supply-mutable" asset with an initial supply of 20 units
+    When Alice decides to "increase" the asset supply in 5 units
+    Then she should receive the error "error"
+    #Todo: Define status error in Catapult REST
+
+  Scenario: An account tries to alter an asset supply, but it has blocked sending "MOSAIC_SUPPLY_CHANGE" transactions
+    Given Alice blocked sending "MOSAIC_DEFINITION" transactions
+    And Alice has registered a "supply-mutable" asset with an initial supply of 20 units
+    When Alice decides to "increase" the asset supply in 5 units
+    Then she should receive the error "error"
+    #Todo: Define status error in Catapult REST
+
   # Todo: Failure_Mosaic_Invalid_Supply_Change_Direction

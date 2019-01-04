@@ -80,4 +80,16 @@ Feature: Register a namespace
     When Alice registers a namespace named "alice" for 1 day
     Then she should receive the error "Failure_Core_Insufficient_Balance"
 
+  Scenario: An account tries to register a namespace, but it has not allowed sending "REGISTER_NAMESPACE" transactions
+    Given Alice only allowed sending "TRANSFER" transactions
+    When "Alice" registers the namespace named "alice" for 1 day
+    Then she should receive the error "error"
+    #Todo: Define status error in Catapult REST
+
+  Scenario: An account tries to register a namespace, but it has blocked sending "REGISTER_NAMESPACE" transactions
+    Given Alice blocked sending "REGISTER_NAMESPACE" transactions
+    When "Alice" registers the namespace named "alice" for 1 day
+    Then she should receive the error "error"
+    #Todo: Define status error in Catapult REST
+
   # Todo: Failure_Namespace_Invalid_Namespace_Type

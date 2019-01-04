@@ -8,13 +8,14 @@ Feature: Create a multisignature contract
     And the maximum number of multisignature contracts an account can be cosignatory of is 5
 
   Scenario Outline: An account creates an M-of-N contract
-    When Alice creates a <minimumApproval> of 2 multisignature contract
-    And she adds the following cosignatories:
+    Given Alice defined a <minimumApproval> of 2 multisignature contract
+    And she added the following cosignatories:
       | cosignatory|
       | phone      |
       | computer   |
+    When she publishes the contract
     Then she should receive a confirmation message
-    And <minimumApproval> of the cosignatories is required to announce transactions from her account
+    And <minimumApproval> of the cosignatories are required to announce transactions from her account
 
     Examples:
       | minimumApproval |
@@ -23,20 +24,23 @@ Feature: Create a multisignature contract
       | 30              |
 
   Scenario: An account tries to create an N-of-M contract
-    When Alice creates a 2 of 1 multisignature contract
+    Given Alice defined a 2 of 1 multisignature contract
+    When she publishes the contract
     Then she should receive the error "Failure_Multisig_Modify_Min_Setting_Larger_Than_Num_Cosignatories"
 
   Scenario: An account tries to create an (-M)-of-N contract
-    When Alice defines a -1 of 2 multisignature contract
+    Given Alice defined a -1 of 2 multisignature contract
+    When she publishes the contract
     Then she should receive the error "Failure_Multisig_Modify_Min_Setting_Out_Of_Range"
 
   Scenario Outline: An account tries to create a multisignature contract, setting an invalid minimum of cosignatures to remove a cosignatory
-    When Alice defines a 1 of 2 multisignature contract
-    And she adds the following cosignatories:
+    Given Alice defined a 1 of 2 multisignature contract
+    And she added the following cosignatories:
       | cosignatory|
       | phone      |
       | computer   |
-    And sets <minimum-removal> as the minimum number of required cosignatures to remove a cosignatory from the multisignature contract
+    And set <minimum-removal> as the minimum number of required cosignatures to remove a cosignatory from the multisignature contract
+    When she publishes the contract
     Then she should receive the error "<error>"
 
     Examples:
@@ -46,43 +50,49 @@ Feature: Create a multisignature contract
       | 3               | Failure_Multisig_Modify_Min_Setting_Larger_Than_Num_Cosignatories |
 
   Scenario: An account tries to create a multisignature contract adding twice the same cosignatory
-    When Alice defines a 1 of 1 multisignature contract
-    And she adds the following cosignatories:
+    Given Alice defined a 1 of 1 multisignature contract
+    And she added the following cosignatories:
       | cosignatory|
       | phone      |
       | phone      |
+    When she publishes the contract
     Then she should receive the error "Failure_Multisig_Modify_Redundant_Modifications"
 
   Scenario: An account tries to create a multisignature contract with more than 10 cosignatories
-    When Alice defines a 1 of 11 multisignature contract
-    And she adds 11 cosignatories
+    Given Alice defined a 1 of 11 multisignature contract
+    And she added 11 cosignatories
+    When she publishes the contract
     Then she should receive the error "Failure_Multisig_Modify_Max_Cosigners"
 
   Scenario: An account tries to add as a cosignatory an account which is already cosignatory of 5 multisignature contracts
     Given Bob is cosignatory of 5 multisignature contracts
-    When Alice defines a 1 of 1 multisignature contract
-    And she adds "Bob" as a cosignatory
+    And Alice defined a 1 of 1 multisignature contract
+    And she added "Bob" as a cosignatory
+    When she publishes the contract
     Then she should receive the error "Failure_Multisig_Modify_Max_Cosigned_Accounts"
 
   Scenario: An account tries to create a multisignature contract adding itself as a cosignatory
-    When Alice defines a 1 of 1 multisignature contract
-    And she adds "Alice" as a cosignatory
+    Given Alice defined a 1 of 1 multisignature contract
+    And she added "Alice" as a cosignatory
+    When she publishes the contract
     Then she should receive the error "Failure_Multisig_Modify_Loop"
 
   Scenario: An account tries to create a multisignature contract, adding a multisig cosignatory where the account is a cosignatory.
     Given Alice is cosignatory of a deposit multisignature contract
-    When Alice defines a 1 of 1 multisignature contract
-    And she adds "deposit" as a cosignatory
+    And Alice defined a 1 of 1 multisignature contract
+    And she added "deposit" as a cosignatory
+    When she publishes the contract
     Then she should receive the error "Failure_Multisig_Modify_Loop"
 
   Scenario: An account tries to create a multisignature contract deleting a cosignatory
-    When Alice defines a 1 of 1 multisignature contract
-    And she adds "phone" as a cosignatory
-    And she deletes "carol" from the cosignatories
+    Given Alice defined a 1 of 1 multisignature contract
+    And she added "phone" as a cosignatory
+    And she deleted "carol" from the cosignatories
+    When she publishes the contract
     Then she should receive the error "Failure_Multisig_Modify_Unknown_Multisig_Account"
 
   Scenario: An account creates a multi-level multisignature contract
-    Given Alice has created a multisignature contract
+    Given Alice defined a multisignature contract
     When she adds a new multisignature contract cosignatory
     Then the multisignature contract should become a 2 level multisig contract
 
@@ -90,5 +100,21 @@ Feature: Create a multisignature contract
     Given Alice has created a multisignature with three levels of multisig cosignatories
     When she adds a new multisignature contract cosignatory to the third level
     Then she should receive the error "Failure_Multisig_Modify_Unknown_Multisig_Account"
+
+  Scenario: An account tries to create a multisig contract, but it has not allowed sending "MODIFY_MULTISIG_ACCOUNT" transactions
+    Given Alice only allowed sending "TRANSFER" transactions
+    And Alice defined a 1 of 1 multisignature contract
+    And she added "phone" as a cosignatory
+    When she publishes the contract
+    Then she should receive the error "error"
+    #Todo: Define status error in Catapult REST
+
+  Scenario: An account tries to create a multisig contract, but it has blocked sending "MODIFY_MULTISIG_ACCOUNT" transactions
+    Given Alice blocked sending "MODIFY_MULTISIG_ACCOUNT" transactions
+    And Alice defined a 1 of 1 multisignature contract
+    And she added "phone" as a cosignatory
+    When she publishes the contract
+    Then she should receive the error "error"
+    #Todo: Define status error in Catapult REST
 
   # Todo: Failure_Multisig_Modify_Unsupported_Modification_Type

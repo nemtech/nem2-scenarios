@@ -6,13 +6,13 @@ Feature: Send an asset
   Background:
     Given the mean block generation time is 15 seconds
     And "ticket vendor" has registered the following assets:
-      |asset-id  | asset-alias     | transferable | supply | divisibility |
+      |id        | alias           | transferable | supply | divisibility |
       |3576016194| concert.ticket  | true         | 1000   | 0            |
       |3576016195| reward.point    | false        | 1000   | 2            |
       |3576016196| event.organizer | true         | 1000   | 0            |
 
     And Alice has the following assets in her account:
-      | asset-alias     | amount |
+      | asset           | amount |
       | concert.ticket  | 100    |
       | reward.point    | 100    |
       | event.organizer | 2      |
@@ -28,6 +28,12 @@ Feature: Send an asset
       | 1      | concert.ticket |
       | 2      | 3576016194     |
       | 0.5    | reward.point   |
+
+  Scenario: An account sends an asset to itself
+    When "Alice" sends  1 "concert.ticket" to "Alice"
+    Then "Alice" should receive a confirmation message
+    And "Alice" should receive 1 "concert.ticket"
+    And her "concert.ticket" balance should remain intact
 
   Scenario Outline: An account tries to send an asset to an invalid account
     When "Alice" sends 1 "concert.ticket" to "<recipient>"
@@ -88,14 +94,56 @@ Feature: Send an asset
     And  her "reward.point" balance should decrease in 2 unit(s)
 
   Scenario Outline: An account tries to send multiple assets to another account, but at least one of the attached assets can't be sent
-    When "Alice" sends <amount-1> "<asset-1>" and 1 reward.point to "Bob"
+    When "Alice" sends <amount> "<asset>" and 1 reward.point to "Bob"
     Then she should receive the error "<error>"
-    And her "<asset-1>" balance should remain intact
+    And her "<asset>" balance should remain intact
     And her "reward.point" balance should remain intact
 
     Examples:
-      | amount-1 | asset-1         | error                                 |
+      | amount   | asset           | error                                 |
       | 500      | concert.ticket  | Failure_Core_Insufficient_Balance     |
       | 1        | unknown.ticket  | Failure_Mosaic_Expired                |
       | 1        | event.organizer | Failure_Mosaic_Non_Transferable       |
       | 1        | reward.point    | Failure_Transfer_Out_Of_Order_Mosaics |
+
+  Scenario: An account tries to send an asset to another account, but the second account does not allow this asset
+    Given Bob only allowed receiving "xem"
+    When "Alice" sends 1 concert.ticket" to "Bob"
+    Then she should receive the error "error"
+    And her "concert.ticket" balance should remain intact
+    #Todo: Define status error in Catapult REST
+
+  Scenario: An account tries to send an asset to another account, but the second account has blocked this asset
+    Given Bob blocked receiving "xem"
+    When "Alice" sends 1 concert.ticket" to "Bob"
+    Then she should receive the error "error"
+    And her "concert.ticket" balance should remain intact
+    #Todo: Define status error in Catapult REST
+
+  Scenario: An account tries to send an asset to another account, but it has not allowed sending "TRANSFER" transactions
+    Given Alice only allowed sending "REGISTER_NAMESPACE" transactions
+    When "Alice" sends 1 concert.ticket" to "Bob"
+    Then she should receive the error "error"
+    And her "concert.ticket" balance should remain intact
+    #Todo: Define status error in Catapult REST
+
+  Scenario: An account tries to send an asset to another account, but it has blocked sending "TRANSFER" transactions
+    Given Alice blocked sending "TRANSFER" transactions
+    When "Alice" sends 1 concert.ticket" to "Bob"
+    Then she should receive the error "error"
+    And her "concert.ticket" balance should remain intact
+    #Todo: Define status error in Catapult REST
+
+  Scenario: An account tries to send an asset to another account, but the second account does not allow it
+    Given Bob only allowed receiving transactions from Carol's address
+    When "Alice" sends 1 concert.ticket" to "Bob"
+    Then she should receive the error "error"
+    And her "concert.ticket" balance should remain intact
+    #Todo: Define status error in Catapult REST
+
+  Scenario: An account tries to send an asset to another account, but the second account blocked it
+    Given Bob blocked receiving transactions from Alice's address
+    When "Alice" sends 1 concert.ticket" to "Bob"
+    Then she should receive the error "error"
+    And her "concert.ticket" balance should remain intact
+    #Todo: Define status error in Catapult REST
