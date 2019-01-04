@@ -87,12 +87,12 @@ Feature: Accept an escrow contract
   Scenario: An account tries to accept a concluded escrow contract
     Given an escrow contract has concluded successfully
     When Alice accepts it
-    Then she should receive the error "Failure_Lock_Inactive_Hash"
+    Then she should receive the error "Failure_LockHash_Inactive_Hash"
 
   Scenario: An account tries to accept an expired escrow contract
     Given an escrow contract has expired
     When Alice accepts it
-    Then she should receive the error "Failure_Lock_Inactive_Hash"
+    Then she should receive the error "Failure_LockHash_Inactive_Hash"
 
 
-#TODO: Review if cosignature transactions can be blocked
+#TODO: Review if cosignature transactions can be allowed/blocked with properties

@@ -83,13 +83,15 @@ Feature: Register a namespace
   Scenario: An account tries to register a namespace, but it has not allowed sending "REGISTER_NAMESPACE" transactions
     Given Alice only allowed sending "TRANSFER" transactions
     When "Alice" registers the namespace named "alice" for 1 day
-    Then she should receive the error "error"
-    #Todo: Define status error in Catapult REST
+    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
   Scenario: An account tries to register a namespace, but it has blocked sending "REGISTER_NAMESPACE" transactions
     Given Alice blocked sending "REGISTER_NAMESPACE" transactions
     When "Alice" registers the namespace named "alice" for 1 day
-    Then she should receive the error "error"
-    #Todo: Define status error in Catapult REST
+    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
   # Todo: Failure_Namespace_Invalid_Namespace_Type
+  # Todo: Failure_Namespace_Name_Id_Mismatch
+  # Todo: Failure_Namespace_Id_Mismatch
+  # Todo: Failure_Namespace_Already_Active
+  # Todo: Failure_Namespace_Max_Children_Exceeded

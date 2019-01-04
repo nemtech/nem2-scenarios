@@ -85,34 +85,34 @@ Feature: Create an escrow contract
     Given Alice defined a valid escrow contract
     And "Alice" locked 10 "xem" three days ago for that contract
     When she publishes the contract
-    Then she should receive the error "Failure_Lock_Inactive_Hash"
+    Then she should receive the error "Failure_LockHash_Inactive_Hash"
 
   Scenario: An account tries to create an escrow contract but the lock already exists
     Given Alice locked 10 "xem" to publish an escrow
     And "Alice" locked 10 "xem" for the same escrow
-    Then she should receive the error "Failure_Lock_Hash_Exists"
+    Then she should receive the error "Failure_LockHash_Hash_Exists"
 
   Scenario: An account tries to create an escrow without locking funds in advance
     Given Alice defined a valid escrow contract
     When she publishes the contract
-    Then she should receive the error "Failure_Lock_Hash_Does_Not_Exist"
+    Then she should receive the error "Failure_LockHash_Hash_Does_Not_Exist"
 
   Scenario: An account tries to create an escrow but locks another mosaic that is not xem
     Given Alice defined a valid escrow contract
     When Alice locks 10 "tickets" to guarantee that the contract will conclude in less than 2 days
-    Then she should receive the error "Failure_Lock_Invalid_Mosaic_Id"
+    Then she should receive the error "Failure_LockHash_Invalid_Mosaic_Id"
     And her xem balance should remain intact
 
   Scenario: An account tries to create an escrow an escrow but locks less than 10 xem
     Given Alice defined a valid escrow contract
     When Alice locks 9 "xem" to guarantee that the contract will conclude in less than 2 days
-    Then she should receive the error "Failure_Lock_Invalid_Mosaic_Amount"
+    Then she should receive the error "Failure_LockHash_Invalid_Mosaic_Amount"
     And her xem balance should remain intact
 
   Scenario Outline: An account tries to create an escrow but sets an invalid duration
     Given Alice defined a valid escrow contract
     When Alice locks 10 "xem" to guarantee that the contract will conclude in less than <duration> days
-    Then she should receive the error "Failure_Lock_Invalid_Duration"
+    Then she should receive the error "Failure_LockHash_Invalid_Duration"
     And her xem balance should remain intact
 
     Examples:
@@ -121,20 +121,28 @@ Feature: Create an escrow contract
       | 0      |
       | 3      |
 
-  Scenario: An account tries to create an escrow contract, but it has not allowed sending "AGGREGATE" transactions
+  Scenario: An account tries to lock assets, but it has not allowed sending "LOCK_HASH" transactions
     Given Alice only allowed sending "TRANSFER" transactions
     And Alice defined a valid escrow contract
+    When "Alice" locks 10 "xem" to guarantee that the contract will conclude in less than 2 days
+    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
+
+  Scenario: An account tries to create an escrow contract, but it has blocked sending "LOCK_HASH" transactions
+    Given Alice blocked sending "LOCK_HASH" transactions
+    And Alice defined a valid escrow contract
+    When "Alice" locks 10 "xem" to guarantee that the contract will conclude in less than 2 days
+    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
+
+  Scenario: An account tries to create an escrow contract, but it has not allowed sending "AGGREGATE" transactions
+    Given Alice defined a valid escrow contract
     And "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
+    And Alice only allowed sending "TRANSFER" transactions
     When she publishes the contract
-    Then she should receive the error "error"
-    #Todo: Define status error in Catapult REST
+    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
   Scenario: An account tries to create an escrow contract, but it has blocked sending "AGGREGATE" transactions
     Given Alice blocked sending "AGGREGATE" transactions
     And Alice defined a valid escrow contract
     And  "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
     When she publishes the contract
-    Then she should receive the error "error"
-    #Todo: Define status error in Catapult REST
-
-# Todo: Failure_Aggregate_Redundant_Cosignatures
+    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"

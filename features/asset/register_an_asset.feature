@@ -76,7 +76,7 @@ Feature: Register an asset
 
   Scenario Outline: An account tries to register an asset with an invalid divisibility
     When Alice registers an asset with divisibility <number> for 1 day
-    Then she should receive the error "Failure_Mosaic_Invalid_Property"
+    Then she should receive the error "Failure_Mosaic_Invalid_Divisibility"
     And her xem balance should remain intact
 
     Examples:
@@ -102,3 +102,9 @@ Feature: Register an asset
     #Todo: Define status error in Catapult REST
 
   # Todo: Failure_Mosaic_Invalid_Flags
+  # Todo: Failure_Mosaic_Invalid_Name
+  # Todo: Failure_Mosaic_Name_Id_Mismatch
+  # Todo: Failure_Mosaic_Id_Mismatch
+  # Todo: Failure_Mosaic_Parent_Id_Conflict
+  # Todo: Failure_Mosaic_Invalid_Id
+  # Todo: Failure_Mosaic_Max_Mosaics_Exceeded

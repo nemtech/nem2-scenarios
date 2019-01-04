@@ -46,35 +46,35 @@ Feature: Prevent receiving transactions containing a specific asset
   Scenario: An account unblocks an asset that is not blocked
     Given Alice blocked receiving "ticket" assets
     When Alice unblocks "voucher"
-    Then she should receive the error "error"
-    #Todo: Define status error in Catapult REST
+    Then she should receive the error "Failure_Property_Modification_Not_Allowed"
 
   Scenario: An account removes an asset that does not exist in the allowed assets
     Given Alice blocked receiving "ticket" assets
     When Alice removes "voucher" from the allowed assets
-    Then she should receive the error "error"
-    #Todo: Define status error in Catapult REST
+    Then she should receive the error "Failure_Property_Modification_Not_Allowed"
 
   Scenario: An account tries only to allow receiving transactions containing specific assets when it has blocked assets
     Given Alice blocked receiving "ticket" assets
     When Alice only allows receiving "voucher" assets
-    Then she should receive the error "error"
-    #Todo: Define status error in Catapult REST
+    Then she should receive the error "Failure_Property_Modification_Not_Allowed"
 
   Scenario: An account tries to block receiving transactions containing specific assets when it has allowed assets
     Given Alice only allowed receiving "ticket" assets
     When Alice blocks receiving "voucher" assets
-    Then she should receive the error "error"
-    #Todo: Define status error in Catapult REST"
+    Then she should receive the error "Failure_Property_Modification_Not_Allowed"
 
   Scenario: An account tries to block an asset twice
     Given Alice blocked receiving "ticket" assets
     When Alice blocks receiving "ticket" assets
-    Then she should receive the error "error"
-    #Todo: Define status error in Catapult REST
+    Then she should receive the error "Failure_Property_Modification_Redundant"
 
   Scenario: An account tries to allow an asset twice
     Given Alice only allowed receiving "ticket" assets
     When Alice only allows receiving "ticket" assets
-    Then she should receive the error "error"
-    #Todo: Define status error in Catapult REST
+    Then she should receive the error "Failure_Property_Modification_Redundant"
+
+  # Todo: Failure_Property_Invalid_Property_Type
+  # Todo: Failure_Property_Modify_Unsupported_Modification_Type
+  #	Todo: Failure_Property_Modification_Count_Exceeded
+  #	Todo: Failure_Property_Values_Count_Exceeded
+  #	Todo: Failure_Property_Value_Invalid

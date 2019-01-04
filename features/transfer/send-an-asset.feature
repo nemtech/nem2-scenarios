@@ -109,41 +109,35 @@ Feature: Send an asset
   Scenario: An account tries to send an asset to another account, but the second account does not allow this asset
     Given Bob only allowed receiving "xem"
     When "Alice" sends 1 concert.ticket" to "Bob"
-    Then she should receive the error "error"
+    Then she should receive the error "Failure_Property_Mosaic_Transfer_Not_Allowed"
     And her "concert.ticket" balance should remain intact
-    #Todo: Define status error in Catapult REST
 
   Scenario: An account tries to send an asset to another account, but the second account has blocked this asset
     Given Bob blocked receiving "xem"
     When "Alice" sends 1 concert.ticket" to "Bob"
-    Then she should receive the error "error"
+    Then she should receive the error "Failure_Property_Mosaic_Transfer_Not_Allowed"
     And her "concert.ticket" balance should remain intact
-    #Todo: Define status error in Catapult REST
 
   Scenario: An account tries to send an asset to another account, but it has not allowed sending "TRANSFER" transactions
     Given Alice only allowed sending "REGISTER_NAMESPACE" transactions
     When "Alice" sends 1 concert.ticket" to "Bob"
-    Then she should receive the error "error"
+    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
     And her "concert.ticket" balance should remain intact
-    #Todo: Define status error in Catapult REST
 
   Scenario: An account tries to send an asset to another account, but it has blocked sending "TRANSFER" transactions
     Given Alice blocked sending "TRANSFER" transactions
     When "Alice" sends 1 concert.ticket" to "Bob"
-    Then she should receive the error "error"
+    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
     And her "concert.ticket" balance should remain intact
-    #Todo: Define status error in Catapult REST
 
   Scenario: An account tries to send an asset to another account, but the second account does not allow it
     Given Bob only allowed receiving transactions from Carol's address
     When "Alice" sends 1 concert.ticket" to "Bob"
-    Then she should receive the error "error"
+    Then she should receive the error "Failure_Property_Signer_Address_Interaction_Not_Allowed"
     And her "concert.ticket" balance should remain intact
-    #Todo: Define status error in Catapult REST
 
   Scenario: An account tries to send an asset to another account, but the second account blocked it
     Given Bob blocked receiving transactions from Alice's address
     When "Alice" sends 1 concert.ticket" to "Bob"
-    Then she should receive the error "error"
+    Then she should receive the error "Failure_Property_Signer_Address_Interaction_Not_Allowed"
     And her "concert.ticket" balance should remain intact
-    #Todo: Define status error in Catapult REST
