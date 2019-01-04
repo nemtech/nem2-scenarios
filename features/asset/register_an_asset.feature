@@ -9,6 +9,7 @@ Feature: Register an asset
     And the mean block generation time is 15 seconds
     And the maximum registration period is 1 year
     And the maximum asset divisibility is 6
+    And the maximum number of assets an account can have is 1000
     And the maximum asset supply is 9000000000
     And Alice has 10000000 xem in her account
 
@@ -42,6 +43,12 @@ Feature: Register an asset
       | -1         |
       | 1          |
       | 40000000000|
+
+  Scenario: An account tries to register an asset but already owns 999 different assets
+    Given Alice is the owner of 999 assets
+    When Alice registers an asset for 1 day
+    Then she should receive the error "Failure_Mosaic_Max_Mosaics_Exceeded"
+    And her xem balance should remain intact
 
   Scenario Outline: An account registers an asset with a valid property
     When Alice registers a "<property>" asset for 1 day
@@ -89,17 +96,15 @@ Feature: Register an asset
     When Alice registers an asset for 1 day
     Then she should receive the error "Failure_Core_Insufficient_Balance"
 
-  Scenario: An account tries to register an asset, but it has not allowed sending "MOSAIC_DEFINITION" transactions
+  Scenario: An account tries to register an asset but has not allowed sending "MOSAIC_DEFINITION" transactions
     Given Alice only allowed sending "TRANSFER" transactions
     When Alice registers an asset for 2 seconds
-    Then she should receive the error "error"
-    #Todo: Define status error in Catapult REST
+    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  Scenario: An account tries to register an asset, but it has blocked sending "MOSAIC_DEFINITION" transactions
+  Scenario: An account tries to register an asset but has blocked sending "MOSAIC_DEFINITION" transactions
     Given Alice blocked sending "MOSAIC_DEFINITION" transactions
     When Alice registers an asset for 2 seconds
-    Then she should receive the error "error"
-    #Todo: Define status error in Catapult REST
+    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
   # Todo: Failure_Mosaic_Invalid_Flags
   # Todo: Failure_Mosaic_Invalid_Name
@@ -107,4 +112,3 @@ Feature: Register an asset
   # Todo: Failure_Mosaic_Id_Mismatch
   # Todo: Failure_Mosaic_Parent_Id_Conflict
   # Todo: Failure_Mosaic_Invalid_Id
-  # Todo: Failure_Mosaic_Max_Mosaics_Exceeded
