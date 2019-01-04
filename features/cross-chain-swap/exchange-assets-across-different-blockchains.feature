@@ -24,7 +24,7 @@ Feature: Exchange assets across different blockchains
     Examples:
       | seed                 | hash_type | secret                                                                                                                           |
       | 51961300df0d60e69b0d | SHA_512   | 8AF159EB455640D7295ACC2D719E3F3ABCB8D00E737CA1490EBD99586456F65B4B7008A524F6ECD127B9B38D10B03DDEC969D6BF81ED39D19CC767CBF374EE39 |
-      # Todo: Add further algorithms in the future
+      # Todo: Add more algorithms in the future
 
   Scenario: An account locks assets
     Given Alice derived the secret from the seed using "SHA_512"
@@ -32,6 +32,7 @@ Feature: Exchange assets across different blockchains
       | amount | asset       | recipient | network  | days |
       | 10     | alice.token | Bob       | MIJIN    | 96   |
     Then she should receive a confirmation message
+    And her "alice.token" balance should have decreased in 10 units
 
   Scenario Outline: An exchange of assets across different blockchains concludes
     Given Alice derived the secret from the seed using "SHA_512"
@@ -102,6 +103,13 @@ Feature: Exchange assets across different blockchains
       | amount | asset       | recipient | network  | hours|
       | 10     | alice.token | Bob       | MIJIN    | 10   |
     Then she should receive the error "Failure_LockSecret_Invalid_Hash_Algorithm"
+
+  Scenario: An account tries to lock assets that does not have
+    Given Alice derived the secret from the seed using "SHA_512"
+    When "Alice" Alice locks the following asset units using the previous secret:
+      | amount | asset       | recipient | network  | hours|
+      | 10     | bob.token   | Bob       | MIJIN    | 10   |
+    Then she should receive the error "Failure_Core_Insufficient_Balance"
 
   Scenario Outline: An account tries to lock assets but the duration set is invalid
     Given Alice derived the secret from the seed using "SHA_512"
@@ -238,5 +246,4 @@ Feature: Exchange assets across different blockchains
     When "Alice" proved knowing the secret's seed in "MAIN_NET"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  # Todo: Failure_Lock_Missing_Secret_Padding
   # Todo: Failure_LockSecret_Hash_Algorithm_Mismatch

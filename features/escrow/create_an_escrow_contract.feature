@@ -9,6 +9,7 @@ Feature: Create an escrow contract
     And each escrow contract requires to lock at least 10 "xem" to guarantee that the contract will conclude
     And an escrow contract is active up to 2 days
     And the mean block generation time is 15 seconds
+    And Alice has at least 10 xem in her account
 
   Scenario: An account creates an escrow contract
     Given Alice defined the following escrow contract:
@@ -121,26 +122,32 @@ Feature: Create an escrow contract
       | 0      |
       | 3      |
 
-  Scenario: An account tries to lock assets, but it has not allowed sending "LOCK_HASH" transactions
+  Scenario: An account tries to create an escrow but does not have 10 xem
+    Given Alice defined a valid escrow contract
+    And Alice has expended all her xem
+    When Alice locks 10 "xem" to guarantee that the contract will conclude in less than <duration> days
+    Then she should receive the error "Failure_Core_Insufficient_Balance"
+
+  Scenario: An account tries to lock assets but it has not allowed sending "LOCK_HASH" transactions
     Given Alice only allowed sending "TRANSFER" transactions
     And Alice defined a valid escrow contract
     When "Alice" locks 10 "xem" to guarantee that the contract will conclude in less than 2 days
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  Scenario: An account tries to create an escrow contract, but it has blocked sending "LOCK_HASH" transactions
+  Scenario: An account tries to create an escrow contract but it has blocked sending "LOCK_HASH" transactions
     Given Alice blocked sending "LOCK_HASH" transactions
     And Alice defined a valid escrow contract
     When "Alice" locks 10 "xem" to guarantee that the contract will conclude in less than 2 days
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  Scenario: An account tries to create an escrow contract, but it has not allowed sending "AGGREGATE" transactions
+  Scenario: An account tries to create an escrow contract but it has not allowed sending "AGGREGATE" transactions
     Given Alice defined a valid escrow contract
     And "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
     And Alice only allowed sending "TRANSFER" transactions
     When she publishes the contract
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  Scenario: An account tries to create an escrow contract, but it has blocked sending "AGGREGATE" transactions
+  Scenario: An account tries to create an escrow contract but it has blocked sending "AGGREGATE" transactions
     Given Alice blocked sending "AGGREGATE" transactions
     And Alice defined a valid escrow contract
     And  "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
