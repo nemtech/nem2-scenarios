@@ -43,7 +43,7 @@ Feature: Prevent receiving transactions containing a specific asset
     Then she should receive a confirmation message
     And only receiving "voucher" assets should remain allowed
 
-  Scenario: An account unblocks an asset that is not blocked
+  Scenario: An account unblocks a not blocked asset
     Given Alice blocked receiving "ticket" assets
     When Alice unblocks "voucher"
     Then she should receive the error "Failure_Property_Modification_Not_Allowed"

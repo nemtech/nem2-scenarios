@@ -44,7 +44,7 @@ Feature: Prevent receiving transactions from undesired addresses
     Then she should receive a confirmation message
     And only Carol should remain allowed
 
-  Scenario: An account unblocks an address that is not blocked
+  Scenario: An account unblocks a not blocked address
     Given Alice blocked receiving transactions from "Bob"
     When Alice unblocks "Carol"
     Then she should receive the error "Failure_Property_Modification_Not_Allowed"

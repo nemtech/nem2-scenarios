@@ -46,7 +46,7 @@ Feature: Send an asset
       | bo                                             | Failure_Core_Invalid_Address |
       | MAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 | Failure_Core_Wrong_Network   |
 
-  Scenario Outline: An account tries to send assets that it does not have
+  Scenario Outline: An account tries to send assets that does not have
 
     When "Alice" sends <amount> "<asset>" to "Bob"
     Then she should receive the error "<error>"
@@ -93,7 +93,7 @@ Feature: Send an asset
     And  her "concert.ticket" balance should decrease in 1 unit(s)
     And  her "reward.point" balance should decrease in 2 unit(s)
 
-  Scenario Outline: An account tries to send multiple assets to another account, but at least one of the attached assets can't be sent
+  Scenario Outline: An account tries to send multiple assets to another account but at least one of the attached assets can't be sent
     When "Alice" sends <amount> "<asset>" and 1 reward.point to "Bob"
     Then she should receive the error "<error>"
     And her "<asset>" balance should remain intact
@@ -106,37 +106,37 @@ Feature: Send an asset
       | 1        | event.organizer | Failure_Mosaic_Non_Transferable       |
       | 1        | reward.point    | Failure_Transfer_Out_Of_Order_Mosaics |
 
-  Scenario: An account tries to send an asset to another account, but the second account does not allow this asset
+  Scenario: An account tries to send an asset to another account but the second account does not allow this asset
     Given Bob only allowed receiving "xem"
     When "Alice" sends 1 concert.ticket" to "Bob"
     Then she should receive the error "Failure_Property_Mosaic_Transfer_Not_Allowed"
     And her "concert.ticket" balance should remain intact
 
-  Scenario: An account tries to send an asset to another account, but the second account has blocked this asset
+  Scenario: An account tries to send an asset to another account but the second account has blocked this asset
     Given Bob blocked receiving "xem"
     When "Alice" sends 1 concert.ticket" to "Bob"
     Then she should receive the error "Failure_Property_Mosaic_Transfer_Not_Allowed"
     And her "concert.ticket" balance should remain intact
 
-  Scenario: An account tries to send an asset to another account, but it has not allowed sending "TRANSFER" transactions
+  Scenario: An account tries to send an asset to another account but has not allowed sending "TRANSFER" transactions
     Given Alice only allowed sending "REGISTER_NAMESPACE" transactions
     When "Alice" sends 1 concert.ticket" to "Bob"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
     And her "concert.ticket" balance should remain intact
 
-  Scenario: An account tries to send an asset to another account, but it has blocked sending "TRANSFER" transactions
+  Scenario: An account tries to send an asset to another account but has blocked sending "TRANSFER" transactions
     Given Alice blocked sending "TRANSFER" transactions
     When "Alice" sends 1 concert.ticket" to "Bob"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
     And her "concert.ticket" balance should remain intact
 
-  Scenario: An account tries to send an asset to another account, but the second account does not allow it
+  Scenario: An account tries to send an asset to another account but the second account does not allow it
     Given Bob only allowed receiving transactions from Carol's address
     When "Alice" sends 1 concert.ticket" to "Bob"
     Then she should receive the error "Failure_Property_Signer_Address_Interaction_Not_Allowed"
     And her "concert.ticket" balance should remain intact
 
-  Scenario: An account tries to send an asset to another account, but the second account blocked it
+  Scenario: An account tries to send an asset to another account but the second account blocked it
     Given Bob blocked receiving transactions from Alice's address
     When "Alice" sends 1 concert.ticket" to "Bob"
     Then she should receive the error "Failure_Property_Signer_Address_Interaction_Not_Allowed"

@@ -20,11 +20,11 @@ Feature: Announce a transaction
     Then she should receive the error "<error>"
 
     Examples:
-    | deadline | error                         |
-    | 25       | Failure_Core_Future_Deadline  |
-    | 999      | Failure_Core_Future_Deadline  |
-    | 0        | Failure_Core_Past_Deadline    |
-    | -1       | Failure_Core_Past_Deadline    |
+      | deadline | error                         |
+      | 25       | Failure_Core_Future_Deadline  |
+      | 999      | Failure_Core_Future_Deadline  |
+      | 0        | Failure_Core_Past_Deadline    |
+      | -1       | Failure_Core_Past_Deadline    |
 
   Scenario: An account tries to announce a transaction with an expired deadline
     Given Alice defined 3 hours ago a transaction with a deadline of 2 hours
@@ -42,7 +42,7 @@ Feature: Announce a transaction
     And she announces the transaction to a "MAIN_NET" node
     Then She should receive the error "Failure_Signature_Not_Verifiable"
 
-  Scenario: An account tries to announce a transaction that has already announced
+  Scenario: An account tries to announce an already announced transaction
     Given Alice defined a valid transaction
     And she signed the transaction
     And she announced the transaction to a "MAIN_NET" node

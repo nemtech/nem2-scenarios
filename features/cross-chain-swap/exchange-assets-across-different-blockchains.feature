@@ -73,7 +73,7 @@ Feature: Exchange assets across different blockchains
     Then "Alice" should receive 10 "alice.token" in "MIJIN" after 96 hours
     And "Bob" should receive 10 "bob.token" in "MAIN_NET" after 84 hours
 
-  Scenario: An exchange of assets doesn't conclude because the second participant didn't prove that knows the secret's seed
+  Scenario: An exchange of assets doesn't conclude because the second participant didn't prove the secret's seed
     Given Alice derived the secret from the seed using "SHA_512"
     And "Alice" locked the following asset units using the previous secret:
       | amount | asset       | recipient | network  | hours|
@@ -177,7 +177,7 @@ Feature: Exchange assets across different blockchains
       | 10     | alice.token | Bob       | MIJIN    | 96    |
     Then she should receive the error "Failure_Property_Signer_Address_Interaction_Not_Allowed"
 
-  Scenario: An account tries to lock assets but it has not allowed sending "LOCK_SECRET" transactions
+  Scenario: An account tries to lock assets but has not allowed sending "LOCK_SECRET" transactions
     Given Alice only allowed sending "TRANSFER" transactions
     And Alice derived the secret from the seed using "SHA_512"
     When "Alice" locks the following asset units using the previous secret:
@@ -185,7 +185,7 @@ Feature: Exchange assets across different blockchains
       | 10     | alice.token | Bob       | MIJIN    | 96    |
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  Scenario: An account tries to lock assets but it has blocked sending "LOCK_SECRET" transactions
+  Scenario: An account tries to lock assets but has blocked sending "LOCK_SECRET" transactions
     Given Alice blocked sending "LOCK_SECRET" transactions
     And Alice derived the secret from the seed using "SHA_512"
     When "Alice" locks the following asset units using the previous secret:
@@ -203,7 +203,7 @@ Feature: Exchange assets across different blockchains
     And "Alice" locked the following asset units using the previous secret:
       | amount | asset       | recipient | network  | hours|
       | 10     | alice.token | Bob       | MIJIN    | 2    |
-    When Alice proves knowing the secret's seed in "MIJIN" but it was copied partially
+    When Alice proves knowing the secret's seed in "MIJIN" but was copied partially
     Then she should receive the error "Failure_LockSecret_Secret_Mismatch"
 
   Scenario Outline: An account tries to unlock assets but the seed used was too large
@@ -228,7 +228,7 @@ Feature: Exchange assets across different blockchains
     When Alice proves knowing the secret's seed in "MIJIN" selecting "Keccak" as the hashing algorithm
     Then she should receive the error "Failure_LockSecret_Hash_Not_Implemented"
 
-  Scenario: An account tries to unlock assets but it has not allowed sending "SECRET_PROOF" transactions
+  Scenario: An account tries to unlock assets but has not allowed sending "SECRET_PROOF" transactions
     Given Alice only allowed sending "SECRET_PROOF" transactions
     And Bob derived the secret from the seed using "SHA_512"
     And "Bob" locked the following asset units using the previous secret:
@@ -237,7 +237,7 @@ Feature: Exchange assets across different blockchains
     When "Alice" proved knowing the secret's seed in "MAIN_NET"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  Scenario: An account tries to unlock assets but it has blocked sending "SECRET_PROOF" transactions
+  Scenario: An account tries to unlock assets but has blocked sending "SECRET_PROOF" transactions
     Given Alice blocked sending "SECRET_PROOF" transactions
     And Bob derived the secret from the seed using "SHA_512"
     And "Bob" locked the following asset units using the previous secret:

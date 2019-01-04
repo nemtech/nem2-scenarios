@@ -46,7 +46,7 @@ Feature: Prevent sending transactions by type
     Then she should receive a confirmation message
     And only "REGISTER_NAMESPACE" should remain allowed
 
-  Scenario: An account unblocks a transaction type that is not blocked
+  Scenario: An account unblocks a not blocked transaction type
     Given Alice blocked sending "TRANSFER" transactions
     When Alice unblocks "REGISTER_NAMESPACE"
     Then she should receive the error "Failure_Property_Modification_Not_Allowed"

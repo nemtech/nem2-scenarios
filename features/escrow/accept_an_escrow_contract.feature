@@ -94,5 +94,4 @@ Feature: Accept an escrow contract
     When Alice accepts it
     Then she should receive the error "Failure_LockHash_Inactive_Hash"
 
-
 #TODO: Review if cosignature transactions can be allowed/blocked with properties

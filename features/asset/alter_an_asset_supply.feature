@@ -48,7 +48,7 @@ Feature: Alter an asset supply
       | supply-mutable   | decrease  |
       | supply-immutable | decrease  |
 
-  Scenario Outline: An account tries to alter the supply of a supply immutable asset, but does not own all the units
+  Scenario Outline: An account tries to alter the supply of a supply immutable asset but does not own all the units
     Given Alice has registered a "supply-immutable" asset with an initial supply of 20 units
     And she still owns 10 units
     When Alice decides to "<direction>" the asset supply in 2 units
@@ -59,13 +59,13 @@ Feature: Alter an asset supply
       | increase  |
       | decrease  |
 
-  Scenario: An account tries to alter an asset supply, but it has not allowed sending "MOSAIC_SUPPLY_CHANGE" transactions
+  Scenario: An account tries to alter an asset supply but has not allowed sending "MOSAIC_SUPPLY_CHANGE" transactions
     Given Alice only allowed sending "TRANSFER" transactions
     And Alice has registered a "supply-mutable" asset with an initial supply of 20 units
     When Alice decides to "increase" the asset supply in 5 units
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  Scenario: An account tries to alter an asset supply, but it has blocked sending "MOSAIC_SUPPLY_CHANGE" transactions
+  Scenario: An account tries to alter an asset supply but has blocked sending "MOSAIC_SUPPLY_CHANGE" transactions
     Given Alice blocked sending "MOSAIC_DEFINITION" transactions
     And Alice has registered a "supply-mutable" asset with an initial supply of 20 units
     When Alice decides to "increase" the asset supply in 5 units
