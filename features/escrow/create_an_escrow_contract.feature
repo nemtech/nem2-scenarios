@@ -6,7 +6,7 @@ Feature: Create an escrow contract
   Background:
     Given the maximum number of participants per escrow contract is 15
     And the maximum number of transactions per escrow contract is 1000
-    And each escrow contract requires to lock at least 10 "xem" to guarantee that the contract will conclude
+    And an escrow contract requires to lock at least 10 "xem" to guarantee that the it will conclude
     And an escrow contract is active up to 2 days
     And the mean block generation time is 15 seconds
     And Alice has at least 10 xem in her account
@@ -29,6 +29,16 @@ Feature: Create an escrow contract
     And "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
     When she publishes the contract
     Then every sender participant should receive a notification to accept the contract
+
+  Scenario: An account creates an escrow contract signed by all the participants
+    Given Alice defined the following escrow contract:
+      | sender | recipient | type          | data            |
+      | Alice  | Bob       | send-an-asset | 1 concert.ticket|
+      | Bob    | Alice     | send-an-asset | 20 euros        |
+    And every sender accepts the contract
+    When she publishes the contract
+    Then every sender participant should receive a confirmation notification
+    And the swap of assets should conclude
 
   Scenario: An account creates an escrow contract using other types of transactions
     Given Alice defined the following escrow contract:
@@ -122,11 +132,20 @@ Feature: Create an escrow contract
       | 0      |
       | 3      |
 
-  Scenario: An account tries to create an escrow but does not have 10 xem
+  Scenario: An account tries to create an escrow contract but does not have 10 xem
     Given Alice defined a valid escrow contract
     And Alice has expended all her xem
     When Alice locks 10 "xem" to guarantee that the contract will conclude in less than <duration> days
     Then she should receive the error "Failure_Core_Insufficient_Balance"
+
+  Scenario: An account tries to create an escrow already signed by the participants but at least one has not signed it
+    Given Alice defined the following escrow contract:
+      | sender | recipient | type          | data            |
+      | Alice  | Bob       | send-an-asset | 1 concert.ticket|
+      | Bob    | Alice     | send-an-asset | 20 euros        |
+    And "Alice" accepts the contract
+    When she publishes the contract
+    Then she should receive the error "Failure_Aggregate_Missing_Cosigners"
 
   Scenario: An account tries to lock assets but has not allowed sending "LOCK_HASH" transactions
     Given Alice only allowed sending "TRANSFER" transactions

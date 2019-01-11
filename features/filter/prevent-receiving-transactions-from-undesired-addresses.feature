@@ -5,10 +5,11 @@ Feature: Prevent receiving transactions from undesired addresses
 
   Background:
     Given the following accounts exists:
-      |account|
-      |Alice  |
-      |Bob    |
-      |Carol  |
+      | account |
+      | Alice   |
+      | Bob     |
+      | Carol   |
+    And an account can only define up to 512 address filters
 
   Scenario: An account blocks receiving transactions from a set of addresses
     When Alice blocks receiving transactions from:
@@ -62,7 +63,7 @@ Feature: Prevent receiving transactions from undesired addresses
   Scenario: An account tries to block receiving transactions from a set of addresses when it has allowed addresses
     Given Alice only allowed receiving transactions from "Bob"
     When Alice blocks receiving transactions from "Carol"
-    Then she should receive the error "Failure_Property_Modification_Redundant"
+    Then she should receive the error "Failure_Property_Modification_Not_Allowed"
 
   Scenario: An account tries to block an address twice
     Given Alice blocked receiving transactions from "Bob"
@@ -72,8 +73,50 @@ Feature: Prevent receiving transactions from undesired addresses
   Scenario: An account tries to allow an address twice
     Given Alice only allowed receiving transactions from "Bob"
     When Alice only allows receiving transactions from "Bob"
-    Then she should receive the error "Failure_Property_Modification_Not_Allowed"
+    Then she should receive the error "Failure_Property_Modification_Redundant"
 
   Scenario: An account tries to block herself
-    When Alice blocks herself
-    Then she should receive the error "Failure_Property_Modification_Not_Allowed"
+    When Alice blocks receiving transactions from herself:
+    Then she should receive the error "Failure_Property_Modification_Address_Invalid"
+
+  Scenario: An account tries to only allow itself
+    When Alice only allows receiving transactions from herself
+    Then she should receive the error "Failure_Property_Modification_Address_Invalid"
+
+  Scenario: An account tries to block too many addresses
+    Given Alice blocked receiving transactions from 512 addresses
+    When Alice blocks receiving transactions from "Bob"
+    Then she should receive the error "Failure_Property_Values_Count_Exceeded"
+
+  Scenario: An account tries to only allow too many addresses
+    Given Alice only allowed receiving transactions from 512 addresses
+    When Alice only allows receiving transactions from "Bob"
+    Then she should receive the error "Failure_Property_Values_Count_Exceeded"
+
+  Scenario: An account tries to block too many addresses in a single transaction
+    When Alice blocks receiving transactions from 513 addresses
+    Then she should receive the error "Failure_Property_Modification_Count_Exceeded"
+
+  Scenario: An account tries to only allow too many addresses in a single transaction
+    When Alice only allows receiving transactions from 513 addresses
+    Then she should receive the error "Failure_Property_Modification_Count_Exceeded"
+
+  Scenario Outline: An account tries to block an invalid address
+    When Alice blocks receiving transactions from "<address>"
+    Then she should receive the error "<error>"
+
+    Examples:
+      | address                                       | error                             |
+      | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H | Failure_Core_Invalid_Address      |
+      | bo                                            | Failure_Core_Invalid_Address      |
+      | MAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5| Failure_Core_Wrong_Network        |
+
+  Scenario Outline: An account tries only allow transactions from an invalid address
+    When Alice only allows receiving transactions from "<address>"
+    Then she should receive the error "<error>"
+
+    Examples:
+      | address                                       | error                             |
+      | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H | Failure_Core_Invalid_Address      |
+      | bo                                            | Failure_Core_Invalid_Address      |
+      | MAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5| Failure_Core_Wrong_Network        |

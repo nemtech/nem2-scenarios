@@ -33,7 +33,7 @@ Feature: Alter an asset supply
       | supply-mutable   | increase  | 9000000000  | Failure_Mosaic_Supply_Exceeded |
       | supply-immutable | increase  | 9000000000  | Failure_Mosaic_Supply_Exceeded |
       | supply-mutable   | decrease  | 21          | Failure_Mosaic_Supply_Negative |
-      | supply-immutable | decrease  | 21         | Failure_Mosaic_Supply_Negative |
+      | supply-immutable | decrease  | 21          | Failure_Mosaic_Supply_Negative |
 
   Scenario Outline: An account tries to alter an asset supply without doing any changes
     Given Alice has registered a <property> asset with an initial supply of 20 units
@@ -59,6 +59,11 @@ Feature: Alter an asset supply
       | increase  |
       | decrease  |
 
+  Scenario: An account tries to alter a non-changeable asset property
+    Given Alice has registered an asset with divisibility 6
+    When Alice changes the divisibility to 5
+    Then she should receive the error "Failure_Mosaic_Modification_Disallowed"
+
   Scenario: An account tries to alter an asset supply but has not allowed sending "MOSAIC_SUPPLY_CHANGE" transactions
     Given Alice only allowed sending "TRANSFER" transactions
     And Alice has registered a "supply-mutable" asset with an initial supply of 20 units
@@ -72,5 +77,4 @@ Feature: Alter an asset supply
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
   # Todo: Failure_Mosaic_Invalid_Supply_Change_Direction
-  # Todo: Failure_Mosaic_Modification_Disallowed
   # Todo: Failure_Mosaic_Modification_No_Changes

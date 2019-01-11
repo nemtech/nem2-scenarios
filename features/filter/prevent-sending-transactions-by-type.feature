@@ -9,6 +9,8 @@ Feature: Prevent sending transactions by type
       | TRANSFER                       |
       | REGISTER_NAMESPACE             |
       | ACCOUNT_PROPERTIES_ENTITY_TYPE |
+    And an account can only define up to 512 transaction type filters
+
     # We are using three transaction types for better comprehension.
     # To get all the available transaction types, see the NEM Developer Center/Protocol/Transaction.
 

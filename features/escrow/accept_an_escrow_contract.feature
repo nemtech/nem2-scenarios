@@ -27,10 +27,7 @@ Feature: Accept an escrow contract
       | Carol  | Alice     | send-an-asset | 20 euros        |
     When every sender participant accepts it
     Then every sender participant should receive a confirmation notification
-    And "Bob" should receive 20 "euros"
-    And "Alice" should receive 1 "concert.ticket"
-    And "Alice" should have 2 "euros"
-    And "Carol" "xem" balance should have decreased in 20 units
+    And the swap of assets should conclude
 
   Scenario: An account accepts an escrow contract but not all participants have accepted it
     Given Bob has asked Alice and Carol for 20 xem

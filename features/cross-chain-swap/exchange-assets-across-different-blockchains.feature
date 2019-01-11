@@ -6,6 +6,8 @@ Feature: Exchange assets across different blockchains
   Background:
     Given assets can be locked up to 30 days
     And the mean block generation time is 15 seconds
+    And the secret seed length should be between 10 and 1000 bytes
+    And the maximum secret lock duration is 30 days
     And the following hashing algorithms are available:
       | hash_type |
       | SHA_512   |
@@ -99,21 +101,21 @@ Feature: Exchange assets across different blockchains
 
   Scenario: An account tries to lock assets using an unimplemented algorithm
     Given Alice derived the secret from the seed using "MD5"
-    When "Alice" Alice locks the following asset units using the previous secret:
+    When "Alice" locks the following asset units using the previous secret:
       | amount | asset       | recipient | network  | hours|
       | 10     | alice.token | Bob       | MIJIN    | 10   |
-    Then she should receive the error "Failure_LockSecret_Invalid_Hash_Algorithm"
+    Then she should receive the error "Failure_LockSecret_Hash_Not_Implemented"
 
   Scenario: An account tries to lock assets that does not have
     Given Alice derived the secret from the seed using "SHA_512"
-    When "Alice" Alice locks the following asset units using the previous secret:
+    When "Alice" locks the following asset units using the previous secret:
       | amount | asset       | recipient | network  | hours|
       | 10     | bob.token   | Bob       | MIJIN    | 10   |
     Then she should receive the error "Failure_Core_Insufficient_Balance"
 
   Scenario Outline: An account tries to lock assets but the duration set is invalid
     Given Alice derived the secret from the seed using "SHA_512"
-    When "Alice" Alice locks the following asset units using the previous secret:
+    When "Alice" locks the following asset units using the previous secret:
       | amount | asset       | recipient | network  | days  |
       | 10     | alice.token | Bob       | MIJIN    | <days>|
     Then she should receive the error "Failure_LockSecret_Invalid_Duration"
@@ -135,7 +137,7 @@ Feature: Exchange assets across different blockchains
 
   Scenario Outline: An account tries to lock assets but the recipient address used is not valid
     Given Alice derived the secret from the seed using "SHA_512"
-    When "Alice" Alice locks the following asset units using the previous secret:
+    When "Alice" locks the following asset units using the previous secret:
       | amount | asset       | recipient  | network  | hours  |
       | 10     | alice.token | <address>| MAIN_NET | 96     |
     Then she should receive the error "<error>"
@@ -217,7 +219,7 @@ Feature: Exchange assets across different blockchains
 
     Examples:
       |length |
-      |0      |
+      |9      |
       |1001   |
 
   Scenario: An account tries to unlock assets using a different algorithm
@@ -226,7 +228,7 @@ Feature: Exchange assets across different blockchains
       | amount | asset       | recipient | network  | hours|
       | 10     | alice.token | Bob       | MIJIN    | 96   |
     When Alice proves knowing the secret's seed in "MIJIN" selecting "Keccak" as the hashing algorithm
-    Then she should receive the error "Failure_LockSecret_Hash_Not_Implemented"
+    Then she should receive the error "Failure_LockSecret_Hash_Algorithm_Mismatch"
 
   Scenario: An account tries to unlock assets but has not allowed sending "SECRET_PROOF" transactions
     Given Alice only allowed sending "SECRET_PROOF" transactions
@@ -246,4 +248,4 @@ Feature: Exchange assets across different blockchains
     When "Alice" proved knowing the secret's seed in "MAIN_NET"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  # Todo: Failure_LockSecret_Hash_Algorithm_Mismatch
+  # Todo: Failure_LockSecret_Invalid_Hash_Algorithm

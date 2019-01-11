@@ -65,11 +65,6 @@ Feature: Register an asset
       | levy mutable     |
       | levy immutable   |
 
-  Scenario: An account tries to register an asset with an invented property
-    When Alice registers a "squared" asset for 1 day
-    Then she should receive the error "Failure_Mosaic_Invalid_Property"
-    And her xem balance should remain intact
-
   Scenario Outline: An account tries to register an asset with a valid divisibility
     When Alice registers an asset with divisibility <divisibility> for 1 day
     Then she should receive a confirmation message
@@ -106,9 +101,10 @@ Feature: Register an asset
     When Alice registers an asset for 2 seconds
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  # Todo: Failure_Mosaic_Invalid_Flags
   # Todo: Failure_Mosaic_Invalid_Name
   # Todo: Failure_Mosaic_Name_Id_Mismatch
   # Todo: Failure_Mosaic_Id_Mismatch
   # Todo: Failure_Mosaic_Parent_Id_Conflict
+  # Todo: Failure_Mosaic_Invalid_Property
+  # Todo: Failure_Mosaic_Invalid_Flags
   # Todo: Failure_Mosaic_Invalid_Id

@@ -9,6 +9,7 @@ Feature: Prevent receiving transactions containing a specific asset
     |ticket |
     |voucher|
     |xem    |
+    And an account can only define up to 512 mosaic filters
 
   Scenario: An account blocks receiving transactions containing a specific asset
     When Alice blocks receiving transactions containing the following assets:
@@ -73,8 +74,26 @@ Feature: Prevent receiving transactions containing a specific asset
     When Alice only allows receiving "ticket" assets
     Then she should receive the error "Failure_Property_Modification_Redundant"
 
+  Scenario: An account tries to block too many mosaics
+    Given Alice blocked receiving 512 different assets
+    When Alice blocks receiving "ticket" assets
+    Then she should receive the error "Failure_Property_Values_Count_Exceeded"
+
+  Scenario: An account tries to only allow too many mosaics
+    Given Alice only allowed receiving 512 different assets
+    When Alice only allows receiving "ticket" assets
+    Then she should receive the error "Failure_Property_Values_Count_Exceeded"
+
+  Scenario: An account tries to block too many mosaics in a single transaction
+    When Alice blocks receiving 513 different assets
+    Then she should receive the error "Failure_Property_Modification_Count_Exceeded"
+
+  Scenario: An account tries to only allow too many mosaics in a single transaction
+    When Alice only allows receiving 513 different assets
+    Then she should receive the error "Failure_Property_Modification_Count_Exceeded"
+
   # Todo: Failure_Property_Invalid_Property_Type
+  # Todo: Failure_Property_Modification_Operation_Type_Incompatible
   # Todo: Failure_Property_Modify_Unsupported_Modification_Type
-  #	Todo: Failure_Property_Modification_Count_Exceeded
-  #	Todo: Failure_Property_Values_Count_Exceeded
-  #	Todo: Failure_Property_Value_Invalid
+  # Todo: Failure_Property_Modification_Type_Invalid
+  # Todo: Failure_Property_Value_Invalid
