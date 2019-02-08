@@ -90,8 +90,9 @@ Feature: Register a namespace
     When "Alice" registers the namespace named "alice" for 1 day
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  # Todo: Failure_Namespace_Invalid_Namespace_Type
-  # Todo: Failure_Namespace_Name_Id_Mismatch
-  # Todo: Failure_Namespace_Id_Mismatch
-  # Todo: Failure_Namespace_Already_Active
-  # Todo: Failure_Namespace_Max_Children_Exceeded
+  # Status errors not treated:
+  # - Failure_Namespace_Invalid_Namespace_Type
+  # - Failure_Namespace_Name_Id_Mismatch
+  # - Failure_Namespace_Id_Mismatch
+  # - Failure_Namespace_Already_Active
+  # - Failure_Namespace_Max_Children_Exceeded

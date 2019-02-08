@@ -76,5 +76,6 @@ Feature: Alter an asset supply
     When Alice decides to "increase" the asset supply in 5 units
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  # Todo: Failure_Mosaic_Invalid_Supply_Change_Direction
-  # Todo: Failure_Mosaic_Modification_No_Changes
+  # Status errors not treated:
+  # - Failure_Mosaic_Invalid_Supply_Change_Direction
+  # - Failure_Mosaic_Modification_No_Changes

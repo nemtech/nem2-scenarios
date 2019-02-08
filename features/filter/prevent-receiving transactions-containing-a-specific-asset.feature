@@ -92,8 +92,9 @@ Feature: Prevent receiving transactions containing a specific asset
     When Alice only allows receiving 513 different assets
     Then she should receive the error "Failure_Property_Modification_Count_Exceeded"
 
-  # Todo: Failure_Property_Invalid_Property_Type
-  # Todo: Failure_Property_Modification_Operation_Type_Incompatible
-  # Todo: Failure_Property_Modify_Unsupported_Modification_Type
-  # Todo: Failure_Property_Modification_Type_Invalid
-  # Todo: Failure_Property_Value_Invalid
+  # Status errors not treated:
+  # - Failure_Property_Invalid_Property_Type
+  # - Failure_Property_Modification_Operation_Type_Incompatible
+  # - Failure_Property_Modify_Unsupported_Modification_Type
+  # - Failure_Property_Modification_Type_Invalid
+  # - Failure_Property_Value_Invalid

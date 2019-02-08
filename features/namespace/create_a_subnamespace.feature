@@ -66,4 +66,5 @@ Feature: Create a subnamespace
     When Alice creates a subnamespace named "alice.subnamespace"
     Then she should receive the error "Failure_Core_Insufficient_Balance"
 
-  #Todo: Failure_Namespace_Max_Children_Exceeded
+  # Status errors not treated:
+  # - Failure_Namespace_Max_Children_Exceeded

@@ -19,7 +19,7 @@ Catapult behavior validation using scenarios.
 
 ## Run linter
 
-``gherkin-lint``
+``npm run gherkin-lint``
 
 ## Write an scenario
 

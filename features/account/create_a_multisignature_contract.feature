@@ -126,4 +126,5 @@ Feature: Create a multisignature contract
     When she publishes the contract
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  # Todo: Failure_Multisig_Modify_Unsupported_Modification_Type
+  # Status errors not treated:
+  # - Failure_Multisig_Modify_Unsupported_Modification_Type

@@ -248,4 +248,5 @@ Feature: Exchange assets across different blockchains
     When "Alice" proved knowing the secret's seed in "MAIN_NET"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  # Todo: Failure_LockSecret_Invalid_Hash_Algorithm
+  # Status errors not treated:
+  # - Failure_LockSecret_Invalid_Hash_Algorithm

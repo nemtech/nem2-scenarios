@@ -69,4 +69,5 @@ Feature: Announce a transaction
     When Alice announces the transaction to a "MAIN_NET" node
     Then she should receive the error "Failure_Multisig_Operation_Not_Permitted_By_Account"
 
-# TODO: Failure_Core_Too_Many_Transactions
+  # Status errors not treated:
+  # - Failure_Core_Too_Many_Transactions

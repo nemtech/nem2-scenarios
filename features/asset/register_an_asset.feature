@@ -101,10 +101,11 @@ Feature: Register an asset
     When Alice registers an asset for 2 seconds
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  # Todo: Failure_Mosaic_Invalid_Name
-  # Todo: Failure_Mosaic_Name_Id_Mismatch
-  # Todo: Failure_Mosaic_Id_Mismatch
-  # Todo: Failure_Mosaic_Parent_Id_Conflict
-  # Todo: Failure_Mosaic_Invalid_Property
-  # Todo: Failure_Mosaic_Invalid_Flags
-  # Todo: Failure_Mosaic_Invalid_Id
+  # Status errors not treated:
+  # - Failure_Mosaic_Invalid_Name
+  # - Failure_Mosaic_Name_Id_Mismatch
+  # - Failure_Mosaic_Id_Mismatch
+  # - Failure_Mosaic_Parent_Id_Conflict
+  # - Failure_Mosaic_Invalid_Property
+  # - Failure_Mosaic_Invalid_Flags
+  # - Failure_Mosaic_Invalid_Id
