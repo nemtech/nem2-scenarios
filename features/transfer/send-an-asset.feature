@@ -6,10 +6,10 @@ Feature: Send an asset
   Background:
     Given the mean block generation time is 15 seconds
     And "ticket vendor" has registered the following assets:
-      |id        | alias           | transferable | supply | divisibility |
-      |3576016194| concert.ticket  | true         | 1000   | 0            |
-      |3576016195| reward.point    | false        | 1000   | 2            |
-      |3576016196| event.organizer | true         | 1000   | 0            |
+      |id              | alias           | transferable | supply | divisibility |
+      |0dc67fbe1cad29e3| concert.ticket  | true         | 1000   | 0            |
+      |0dc67fbe1cad29e4| reward.point    | false        | 1000   | 2            |
+      |0dc67fbe1cad29e5| event.organizer | true         | 1000   | 0            |
 
     And Alice has the following assets in her account:
       | asset           | amount |
@@ -24,10 +24,10 @@ Feature: Send an asset
     And her "<asset>" balance should decrease in <amount> unit(s)
 
     Examples:
-      | amount | asset          |
-      | 1      | concert.ticket |
-      | 2      | 3576016194     |
-      | 0.5    | reward.point   |
+      | amount | asset            |
+      | 1      | concert.ticket   |
+      | 2      | 0dc67fbe1cad29e3 |
+      | 0.5    | reward.point     |
 
   Scenario: An account sends an asset to itself
     When "Alice" sends  1 "concert.ticket" to "Alice"
