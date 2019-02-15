@@ -73,7 +73,7 @@ Feature: Accept an escrow contract
 
   Scenario: An account tries to accept an escrow contract that the account has already accepted
     Given Alice has created and escrow contract that has not concluded yet
-    When she signs it again
+    When Alice accepts it
     Then every sender participant should receive the error "Failure_Aggregate_Redundant_Cosignatures"
 
   Scenario: An account not required to accept the escrow contract accepts it
