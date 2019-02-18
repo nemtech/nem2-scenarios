@@ -1,14 +1,9 @@
 Feature: Enable delegated harvesting
   As Alice
   I want to enable delegated harvesting
-  So that I can share my importance with a remote node securely to create new blocks and obtain the resulting fees.
-
-  Background:
-    Given the harvesting mosaic is "xem"
-    And the minimum amount of "xem" necessary to be eligible to harvest is 10000
+  So that I can share my importance with a remote node securely to harvest new blocks.
 
   Scenario: An account enables delegated harvesting and delegates its importance to a remote account
-    Given Alice has 10000 xem in her account
     When she enables delegated harvesting delegating her account importance to "54BEF898980B8C4EBF81894775994FB0255BA4D5926126865FBA544360A0FDEE"
     Then she should receive a confirmation message
     And the delegate account can use Alice's importance to harvest
@@ -25,23 +20,11 @@ Feature: Enable delegated harvesting
     Then she should receive the error "Failure_AccountLink_Link_Already_Exists"
 
   Scenario: An account tries to disable delegated harvesting but it was not enabled
-    Given Alice has 10000 xem in her account
     When she disables delegating her account importance to "54BEF898980B8C4EBF81894775994FB0255BA4D5926126865FBA544360A0FDEE"
     Then she should receive the error "Failure_AccountLink_Link_Does_Not_Exist"
 
-  Scenario: An account tries to enable delegated harvesting without having enough xem
-    Given Alice has 9999 xem in her account
-    When she enables delegated harvesting delegating her account importance to "54BEF898980B8C4EBF81894775994FB0255BA4D5926126865FBA544360A0FDEE"
-    Then she should receive the error "Failure_Core_Block_Harvester_Ineligible"
-
-  Scenario: An account tries to enable delegated harvesting but the account is not valid
-    Given Alice has 9999 xem in her account
-    When she enables delegated harvesting delegating her account importance to "54"
-    Then she should receive the error "Failure_AccountLink_Remote_Account_Ineligible"
-
   Scenario: An account tries to enable delegated harvesting but the remote account was already linked
     Given Bob delegated his importance to "54BEF898980B8C4EBF81894775994FB0255BA4D5926126865FBA544360A0FDEE"
-    And Alice has 10000 xem in her account
     When she enables delegated harvesting delegating her account importance to "54BEF898980B8C4EBF81894775994FB0255BA4D5926126865FBA544360A0FDEE"
     Then she should receive the error "Failure_AccountLink_Remote_Account_Ineligible"
 
@@ -62,13 +45,11 @@ Feature: Enable delegated harvesting
 
   Scenario: An account tries to enable delegated harvesting but has not allowed sending "ACCOUNT_LINK" transactions
     Given Alice only allowed sending "TRANSFER" transactions
-    And Alice has 10000 xem in her account
     When she enables delegated harvesting delegating her account importance to "54BEF898980B8C4EBF81894775994FB0255BA4D5926126865FBA544360A0FDEE"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
   Scenario: An account tries to enable delegated harvesting but has blocked sending "ACCOUNT_LINK" transactions
     Given Alice blocked sending "ACCOUNT_LINK" transactions
-    And Alice has 10000 xem in her account
     And Alice has delegated her account importance to "54BEF898980B8C4EBF81894775994FB0255BA4D5926126865FBA544360A0FDEE"
     When she enables delegated harvesting delegating her account importance to "54BEF898980B8C4EBF81894775994FB0255BA4D5926126865FBA544360A0FDEE"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
