@@ -60,11 +60,15 @@ Feature: Create a subnamespace
     Then she should receive the error "Failure_Namespace_Parent_Unknown"
     And her xem balance should remain intact
 
+  Scenario: An account tries to exceed the maximum number of subnamespaces
+    Given Alice registered the namespace "alice" for one week
+    And Alice created 500 subnamespaces under "alice" namespace
+    When Alice creates a subnamespace named "one.501"
+    Then she should receive the error "Failure_Namespace_Max_Children_Exceeded"
+    And her xem balance should remain intact
+
   Scenario: An account tries to create a subnamespace but does not have enough funds
     Given Alice registered the namespace "one" for a week
     And  she has spent all her xem
     When Alice creates a subnamespace named "alice.subnamespace"
     Then she should receive the error "Failure_Core_Insufficient_Balance"
-
-  # Status errors not treated:
-  # - Failure_Namespace_Max_Children_Exceeded
