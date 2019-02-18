@@ -107,14 +107,26 @@ Feature: Link a namespace to an address
       | MIJIN_TEST | SAIBV5                                         | Failure_Core_Invalid_Address  |
       | MAIN_NET   | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 | Failure_Core_Invalid_Network  |
 
+  Scenario: An account tries to link a namespace to an address but has not allowed sending "ADDRESS_ALIAS" transactions
+    Given Alice registered the namespace "bob"
+    And Alice only allowed sending "TRANSFER" transactions
+    When Alice links the namespace "bob" to the address "SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5"
+    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
+
+  Scenario: An account tries to unlink a namespace from an address but has not allowed sending "ADDRESS_ALIAS" transactions
+    Given Alice linked the namespace "bob" to the address "SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5"
+    And Alice only allowed sending "TRANSFER" transactions
+    When Alice unlinks the namespace "bob" from the address "SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5"
+    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
+
   Scenario: An account tries to link a namespace to an address but has blocked sending "ADDRESS_ALIAS" transactions
-    Given Alice blocked sending "ADDRESS_ALIAS" transactions
-    And  Alice registered the namespace "bob"
+    Given Alice registered the namespace "bob"
+    And Alice blocked sending "ADDRESS_ALIAS" transactions
     When Alice links the namespace "bob" to the address "SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
   Scenario: An account tries to unlink a namespace from an address but has blocked sending "ADDRESS_ALIAS" transactions
-    Given Alice blocked sending "ADDRESS_ALIAS" transactions
-    And Alice linked the namespace "bob" to the address "SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5"
+    Given Alice linked the namespace "bob" to the address "SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5"
+    And Alice blocked sending "ADDRESS_ALIAS" transactions
     When Alice unlinks the namespace "bob" from the address "SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"

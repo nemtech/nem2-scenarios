@@ -125,28 +125,28 @@ Feature: Link a namespace to an asset
     Then she should receive the error "Failure_Namespace_Alias_Unlink_Data_Inconsistency"
 
   Scenario: An account tries to link a namespace to an asset but has not allowed sending "MOSAIC_ALIAS" transactions
-    Given Alice only allowed sending "TRANSFER" transactions
-    And Alice registered the namespace "token"
+    Given Alice registered the namespace "token"
     And she registered the asset "0dc67fbe1cad29e3"
+    And  Alice only allowed sending "TRANSFER" transactions
     When Alice links the namespace "token" to the asset "0dc67fbe1cad29e3"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
   Scenario: An account tries to unlink a namespace from an asset but has not allowed sending "MOSAIC_ALIAS" transactions
-    Given Alice only allowed sending "TRANSFER" transactions
-    And Alice linked the namespace "token" to the asset "0dc67fbe1cad29e3"
+    Given Alice linked the namespace "token" to the asset "0dc67fbe1cad29e3"
+    And Alice only allowed sending "TRANSFER" transactions
     When Alice unlinks the namespace "token" from the asset "0dc67fbe1cad29e3"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
   Scenario: An account tries to link a namespace to an asset but has blocked sending "MOSAIC_ALIAS" transactions
-    Given Alice blocked sending "MOSAIC_ALIAS" transactions
-    And Alice registered the namespace "token"
+    Given Alice registered the namespace "token"
     And she registered the asset "0dc67fbe1cad29e3"
+    And Alice blocked sending "MOSAIC_ALIAS" transactions
     When Alice links the namespace "token" to the asset "0dc67fbe1cad29e3"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
   Scenario: An account tries to unlink a namespace from an asset but has blocked sending "MOSAIC_ALIAS" transactions
-    Given Alice blocked sending "MOSAIC_ALIAS" transactions
-    And Alice linked the namespace "token" to the asset "0dc67fbe1cad29e3"
+    Given Alice linked the namespace "token" to the asset "0dc67fbe1cad29e3"
+    And Alice blocked sending "MOSAIC_ALIAS" transactions
     When Alice unlinks the namespace "token" from the asset "0dc67fbe1cad29e3"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
