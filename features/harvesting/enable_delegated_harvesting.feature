@@ -1,7 +1,7 @@
 Feature: Enable delegated harvesting
   As Alice
   I want to enable delegated harvesting
-  So that I can share my importance with a remote node securely to calculate new blocks and obtain the resulting fees.
+  So that I can share my importance with a remote node securely to create new blocks and obtain the resulting fees.
 
   Background:
     Given the harvesting mosaic is "xem"
