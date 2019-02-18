@@ -53,16 +53,17 @@ Feature: Link a namespace to an asset
     When Alice tries to unlink the namespace "unknown" from the asset "0dc67fbe1cad29e3"
     Then she should receive the error "Failure_Namespace_Alias_Namespace_Unknown"
 
-  # Todo: Check error
+  # Todo: There is a validator for the mosaic id, check what the API returns
   Scenario: Alice tries to link a namespace to an unknown asset
     Given Alice registered the namespace "token"
     When Alice links the namespace "token" to the asset "0dc67fbe1cad29e3"
-    Then she should receive the error "<error>"
+    Then she should receive the error "Failure"
 
-  # Todo: Check error
+  # Todo: There is a validator for the mosaic id, check what the API returns
   Scenario: Alice tries to unlink a namespace from an unknown asset
-    When Alice links the namespace "unknown" to the asset "0dc67fbe1cad29e3"
-    Then she should receive the error "<error>"
+    Given Alice registered the namespace "token"
+    When Alice unlinks the namespace "token" from the asset "0dc67fbe1cad29e3"
+    Then she should receive the error "Failure"
 
   Scenario: Alice tries to link a namespace to an asset that she does not own
     Given Alice registered the namespace "token"
