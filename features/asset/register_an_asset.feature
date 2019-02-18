@@ -4,8 +4,7 @@ Feature: Register an asset
   So that I can send one unit to Bob.
 
   Background:
-    Given registering an expiring asset costs 50 xem per block
-    And registering a non-expiring asset costs 5000 xem
+    Given registering an expiring asset costs 50 xem
     And the mean block generation time is 15 seconds
     And the maximum registration period is 1 year
     And the maximum asset divisibility is 6
@@ -18,19 +17,19 @@ Feature: Register an asset
     Then she should receive a confirmation message
     And she should become the owner of the new asset
     And it should be registered for at least <seconds> seconds
-    And her xem balance should decrease in <cost> units
+    And her xem balance should decrease in 50 units
 
     Examples:
-      |seconds| cost |
-      | 15    | 50   |
-      | 20    | 100  |
-      | 30    | 100  |
+      |seconds|
+      | 15    |
+      | 20    |
+      | 30    |
 
   Scenario: An account registers a non-expiring asset
     When Alice registers a non-expiring asset
     Then she should receive a confirmation message
     And she should become the owner of the non-expiring asset
-    And her xem balance should decrease in 5000 xem
+    And her xem balance should decrease in 50 xem
 
   Scenario Outline: An account tries to register an asset for an invalid duration
     When Alice registers an asset for <seconds> seconds
