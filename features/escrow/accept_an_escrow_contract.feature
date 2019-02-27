@@ -21,10 +21,10 @@ Feature: Accept an escrow contract
     And "Bob" has 1 "concert.ticket"
     And "Carol" has 20 "euros"
     And the following contract is pending to be accepted by Bob:
-      | sender | recipient | type          | data            |
-      | Alice  | Bob       | send-an-asset | 18 euros        |
-      | Bob    | Alice     | send-an-asset | 1 concert.ticket|
-      | Carol  | Alice     | send-an-asset | 20 euros        |
+      | sender | recipient | type          | data             |
+      | Alice  | Bob       | send-an-asset | 18 euros         |
+      | Bob    | Alice     | send-an-asset | 1 concert.ticket |
+      | Carol  | Alice     | send-an-asset | 20 euros         |
     When every sender participant accepts it
     Then every sender participant should receive a confirmation notification
     And the swap of assets should conclude
@@ -39,22 +39,22 @@ Feature: Accept an escrow contract
   Scenario: An account required to accept the escrow contract is a multisiginature contract
     Given every sender participant who was notified to accept an escrow contract has accepted it except Alice
     And "Alice" is a 2 of 2 multisignature contract with the following cosignatories:
-      |cosignatories|
-      | phone       |
-      | computer    |
+      | cosignatories |
+      | phone         |
+      | computer      |
     When Alice accepts it with both participants
     Then every sender participant should receive a confirmation notification
 
   Scenario: An account required to accept the escrow contract is a multi-level multisiginature contract
     Given every sender participant who was notified to accept an escrow contract has accepted it except Alice
     And "Alice" is a 2 of 2 multisignature contract with the following cosignatories:
-      |cosignatories|
-      | phone       |
-      | computer    |
+      | cosignatories |
+      | phone         |
+      | computer      |
     And "Computer" is a 1 of 2 multisignature contract with the following cosignatories:
-      |cosignatories|
-      | nemapp      |
-      | nembrowser  |
+      | cosignatories |
+      | nemapp        |
+      | nembrowser    |
     When "phone" accepts it
     And "nemapp" accepts it
     And "nembrowser" accepts it
@@ -64,9 +64,9 @@ Feature: Accept an escrow contract
     # It applies to any restriction (e.g. Account properties filters)
     Given Alice does not own 1 concert.ticket
     And the following contract is pending to be accepted by Bob:
-      | sender | recipient | type          | data            |
-      | Alice  | Bob       | send-an-asset | 1 concert.ticket|
-      | Bob    | Alice     | send-an-asset | 20 euros        |
+      | sender | recipient | type          | data             |
+      | Alice  | Bob       | send-an-asset | 1 concert.ticket |
+      | Bob    | Alice     | send-an-asset | 20 euros         |
     When "Bob" accepts it
     Then every sender participant should receive the error "Failure_Core_Insufficient_Balance"
     And every sender participant balance should remain intact
@@ -90,3 +90,57 @@ Feature: Accept an escrow contract
     Given an escrow contract has expired
     When Alice accepts it
     Then she should receive the error "Failure_LockHash_Inactive_Hash"
+
+  # Receipts Behavior
+  # LockHash_Created, LockHash_Completed
+
+  Scenario: Alice and Bob wants to see her xem balance after concluding escrow contract
+    Given Alice sent Bob 20 "xem"
+    And Bob locked 10 "xem" to guarantee the contract concludes in less than 2 days
+    And Alice accepts it
+    When Alice wants to see her "xem" balance after escrow contract concludes
+    And Bob wants to see his "xem" balance
+    Then Bob should find his "xem" balance increase by 30 units
+    And Alice should find her "xem" balance decrease by 20 units
+
+  Scenario: Alice and Bob wants to see they could make swaps of assets
+    Given "Bob" has accepted the following contract:
+      | sender | recipient | type          | data             |
+      | Alice  | Bob       | send-an-asset | 18 euros         |
+      | Bob    | Alice     | send-an-asset | 1 concert.ticket |
+      | Carol  | Alice     | send-an-asset | 20 euros         |
+      And Every sender participant has accepted it 
+    When Alice wants to check if swap of assets are possible
+    Then Alice should be able to check that swap of assets should conclude 
+
+  Scenario: Alice wants to see if her xem balance decreased after accepting an escrow contract but not all participants accepted it
+  Given Carol and Alice accepted the escrow contract 
+  And Bob locked 10 "xem" to guarantee tha the contract concludes in less than 2 days
+  When Alice wants to check her xem balance after accepting escrow contract 
+  Then Alice should should see her xem balance has not decreased after accepting an escrow contract
+
+Scenario: Alice wants to check if every participant receive a confirmation after an multisig account accepts it
+Given "Alice" is a 2 fo 2 multisig contract with the following cosignatories:
+      | cosignatories |
+      | phone         |
+      | computer      |
+And "Alice" accepted the escrow contract that required her acceptance
+And All participants have accepted the escrow contract
+When "Alice" wants to check if every participants received confirmation notification
+Then "Alice" should see that every participants have received confirmation notifcation
+
+
+Scenario: Alice wants to check if every participant receive a confirmation after a multi-level multisig account accepted it
+Given "Alice" is a 2 fo 2 multisig contract with the following cosignatories:
+      | cosignatories |
+      | phone         |
+      | computer      |
+And "Computer" is a 1 of 2 multisig contract with the following cosignatories:
+      | cosignatories |
+      | nemapp        |
+      | nembrowser    |
+And "phone" accepted the escrow contract
+And "nemapp" accepted the escrow contract
+And "nembrowser" accepted the escrow contract
+When "Alice" wants to check if every participants received confirmation notification
+Then "Alice" should see that every participants have received confirmation notifcation

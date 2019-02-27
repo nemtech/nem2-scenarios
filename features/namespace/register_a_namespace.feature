@@ -28,17 +28,19 @@ Feature: Register a namespace
     And she should become the owner of the new namespace <name>
     And it should be registered for at least <time> seconds
     And her xem balance should decrease in <cost> units
+    # And she should receive a Namespace_Rental_Fee receipt
 
     Examples:
-      | name  | time  | cost |
-      | test1 | 15    | 0.1  |
-      | test1 | 20    | 0.2  |
-      | test2 | 30    | 0.2  |
+      | name  | time | cost |
+      | test1 | 15   | 0.1  |
+      | test1 | 20   | 0.2  |
+      | test2 | 30   | 0.2  |
 
   Scenario Outline: An account tries to register a namespace with an invalid duration
     When Alice registers a namespace named "alice" for <time> seconds
     Then she should receive the error "<error>"
     And her xem balance should remain intact
+
 
     Examples:
       | time        | error                                         |
@@ -52,9 +54,9 @@ Feature: Register a namespace
     And her xem balance should remain intact
 
     Examples:
-      | name                                                               |
-      | ?€!                                                                |
-      | this_is_a_really_long_space_name_this_is_a_really_long_space_name  |
+      | name                                                              |
+      | ?€!                                                               |
+      | this_is_a_really_long_space_name_this_is_a_really_long_space_name |
 
   Scenario: An account tries to register a namespace with a reserved name
     When Alice registers a namespace named "xem" for 1 day
@@ -96,3 +98,29 @@ Feature: Register a namespace
   # - Failure_Namespace_Id_Mismatch
   # - Failure_Namespace_Already_Active
   # - Failure_Namespace_Max_Children_Exceeded
+
+  # receipt behavior
+
+  # Scenario Outline: An account registers a namespace
+  #   When Alice registers a namespace named <name> for <time> seconds
+  #   Then she should receive a confirmation message
+  #   And she should become the owner of the new namespace <name>
+  #   And it should be registered for at least <time> seconds
+  #   And her xem balance should decrease in <cost> units
+  #   # And she should receive a Namespace_Rental_Fee receipt
+
+
+
+  Scenario: Alice wants to check her xem balance after registering a namespace
+    Given Alice registered a namespace named <name> for <time> seconds
+    And she received a confirmation message
+    And she became the owner of the new namespace <name>
+    And it should be registered for at least <time> seconds
+    When Alice wants to check her xem balance
+    Then Alice should find that her xem balance has decreased by <cost> units
+
+    Examples:
+      | name  | time | cost |
+      | test1 | 15   | 0.1  |
+      | test1 | 20   | 0.2  |
+      | test2 | 30   | 0.2  |

@@ -9,15 +9,16 @@ Feature: Create a multisignature contract
 
   Scenario Outline: An account creates an M-of-N contract
     Given Alice defined a <minimumApproval> of 2 multisignature contract
-    And she added the following cosignatories:
-      | cosignatory|
-      | phone      |
-      | computer   |
+    And she added the following <cosignatories>:
+      | cosignatory |
+      | phone       |
+      | computer    |
     When she publishes the contract
     Then she should receive a confirmation message
     And <minimumApproval> of the cosignatories are required to announce transactions from her account
+      # Transaction_Group
 
-    Examples:
+      Exampldes:
       | minimumApproval |
       | 1               |
       | 2               |
@@ -36,9 +37,9 @@ Feature: Create a multisignature contract
   Scenario Outline: An account tries to create a multisignature contract, setting an invalid minimum of cosignatures to remove a cosignatory
     Given Alice defined a 1 of 2 multisignature contract
     And she added the following cosignatories:
-      | cosignatory|
-      | phone      |
-      | computer   |
+      | cosignatory |
+      | phone       |
+      | computer    |
     And set <minimum-removal> as the minimum number of required cosignatures to remove a cosignatory from the multisignature contract
     When she publishes the contract
     Then she should receive the error "<error>"
@@ -52,9 +53,9 @@ Feature: Create a multisignature contract
   Scenario: An account tries to create a multisignature contract adding twice the same cosignatory
     Given Alice defined a 1 of 1 multisignature contract
     And she added the following cosignatories:
-      | cosignatory|
-      | phone      |
-      | phone      |
+      | cosignatory |
+      | phone       |
+      | phone       |
     When she publishes the contract
     Then she should receive the error "Failure_Multisig_Modify_Redundant_Modifications"
 
@@ -103,14 +104,15 @@ Feature: Create a multisignature contract
     Then she should receive the error "<error>"
 
     Examples:
-      |address                                        | error                        |
-      | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H | Failure_Core_Invalid_Address |
-      | LAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5| Failure_Core_Wrong_Network   |
+      | address                                        | error                        |
+      | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H  | Failure_Core_Invalid_Address |
+      | LAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 | Failure_Core_Wrong_Network   |
 
   Scenario: An account creates a multi-level multisignature contract
     Given Alice defined a multisignature contract
     When she adds a new multisignature contract cosignatory
     Then the multisignature contract should become a 2 level multisignature contract
+  # Transaction_Group
 
   Scenario: An account tries to create a multisignature contract but has not allowed sending "MODIFY_MULTISIG_ACCOUNT" transactions
     Given Alice only allowed sending "TRANSFER" transactions
@@ -128,3 +130,15 @@ Feature: Create a multisignature contract
 
   # Status errors not treated:
   # - Failure_Multisig_Modify_Unsupported_Modification_Type
+
+#  Receipts Behavior
+  # Transaction_Group
+  Scenario: Alice wants to get the state change of M-of-N multisig contract
+    Given Alice published the multisig contract
+    When Alice wants to get the state change of the multisig contract
+    Then Alice should get the "confirmed" status of the multisig contract
+
+  Scenario: Alice wants to get the state change of a multi-level multisignature contract
+    Given Alice added a new multisignature contract cosignatory
+    When Alice wants to get the state change of the  multi-level multisig contract
+    Then Alice should get the "confirmed" status of the multi-level sig contract

@@ -5,44 +5,46 @@ Feature: Prevent receiving transactions containing a specific asset
 
   Background:
     Given the following assets are registered and active:
-    |asset  |
-    |ticket |
-    |voucher|
-    |xem    |
+      | asset   |
+      | ticket  |
+      | voucher |
+      | xem     |
     And an account can only define up to 512 mosaic filters
 
   Scenario: An account blocks receiving transactions containing a specific asset
     When Alice blocks receiving transactions containing the following assets:
-      | asset              |
-      | ticket             |
-      | voucher            |
+      | asset   |
+      | ticket  |
+      | voucher |
     Then she should receive a confirmation message
     And receiving the stated assets should be blocked
 
   Scenario: An account allows only receiving transactions containing a specific asset
     When Alice only allows receiving transactions containing type:
-      | asset              |
-      | xem                |
+      | asset |
+      | xem   |
     Then she should receive a confirmation message
     And  receiving the stated assets should be allowed
+  # Mosaic_Levy
 
   Scenario: An account unblocks an asset
     Given Alice blocked receiving transactions containing the following assets:
-      | asset              |
-      | ticket             |
-      | voucher            |
+      | asset   |
+      | ticket  |
+      | voucher |
     When Alice unblocks "ticket"
     Then she should receive a confirmation message
     And receiving "voucher" assets should remain blocked
 
   Scenario: An account removes an asset from the allowed assets
     Given Alice only allowed receiving "ticket" assets
-      | asset              |
-      | ticket             |
-      | voucher            |
+      | asset   |
+      | ticket  |
+      | voucher |
     When Alice removes "ticket" from the allowed assets
     Then she should receive a confirmation message
     And only receiving "voucher" assets should remain allowed
+
 
   Scenario: An account unblocks a not blocked asset
     Given Alice blocked receiving "ticket" assets
@@ -98,3 +100,31 @@ Feature: Prevent receiving transactions containing a specific asset
   # - Failure_Property_Modify_Unsupported_Modification_Type
   # - Failure_Property_Modification_Type_Invalid
   # - Failure_Property_Value_Invalid
+
+# Receipt Behavior
+  # Transaction_Group receipt
+  Scenario: Alice wants to get the state change of blocking transactions
+    Given Alice blocks the receiving transactions containing specific assets
+    When Alice wants to get the state change of the her blocking transaction
+    Then Alice should get the "confirmed" status of the blocking transaction
+
+  # Transaction_Group Receipt
+  Scenario: Alice wants to get the state change of filtering transactions
+    Given Alice specifies to only receive transactions containing specific assets
+    When Alice wants to get the state change of the filter transaction
+    Then Alice should get the "confirmed" status of the filter transaction
+
+  # Transaction_Group Receipt
+  Scenario: Alice wants to get the state change of unblocking an asset
+    Given Alice unblocks "ticket" asset
+    And keeps "voucher" asset blocked
+    When Alice wants to get the state change of her unblock transaction
+    Then Alice should get the "confirmed" status of the unblock transaction
+
+  # Transaction_Group receipts
+  Scenario: Alice wants to get the state change of remove asset transaction
+    Given Alice only allows receiving "ticket" asset
+    And she removes "ticket" assets from allowed assets
+    When Alice wants to get the state change of the asset removal transaction
+    Then Alice should get the "confirmed" status of the asset removal transaction
+

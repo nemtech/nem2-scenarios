@@ -68,3 +68,17 @@ Feature: Enable delegated harvesting
 
   # Status errors not treated:
   # Failure_AccountLink_Invalid_Action
+
+  # Receipt Behavior
+
+  Scenario: Alice wants to see if she delegated its importance to a remote account
+    Given Alice enabled delegated harvesting her account importance to "54BEF898980B8C4EBF81894775994FB0255BA4D5926126865FBA544360A0FDEE"
+    When Alice wants to see if the delegate account can use her importance to harvest
+    Then Alice should see if the delegated account can use her importance to harvest
+
+
+  Scenario: Alice wants to see if she disabled delegated harvesting to a remote account
+  Given Alice delegated her account importance to "54BEF898980B8C4EBF81894775994FB0255BA4D5926126865FBA544360A0FDEE"
+  And she disabled delegating her account importance to "54BEF898980B8C4EBF81894775994FB0255BA4D5926126865FBA544360A0FDEE"
+  When she wants to see if the delegated account has been disabled
+  Then Alice should see if the delegated account has been disabled

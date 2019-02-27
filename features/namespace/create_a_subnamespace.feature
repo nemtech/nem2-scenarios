@@ -17,6 +17,7 @@ Feature: Create a subnamespace
     Then she should receive a confirmation message
     And she should become the owner of the new subnamespace "one.two"
     And her xem balance should decrease in 10 units
+  # And she should get a Namespace_Rental_Fee receipt
 
   Scenario Outline: An account tries to create a subnamespace with an invalid name
     Given Alice registered the namespace "alice" for a week
@@ -54,17 +55,11 @@ Feature: Create a subnamespace
     When Alice creates a subnamespace named "alice.subnamespace"
     Then she should receive the error "Failure_Namespace_Expired"
     And her xem balance should remain intact
+  # And she should receive a Namespace_Expired receipt
 
   Scenario: An account tries to create a subnamespace with an unknown parent namespace
     When Alice creates a subnamespace named "unknown.subnamespace"
     Then she should receive the error "Failure_Namespace_Parent_Unknown"
-    And her xem balance should remain intact
-
-  Scenario: An account tries to exceed the maximum number of subnamespaces
-    Given Alice registered the namespace "alice" for one week
-    And Alice created 500 subnamespaces under "alice" namespace
-    When Alice creates a subnamespace named "one.501"
-    Then she should receive the error "Failure_Namespace_Max_Children_Exceeded"
     And her xem balance should remain intact
 
   Scenario: An account tries to create a subnamespace but does not have enough funds
@@ -72,3 +67,17 @@ Feature: Create a subnamespace
     And  she has spent all her xem
     When Alice creates a subnamespace named "alice.subnamespace"
     Then she should receive the error "Failure_Core_Insufficient_Balance"
+
+  # Status errors not treated:
+  # - Failure_Namespace_Max_Children_Exceeded
+
+  # Receipt Behavior
+  # Namespace_Rental_Fee
+
+  Scenario: Alice wants to check her xem balance after creating a subnamespace
+    Given Alice registered the namespace "one" for a week
+    And she created a subnamespace named "one.two"
+    When Alice wants to check her xem balance after creating namespace and subnamespace
+    And She received a confirmation message
+    And She became the owner of the subnamespace "one.two"
+    Then She should see that her xem balance has decrease by 10 units
