@@ -19,7 +19,6 @@ Feature: Exchange assets across different blockchains
     And "Bob" owns 999999 bob:token units in "MAIN_NET"
     And "Bob" owns an account in "MIJIN"
 
-
   Scenario Outline: An account derives the secret from the secret's seed
     Given Alice generated the random seed "<seed>"
     When she derived secret from the seed with "<hash_type>"
@@ -36,7 +35,6 @@ Feature: Exchange assets across different blockchains
       | 10     | alice.token | Bob       | MIJIN   | 96   |
     Then she should receive a confirmation message
     And her "alice.token" balance should have decreased in 10 units
-  # And she should receive a LockSecret_Completed receipt
 
   Scenario Outline: An exchange of assets across different blockchains concludes
     Given Alice derived the secret from the seed using "SHA_512"
@@ -50,7 +48,6 @@ Feature: Exchange assets across different blockchains
     And "<signer>" proves knowing the secret's seed in "MIJIN"
     Then "Alice" should receive 10 "bob.token" in "MAIN_NET"
     And "Bob" should receive 10 "alice.token" in "MIJIN"
-    # And she should receive a LockSecret_Completed receipt
 
     Examples:
       | signer |
@@ -65,7 +62,6 @@ Feature: Exchange assets across different blockchains
       | 10     | alice.token | Bob       | MIJIN   | 96    |
     When "Bob" decides not locking the assets
     Then "Alice" should receive 10 "alice.token" in "MIJIN" after 96 hours
-  # And she should receive a LockSecret_Completed receipt
 
   Scenario: An exchange of assets doesn't conclude because the first participant decides not to prove to know the secret's seed
     Given Alice derived the secret from the seed using "SHA_512"
@@ -78,7 +74,6 @@ Feature: Exchange assets across different blockchains
     When "Alice" decides not to prove to know the secret's seed
     Then "Alice" should receive 10 "alice.token" in "MIJIN" after 96 hours
     And "Bob" should receive 10 "bob.token" in "MAIN_NET" after 84 hours
-  # And she should receive a LockSecret_Completed receipt
 
   Scenario: An exchange of assets doesn't conclude because the second participant didn't prove the secret's seed
     Given Alice derived the secret from the seed using "SHA_512"
@@ -91,7 +86,6 @@ Feature: Exchange assets across different blockchains
     And Alice proved knowing the secret's seed in "MAIN_NET" receiving 10 bob.token
     When "Bob" decides not to prove to know the secret's seed
     Then "Alice" should receive 10 "alice.token" in "MIJIN" after 84 hours
-  # And she should receive a LockSecret_Completed receipt
 
   Scenario: An exchange of assets doesn't conclude because there is not enough time
     Given Alice derived the secret from the seed using "SHA_512"
@@ -258,14 +252,12 @@ Feature: Exchange assets across different blockchains
   # - Failure_LockSecret_Invalid_Hash_Algorithm
 
 #Receipts Behavior
-  #LockSecret_Created
   Scenario: An Account wants to check their balance after locking an asset
     Given Alice locked an asset "alice.token" on to the blockchain
     And wants to check her balance after locking the asset
     When Alice checks her asset balance
     Then she should see asset balance is reduced by 10 units
 
-  #LockSecret_Completed
   Scenario: An account wants to check their balance after announcing the secret proof transaction
     Given "Bob" locked 10 "bob.token" on the "MAIN_NET"
     And "Alice" proves knowing the secret's seed in "MAIN_NET"
@@ -273,16 +265,14 @@ Feature: Exchange assets across different blockchains
     When Alice checks her asset balance
     Then she should have 10 more "bob.token" units in her account
 
-  # LockSecret_Expired
-  Scenario: An account wants to check their asset balance after an uncocncluded exchange of assets because the second participant decides not locking the assets
+  Scenario: An account to check asset balance after uncocncluded exchange of asset because second participant didnt lock the asset
     Given Alice locked 10 "alice.token" units to send to "Bob"
     And Bob did not lock his assets
     And it has been 96 hours
     When Alice checks her "alice.token" balance
     Then the locked 10 "alice.token" units should be back in her account
 
-  # LockSecret_Expired
-  Scenario: An account checks their account balance after an unconcluded exchange of assets because the first participant decides not to prove to know the secret's seed
+  Scenario: Account checks account balance after unconcluded exchange because first participant didnt prove to know the secret seed
     Given Alice locked 10 "alice.token" on the "MIJIN" to send to "Bob"
     And Bob locked 10 "bob.token" on the "MAIN_NET" to send to "Alice"
     And Alice  decides not to prove to know the secret's seed
@@ -291,8 +281,7 @@ Feature: Exchange assets across different blockchains
     Then the locked 10 "bob.token" units should be back in Bob account
     And the locked 10 "alice.token" units hould be back in Alice account
 
-  # LockSecret_Expired
-  Scenario: An account checks their account balance after an unconcluded exchange of assets because the second participant decides not to prove to know the secret's seed
+  Scenario: Account checks account balance after unconcluded exchange because second participant didnt prove to know the secret seed
     Given Alice locked 10 "alice.token" on the "MIJIN" to send to "Bob"
     And Alice locked 10 "bob.token" on the "MAIN_NET" to send to "Alice"
     And Bob decides not to prove to know the secret's seed

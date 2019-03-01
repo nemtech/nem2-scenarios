@@ -69,76 +69,10 @@ Feature: Announce a transaction
     When Alice announces the transaction to a "MAIN_NET" node
     Then she should receive the error "Failure_Multisig_Operation_Not_Permitted_By_Account"
 
-#Fee Behaviour
-  Scenario: An account announced a valid transaction
-    Given Alice announced a valid transaction to the "MAIN_NET"
-    When the transaction status is Success
-    Then her "nem:xem" balance is the deducted by the "transaction_fee"
-
-  Scenario Outline: An account announced a transaction with an invalid deadline
-    Given Alice announced a transaction with a deadline of <deadline> hours
-    When Alice announces the transaction to a "MAIN_NET" node
-    And the transaction status is Failed due to the error "<error>"
-    Then the "transaction_fee" is not deducted from her "nem:xem" balance
-
-    Examples:
-      | deadline | error                        |
-      | 25       | Failure_Core_Future_Deadline |
-      | 999      | Failure_Core_Future_Deadline |
-      | 0        | Failure_Core_Past_Deadline   |
-      | -1       | Failure_Core_Past_Deadline   |
-
-  Scenario: An account announced a transaction with an expired deadline
-    Given Alice announced 3 hours ago a transaction with a deadline of 2 hours to the "MAIN_NET"
-    When Alice announces the transaction to a "MAIN_NET" node
-    And the transaction status is Failed due to error "Failure_Core_Past_Deadline"
-    Then the "transaction_fee" will not be deducted from her "nem:xem" balance
-
-  Scenario: An expired deadline on unconfirmed transaction
-    Given Alice announced a valid transaction
-    And the deadline expired in its unconfirmed state
-    When the transaction status is Success
-    Then a "transaction fee" is deducted from her "nem:xem" balance
-
-  Scenario: An account announced a transaction with an invalid signature
-    Given Alice annouced a transaction using an invalid or random signature
-    When Alice announces the transaction to any "MAIN_NET" node
-    And the transaction status is Failed due to error "Failure_Signature_Not_Verifiable"
-    Then Alice shall not be charged the "transaction_fee" for announcing a transaction.
-
-  Scenario: An account announced an already announced transaction
-    Given Alice announced a transaction using a pre existing transaction hash
-    When Alice announces an already announced transaction to a "MAIN_NET" node
-    And the transaction status is Failed due to error "Failure_Hash_Exists"
-    Then Alice shall not be charged a "transaction_fee"
-    And her "nem:xem" balance shall stay intact
-
-  Scenario: An account announced a transaction with an invalid network
-    Given Alice defined a transaction on the "TEST_NET"
-    And announced the transaction on the "MAIN_NET"
-    When Alice announces a transaction on a different network than what was defined
-    And the transaction status is Failed due to error "Failure_Core_Wrong_Network"
-    Then Alice's "nem:xem" balance stays intact
-
-  Scenario: A nemesis account announced a transaction
-    Given Alice is a nemesis account
-    When Alice announced a valid transaction to the "MAIN_NET"
-    And the transaction status is Failed due to error "Failure_Core_Nemesis_Account_Signed_After_Nemesis_Block"
-    Then Alice is not charged a "transaction_fee"
-    And her "nem:xem" balanced is intact
-
-  Scenario: Multisig contract announced a transaction
-    Given Alice is a multisig contract
-    When Alice announced a valid transaction to a "MAIN_NET" node
-    And the transaction status is Failed due to error "Failure_Multisig_Operation_Not_Permitted_By_Account"
-    Then Alice does not pay a "transaction_fee"
-    And her "nem:xem" balance is intact
-
 # Status errors not treated:
 # - Failure_Core_Too_Many_Transactions
 
 #Receipt Behavior
-# Transaction_Group receipt
   Scenario: Alice wants to get the state change of transaction
     Given Alice sends a valid transaction to the "MAIN_NET" node
     When Alice wants to get the state change of the her Transfer transaction

@@ -17,13 +17,11 @@ Feature: Send an asset
       | reward.point    | 100    |
       | event.organizer | 2      |
 
-
   Scenario Outline: An account sends an asset to another account
     When "Alice" sends  <amount> "<asset>" to "Bob"
     Then "Alice" should receive a confirmation message
     And "Bob" should receive <amount> "<asset>"
     And her "<asset>" balance should decrease in <amount> unit(s)
-    # Receipts Generated
 
     Examples:
       | amount | asset            |
@@ -36,13 +34,11 @@ Feature: Send an asset
     Then "Alice" should receive a confirmation message
     And "Alice" should receive 1 "concert.ticket"
     And her "concert.ticket" balance should remain intact
-  # Receipts Generated
 
   Scenario Outline: An account tries to send an asset to an invalid account
     When "Alice" sends 1 "concert.ticket" to "<recipient>"
     Then she should receive the error "<error>"
     And her "concert.ticket" balance should remain intact
-    # Receipts Not Generated
 
     Examples:
       | recipient                                      | error                        |
@@ -54,7 +50,6 @@ Feature: Send an asset
     When "Alice" sends <amount> "<asset>" to "Bob"
     Then she should receive the error "<error>"
     And her "<asset>" balance should remain intact
-    # Receipts Not Generated
 
     Examples:
       | amount | asset          | error                             |
@@ -67,7 +62,6 @@ Feature: Send an asset
     When "Alice" sends <amount> "<asset>" to "Bob"
     Then "Bob" should not receive any asset
     And her "<asset>" balance should remain intact
-    # Receipts Not Generated
 
     Examples:
       | amount   | asset          |
@@ -79,20 +73,17 @@ Feature: Send an asset
     Then "Ticket vendor" should receive a confirmation message
     And "Bob" should receive 1 "event.organizer"
     And the ticket vendor "event.organizer" balance should decrease in 1 unit(s)
-  # Receipts Generated
 
   Scenario: An account sends a non-transferable asset to the account that registered the asset
     When "Alice" sends 1 "event.organizer" to "Ticket vendor"
     Then she should receive a confirmation message
     And "Ticket vendor" should receive 1 "event.organizer"
     And  her "event.organizer" balance should decrease in 1 unit(s)
-  # Receipts Generated
 
   Scenario: An account tries to send a non-transferable asset to another account
     When "Alice" sends 1 "event.organizer" to "Bob"
     Then she should receive the error "Failure_Mosaic_Non_Transferable"
     And her "event.organizer" balance should remain intact
-  # Receipts Not Generated
 
   Scenario: An account sends multiple assets to another account
     When "Alice" sends 1 "concert.ticket" and 2 "reward.point" to "Bob"
@@ -100,14 +91,12 @@ Feature: Send an asset
     And "Bob" should receive 1 "concert.ticket" and 2 "reward.point"
     And  her "concert.ticket" balance should decrease in 1 unit(s)
     And  her "reward.point" balance should decrease in 2 unit(s)
-  # Receipts Generated
 
   Scenario Outline: An account tries to send multiple assets to another account but at least one of the attached assets can't be sent
     When "Alice" sends <amount> "<asset>" and 1 reward.point to "Bob"
     Then she should receive the error "<error>"
     And her "<asset>" balance should remain intact
     And her "reward.point" balance should remain intact
-    # Receipts Not Generated
 
     Examples:
       | amount | asset           | error                                 |
@@ -121,43 +110,36 @@ Feature: Send an asset
     When "Alice" sends 1 "concert.ticket" to "Bob"
     Then she should receive the error "Failure_Property_Mosaic_Transfer_Not_Allowed"
     And her "concert.ticket" balance should remain intact
-  # Receipts Not Generated
 
   Scenario: An account tries to send an asset to another account but the second account has blocked this asset
     Given Bob blocked receiving "xem"
     When "Alice" sends 1 "concert.ticket" to "Bob"
     Then she should receive the error "Failure_Property_Mosaic_Transfer_Not_Allowed"
     And her "concert.ticket" balance should remain intact
-  # Receipts Not Generated
 
   Scenario: An account tries to send an asset to another account but has not allowed sending "TRANSFER" transactions
     Given Alice only allowed sending "REGISTER_NAMESPACE" transactions
     When "Alice" sends 1 "concert.ticket" to "Bob"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
     And her "concert.ticket" balance should remain intact
-  # Receipts Not Generated
 
   Scenario: An account tries to send an asset to another account but has blocked sending "TRANSFER" transactions
     Given Alice blocked sending "TRANSFER" transactions
     When "Alice" sends 1 "concert.ticket" to "Bob"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
     And her "concert.ticket" balance should remain intact
-  # Receipts Not Generated
 
   Scenario: An account tries to send an asset to another account but the second account does not allow it
     Given Bob only allowed receiving transactions from Carol's address
     When "Alice" sends 1 "concert.ticket" to "Bob"
     Then she should receive the error "Failure_Property_Signer_Address_Interaction_Not_Allowed"
     And her "concert.ticket" balance should remain intact
-  # Receipts Not Generated
 
   Scenario: An account tries to send an asset to another account but the second account blocked it
     Given Bob blocked receiving transactions from Alice's address
     When "Alice" sends 1 "concert.ticket" to "Bob"
     Then she should receive the error "Failure_Property_Signer_Address_Interaction_Not_Allowed"
     And her "concert.ticket" balance should remain intact
-  # Receipts Not Generated
-
 
   # RECEIPTS BEHAVIOR
   Scenario: Alice wants to get the mosaic ID of an aliased mosaic for a transaction to Bob
@@ -183,6 +165,4 @@ Feature: Send an asset
   Scenario: Alice wants to get mosaic ID for two aliased mosaics for transaction to Bob
     Given "Alice" sent 1 "concert.ticket" and 2 "reward.point" to "Bob"
     When "Alice wants to get "event.organizer" and "reward.point" mosaic ID for this transaction
-    Then "Alice" should get "0dc67fbe1cad29e5" and "0dc67fbe1cad29e4" 
-
-
+    Then "Alice" should get "0dc67fbe1cad29e5" and "0dc67fbe1cad29e4"

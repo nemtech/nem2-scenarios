@@ -28,7 +28,6 @@ Feature: Register a namespace
     And she should become the owner of the new namespace <name>
     And it should be registered for at least <time> seconds
     And her xem balance should decrease in <cost> units
-    # And she should receive a Namespace_Rental_Fee receipt
 
     Examples:
       | name  | time | cost |
@@ -40,7 +39,6 @@ Feature: Register a namespace
     When Alice registers a namespace named "alice" for <time> seconds
     Then she should receive the error "<error>"
     And her xem balance should remain intact
-
 
     Examples:
       | time        | error                                         |
@@ -100,18 +98,7 @@ Feature: Register a namespace
   # - Failure_Namespace_Max_Children_Exceeded
 
   # receipt behavior
-
-  # Scenario Outline: An account registers a namespace
-  #   When Alice registers a namespace named <name> for <time> seconds
-  #   Then she should receive a confirmation message
-  #   And she should become the owner of the new namespace <name>
-  #   And it should be registered for at least <time> seconds
-  #   And her xem balance should decrease in <cost> units
-  #   # And she should receive a Namespace_Rental_Fee receipt
-
-
-
-  Scenario: Alice wants to check her xem balance after registering a namespace
+  Scenario Outline: Alice wants to check her xem balance after registering a namespace
     Given Alice registered a namespace named <name> for <time> seconds
     And she received a confirmation message
     And she became the owner of the new namespace <name>

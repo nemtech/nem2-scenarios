@@ -197,10 +197,7 @@ Feature: Edit a multisignature contract
     When she adds "phone" as a cosignatory
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-
-  # Receipts Behavior 
-  # transaction_Group
-
+#Receipts
   Scenario: Alice wants to get state change after cosignatory adds another cosignatory to multisig contract
     Given "computer" added "tablet" to the multisignature
     When "Alice" wants to get the state change after "tablet" is added as cosignatory

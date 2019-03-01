@@ -14,7 +14,6 @@ Feature: Alter an asset supply
     When Alice decides to "<direction>" the asset supply in <amount> units
     Then she should receive a confirmation message
     And the balance of the asset in her account should "<direction>" in <amount> units
-    # Mosaic_Rental_Fee
 
     Examples:
       | property         | direction | amount |
@@ -28,7 +27,6 @@ Feature: Alter an asset supply
     And she still owns 20 units
     When Alice decides to "<direction>" the asset supply in <amount> units
     Then she should receive the error "<error>"
-    # Mosaic_Rental_Fee
 
     Examples:
       | property         | direction | amount     | error                          |
@@ -42,7 +40,6 @@ Feature: Alter an asset supply
     And she still owns 20 units
     When Alice decides to "<direction>" the asset supply in 0 units
     Then she should receive the error "Failure_Mosaic_Invalid_Supply_Change_Amount"
-    # Mosaic_Rental_Fee
 
     Examples:
       | property         | direction |
@@ -56,7 +53,6 @@ Feature: Alter an asset supply
     And she still owns 10 units
     When Alice decides to "<direction>" the asset supply in 2 units
     Then she should receive the error "Failure_Mosaic_Supply_Immutable"
-    # Mosaic_Rental_Fee
 
     Examples:
       | direction |
@@ -67,7 +63,6 @@ Feature: Alter an asset supply
     Given Alice has registered an asset with divisibility 6
     When Alice changes the divisibility to 5
     Then she should receive the error "Failure_Mosaic_Modification_Disallowed"
-  # Mosaic_Rental_Fee
 
   Scenario: An account tries to alter an asset supply but has not allowed sending "MOSAIC_SUPPLY_CHANGE" transactions
     Given Alice only allowed sending "TRANSFER" transactions
@@ -85,21 +80,17 @@ Feature: Alter an asset supply
   # - Failure_Mosaic_Invalid_Supply_Change_Direction
   # - Failure_Mosaic_Modification_No_Changes
 
-
-# Receipt Behavior
-  # Mosaic_Rental_Fee
+  # Receipt Behavior
   Scenario: Alice wants to get the asset balance after altering supply
     Given Alice "<direction>" the asset supply in <amount> units
     When Alice want to get asset balance after <direction> asset supply
     Then Alice should see asset balance is "<direction>" by <amount> in her account
 
-  # Mosaic_Rental_Fee
   Scenario: Alice wants to get the asset balance after altering supply to surpass maximum and minimum asset supply
     Given Alice "<direction>" the asset supply by <amount> units beyond supply limit
     When Alice want to get asset balance after <direction> asset supply
     Then Alice should receive the error "<error>"
 
-  # Mosaic_Rental_Fee
   Scenario: Alice wants to get the asset balance after altering supply without doing any changes
     Given Alice "<direction>" the asset supply by 0 units
     When Alice want to get asset balance after <direction> asset supply

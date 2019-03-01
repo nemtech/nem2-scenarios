@@ -14,9 +14,9 @@ Feature: Send a message
     And the "<recipient>" should receive the message "<message>"
 
     Examples:
-      |message| recipient                                      |
-      | Hello | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 |
-      | Hello | Bob                                            |
+      | message | recipient                                      |
+      | Hello   | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 |
+      | Hello   | Bob                                            |
 
   Scenario Outline: An account tries to send a message to an invalid account
 
@@ -24,10 +24,10 @@ Feature: Send a message
     Then she should receive the error "<error>"
 
     Examples:
-      |message| recipient                                     | error                             |
-      | Hello | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H | Failure_Core_Invalid_Address      |
-      | Hello | bo                                            | Failure_Core_Invalid_Address      |
-      | Hello | MAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5| Failure_Core_Wrong_Network	     |
+      | message | recipient                                      | error                        |
+      | Hello   | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H  | Failure_Core_Invalid_Address |
+      | Hello   | bo                                             | Failure_Core_Invalid_Address |
+      | Hello   | MAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 | Failure_Core_Wrong_Network   |
 
   Scenario: An account  tries to send a message to another account but the message is too large
 
@@ -61,19 +61,17 @@ Feature: Send a message
     When "Alice" sends "Hello" to "Bob"
     Then she should receive the error "Failure_Property_Signer_Address_Interaction_Not_Allowed"
 
+  # Receipt Behavior
+  Scenario: Alice wants to see if recipient received her message
+    Given Alice sent "<message>" to "<recipient>"
+    And she received a confirmation message
+    When Alice wants to see if recipient received her message
+    And the "<recipient>" had received the message "<message>"
+    Then Alice should see that "<recipient>" has received "<message>"
 
-# Receipt Behavior
-
-Scenario: Alice wants to see if recipient received her message
-Given Alice sent "<message>" to "<recipient>"
-And she received a confirmation message
-When Alice wants to see if recipient received her message
-And the "<recipient>" had received the message "<message>"
-Then Alice should see that "<recipient>" has received "<message>"
-
-Scenario: Alice wants to see if recipient received encrypted message
-Given Alice sent the encrypted message "Hello" to "Bob"
-And she received a confirmation message
-And Bob received the encrypted message
-When Alice wants to check if Bob is the only one capable of reading the original message
-Then Alice should see that Bob is the only one capable of reading the original message 
+  Scenario: Alice wants to see if recipient received encrypted message
+    Given Alice sent the encrypted message "Hello" to "Bob"
+    And she received a confirmation message
+    And Bob received the encrypted message
+    When Alice wants to check if Bob is the only one capable of reading the original message
+    Then Alice should see that Bob is the only one capable of reading the original message

@@ -9,16 +9,15 @@ Feature: Create a multisignature contract
 
   Scenario Outline: An account creates an M-of-N contract
     Given Alice defined a <minimumApproval> of 2 multisignature contract
-    And she added the following <cosignatories>:
+    And she added the following cosignatories:
       | cosignatory |
       | phone       |
       | computer    |
     When she publishes the contract
     Then she should receive a confirmation message
     And <minimumApproval> of the cosignatories are required to announce transactions from her account
-      # Transaction_Group
 
-      Exampldes:
+    Examples:
       | minimumApproval |
       | 1               |
       | 2               |
@@ -112,7 +111,6 @@ Feature: Create a multisignature contract
     Given Alice defined a multisignature contract
     When she adds a new multisignature contract cosignatory
     Then the multisignature contract should become a 2 level multisignature contract
-  # Transaction_Group
 
   Scenario: An account tries to create a multisignature contract but has not allowed sending "MODIFY_MULTISIG_ACCOUNT" transactions
     Given Alice only allowed sending "TRANSFER" transactions
@@ -131,8 +129,7 @@ Feature: Create a multisignature contract
   # Status errors not treated:
   # - Failure_Multisig_Modify_Unsupported_Modification_Type
 
-#  Receipts Behavior
-  # Transaction_Group
+  #  Receipts Behavior
   Scenario: Alice wants to get the state change of M-of-N multisig contract
     Given Alice published the multisig contract
     When Alice wants to get the state change of the multisig contract

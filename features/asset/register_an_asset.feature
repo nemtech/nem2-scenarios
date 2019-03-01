@@ -19,7 +19,6 @@ Feature: Register an asset
     And she should become the owner of the new asset
     And it should be registered for at least <seconds> seconds
     And her xem balance should decrease in <cost> units
-    # And she should receive a Mosaic_Rental_Fee receipt
 
     Examples:
       | seconds | cost |
@@ -32,13 +31,11 @@ Feature: Register an asset
     Then she should receive a confirmation message
     And she should become the owner of the non-expiring asset
     And her xem balance should decrease in 5000 xem
-  # And she should receive a Mosaic_Rental_Fee receipt
 
   Scenario Outline: An account tries to register an asset for an invalid duration
     When Alice registers an asset for <seconds> seconds
     Then she should receive the error "Failure_Mosaic_Invalid_Duration"
     And her xem balance should remain intact
-
 
     Examples:
       | seconds     |
@@ -53,13 +50,11 @@ Feature: Register an asset
     Then she should receive the error "Failure_Mosaic_Max_Mosaics_Exceeded"
     And her xem balance should remain intact
 
-
   Scenario Outline: An account registers an asset with a valid property
     When Alice registers a "<property>" asset for 1 day
     Then she should receive a confirmation message
     And she should become the owner of the new asset
     And it should have the property "<property>"
-    # And she should receive a Mosaic_Rental_Fee receipt
 
     Examples:
       | property         |
@@ -75,7 +70,6 @@ Feature: Register an asset
     Then she should receive a confirmation message
     And she should become the owner of the new asset
     And the asset should handle up to <divisibility> decimals
-    # And she should receive a Mosaic_Rental_Fee receipt
 
     Examples:
       | divisibility |
@@ -86,7 +80,6 @@ Feature: Register an asset
     When Alice registers an asset with divisibility <number> for 1 day
     Then she should receive the error "Failure_Mosaic_Invalid_Divisibility"
     And her xem balance should remain intact
-    # And she should receive a Mosaic_Rental_Fee receipt
 
     Examples:
       | number |
@@ -98,31 +91,17 @@ Feature: Register an asset
     When Alice registers an asset for 1 day
     Then she should receive the error "Failure_Core_Insufficient_Balance"
 
-
   Scenario: An account tries to register an asset but has not allowed sending "MOSAIC_DEFINITION" transactions
     Given Alice only allowed sending "TRANSFER" transactions
     When Alice registers an asset for 2 seconds
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
-
 
   Scenario: An account tries to register an asset but has blocked sending "MOSAIC_DEFINITION" transactions
     Given Alice blocked sending "MOSAIC_DEFINITION" transactions
     When Alice registers an asset for 2 seconds
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-
-  # Status errors not treated:
-  # - Failure_Mosaic_Invalid_Name
-  # - Failure_Mosaic_Name_Id_Mismatch
-  # - Failure_Mosaic_Id_Mismatch
-  # - Failure_Mosaic_Parent_Id_Conflict
-  # - Failure_Mosaic_Invalid_Property
-  # - Failure_Mosaic_Invalid_Flags
-  # - Failure_Mosaic_Invalid_Id
-
-
   # # Receipt Behavior
-
   Scenario: Alice wants to get her XEM balance after registering an expiring asset
     Given Alice registered an expiring asset for <seconds> seconds
     And she became the owner of the new expiring asset
@@ -146,3 +125,12 @@ Feature: Register an asset
     And she became the owner the new asset
     When Alice wants to see the divisibility of registered asset
     Then Alice should see that her registered asset can handle up to <divisibility> decimals
+
+ # Status errors not treated:
+  # - Failure_Mosaic_Invalid_Name
+  # - Failure_Mosaic_Name_Id_Mismatch
+  # - Failure_Mosaic_Id_Mismatch
+  # - Failure_Mosaic_Parent_Id_Conflict
+  # - Failure_Mosaic_Invalid_Property
+  # - Failure_Mosaic_Invalid_Flags
+  # - Failure_Mosaic_Invalid_Id

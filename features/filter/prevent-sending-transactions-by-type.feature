@@ -83,27 +83,22 @@ Feature: Prevent sending transactions by type
     Then she should receive the error "Failure_Property_Modification_Not_Allowed"
 
 #Receipt Behavior
-
-# Transaction_Group receipt
   Scenario: Alice wants to get the state change of blocking transaction type
     Given Alice blocks sending transactions with certain transaction types
     When Alice wants to get the state change of the her transaction type blocking transaction
     Then Alice should get the "confirmed" status of the transaction type blocking transaction
 
-  # Transaction_Group Receipt
   Scenario: Alice wants to get the state change of filtering transaction type
     Given Alice specifies to only send transactions with certain transaction types
     When Alice wants to get the state change of the transaction type filter transaction
     Then Alice should get the "confirmed" status of the transaction type filter transaction
 
-  # Transaction_Group Receipt
   Scenario: Alice wants to get the state change of unblocking a transaction type
-    Given Alice unblocks "TRANSFER" 
+    Given Alice unblocks "TRANSFER"
     And keeps "REGISTER_NAMESPACE" blocked
     When Alice wants to get the state change of her transaction type unblock transaction
     Then Alice should get the "confirmed" status of the transaction type unblock transaction
 
-  # Transaction_Group receipts
   Scenario: Alice wants to get the state change of remove transaction type transaction
     Given Alice only allows receiving from "TRANSFER"
     And she removes "TRANSFER" from allowed addresses

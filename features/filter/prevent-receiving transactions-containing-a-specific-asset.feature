@@ -25,7 +25,6 @@ Feature: Prevent receiving transactions containing a specific asset
       | xem   |
     Then she should receive a confirmation message
     And  receiving the stated assets should be allowed
-  # Mosaic_Levy
 
   Scenario: An account unblocks an asset
     Given Alice blocked receiving transactions containing the following assets:
@@ -44,7 +43,6 @@ Feature: Prevent receiving transactions containing a specific asset
     When Alice removes "ticket" from the allowed assets
     Then she should receive a confirmation message
     And only receiving "voucher" assets should remain allowed
-
 
   Scenario: An account unblocks a not blocked asset
     Given Alice blocked receiving "ticket" assets
@@ -102,29 +100,24 @@ Feature: Prevent receiving transactions containing a specific asset
   # - Failure_Property_Value_Invalid
 
 # Receipt Behavior
-  # Transaction_Group receipt
   Scenario: Alice wants to get the state change of blocking transactions
     Given Alice blocks the receiving transactions containing specific assets
     When Alice wants to get the state change of the her blocking transaction
     Then Alice should get the "confirmed" status of the blocking transaction
 
-  # Transaction_Group Receipt
   Scenario: Alice wants to get the state change of filtering transactions
     Given Alice specifies to only receive transactions containing specific assets
     When Alice wants to get the state change of the filter transaction
     Then Alice should get the "confirmed" status of the filter transaction
 
-  # Transaction_Group Receipt
   Scenario: Alice wants to get the state change of unblocking an asset
     Given Alice unblocks "ticket" asset
     And keeps "voucher" asset blocked
     When Alice wants to get the state change of her unblock transaction
     Then Alice should get the "confirmed" status of the unblock transaction
 
-  # Transaction_Group receipts
   Scenario: Alice wants to get the state change of remove asset transaction
     Given Alice only allows receiving "ticket" asset
     And she removes "ticket" assets from allowed assets
     When Alice wants to get the state change of the asset removal transaction
     Then Alice should get the "confirmed" status of the asset removal transaction
-

@@ -17,7 +17,6 @@ Feature: Create a subnamespace
     Then she should receive a confirmation message
     And she should become the owner of the new subnamespace "one.two"
     And her xem balance should decrease in 10 units
-  # And she should get a Namespace_Rental_Fee receipt
 
   Scenario Outline: An account tries to create a subnamespace with an invalid name
     Given Alice registered the namespace "alice" for a week
@@ -55,7 +54,6 @@ Feature: Create a subnamespace
     When Alice creates a subnamespace named "alice.subnamespace"
     Then she should receive the error "Failure_Namespace_Expired"
     And her xem balance should remain intact
-  # And she should receive a Namespace_Expired receipt
 
   Scenario: An account tries to create a subnamespace with an unknown parent namespace
     When Alice creates a subnamespace named "unknown.subnamespace"
@@ -72,8 +70,6 @@ Feature: Create a subnamespace
   # - Failure_Namespace_Max_Children_Exceeded
 
   # Receipt Behavior
-  # Namespace_Rental_Fee
-
   Scenario: Alice wants to check her xem balance after creating a subnamespace
     Given Alice registered the namespace "one" for a week
     And she created a subnamespace named "one.two"
