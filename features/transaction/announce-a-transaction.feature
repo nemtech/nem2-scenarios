@@ -6,6 +6,7 @@ Feature: Announce a transaction
   Background:
     Given Alice has an account in MAIN_NET
     And the maximum transaction lifetime is 1 day
+    And the native currency mosaic is "xem"
 
   Scenario: Alice announces a valid transaction
     Given Alice defined a valid transaction
@@ -20,11 +21,11 @@ Feature: Announce a transaction
     Then she should receive the error "<error>"
 
     Examples:
-      | deadline | error                         |
-      | 25       | Failure_Core_Future_Deadline  |
-      | 999      | Failure_Core_Future_Deadline  |
-      | 0        | Failure_Core_Past_Deadline    |
-      | -1       | Failure_Core_Past_Deadline    |
+      | deadline | error                        |
+      | 25       | Failure_Core_Future_Deadline |
+      | 999      | Failure_Core_Future_Deadline |
+      | 0        | Failure_Core_Past_Deadline   |
+      | -1       | Failure_Core_Past_Deadline   |
 
   Scenario: An account tries to announce a transaction with an expired deadline
     Given Alice defined 3 hours ago a transaction with a deadline of 2 hours
@@ -72,50 +73,44 @@ Feature: Announce a transaction
   # Status errors not treated:
   # - Failure_Core_Too_Many_Transactions
 
-#Fee Behaviour
+  #Fee Behaviour
   Scenario: An account announced a valid transaction
-    Given Alice announced a valid transaction with "transaction_size" of 10 "nem:xem" to a "MAIN_NET" node with a "fee_multiplier" of 2
-    And "effective_fee" is the product of "transaction_size" and "fee_multiplier"
-    When the transaction status is Success
-    Then her "nem:xem" balance is the deducted by the sum of "effective_fee" and the "transaction_size" 
+    Given Alice announced a valid transaction of 10 "xem" to a "MAIN_NET" node with a "fee_multiplier" of 2
+    And sets a "max_fee" of 25 "xem"
+    When the node process the transaction to include it in a block
+    And "effective_fee" is less than or equal to the "max_fee"
+    Then the node accepts the transaction // Note: transaction::size * block::fee_multiplier should be less or equal than max_fee
+    And her "xem" balance is deducted in units
 
-  Scenario: An account announced a valid transaction and sets a max fee
-    Given Alice announced a valid transaction with "transaction_size" of 10 "nem:xem" to a "MAIN_NET" node with a "fee_multiplier" of 2
-    And sets a "max_fee" of 25 "nem:xem"
-    And "effective_fee" is the product of "transaction_size" and "fee_multiplier"
-    When the transaction status is Success
-    And "effective_fee" is smaller or equal to the "max_fee"
-    Then her "nem:xem" balance is the deducted by the "effective_fee" and the "transaction_size"
-
-  Scenario: An account announced a valid transaction and sets a max fee smaller than effective fee
-    Given Alice announced a valid transaction with "transaction_size" of 10 "nem:xem" to a "MAIN_NET" node with a "fee_multiplier" of 2
-    And sets a "max_fee" of 2 "nem:xem"
-    And "effective_fee" is the product of "transaction_size" and "fee_multiplier"
-    When the "effective_fee" is larger than the set "max_fee"
+  Scenario: An account announced a valid transaction and sets a max fee less than than effective fee
+    Given Alice announced a valid transaction of 10 "xem" to a "MAIN_NET" node with a "fee_multiplier" of 2
+    And sets a "max_fee" of 2 "xem"
+    And "effective_fee" is the product of transaction size and "fee_multiplier"
+    When the "effective_fee" is greater than than the set "max_fee"
     Then the transaction status will remain unannounced
-    And her "nem:xem" balance stays intact
+    And her "xem" balance stays intact
 
   Scenario: An expired deadline on unconfirmed transaction
-    Given Alice announced a valid transaction with "transaction_size" of 10 "nem:xem" to a "MAIN_NET" node with a "fee_multiplier" of 1
-    And sets a "max_fee" of 25 "nem:xem"
-    And "effective_fee" is the product of "transaction_size" and "fee_multiplier"
+    Given Alice announced a valid transaction of 10 "xem" to a "MAIN_NET" node with a "fee_multiplier" of 1
+    And sets a "max_fee" of 25 "xem"
     And the deadline expired in its unconfirmed state
-    When the transaction status is Success
-    And "effective_fee" is smaller or equal to the "max_fee"
-    Then her "nem:xem" balance is the deducted by the "effective_fee"
+    When the node process the transaction to include it in a block
+    And "effective_fee" is less than or equal to the "max_fee"
+    Then the node accepts the transaction // Note: transaction::size * block::fee_multiplier should be less or equal than max_fee
+    And her "xem" balance is deducted in units
 
   Scenario: An account announced a transaction with an expired deadline
-    Given Alice announced 3 hours ago a transaction with "transaction_size" of 10 "nem:xem" to a "MAIN_NET" node with a "fee_multiplier" of 1
+    Given Alice announced 3 hours ago a transaction of 10 "xem" to a "MAIN_NET" node with a "fee_multiplier" of 1
     And with a deadline of 2 hours
-    And sets a "max_fee" of 25 "nem:xem"
-    And "effective_fee" is the product of "transaction_size" and "fee_multiplier"
+    And sets a "max_fee" of 25 "xem"
+    And "effective_fee" is the product of transaction size and "fee_multiplier"
     When the transaction status is Failed due to error "Failure_Core_Past_Deadline"
-    Then the "effective_fee" will not be deducted from her "nem:xem" balance
+    Then the "effective_fee" will not be deducted from her "xem" balance
 
   Scenario: An account announced a transaction with an invalid signature
-    Given Alice annouced a transaction with "transaction_size" of 10 "nem:xem" to a "MAIN_NET" node with a "fee_multiplier" of 1 
+    Given Alice annouced a transaction of 10 "xem" to a "MAIN_NET" node with a "fee_multiplier" of 1
     And uses an invalid or random signature
-    And sets a "max_fee" of 25 "nem:xem"
-    And "effective_fee" is the product of "transaction_size" and "fee_multiplier"
+    And sets a "max_fee" of 25 "xem"
+    And "effective_fee" is the product of transaction size and "fee_multiplier"
     When the transaction status is Failed due to error "Failure_Signature_Not_Verifiable"
-    Then the "effective_fee" will not be deducted from her "nem:xem" balance
+    Then the "effective_fee" will not be deducted from her "xem" balance
