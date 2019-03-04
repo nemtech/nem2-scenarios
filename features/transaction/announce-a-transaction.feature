@@ -73,15 +73,15 @@ Feature: Announce a transaction
   Scenario: An account announced a valid transaction
     Given Alice announced a valid transaction of size 10 bytes
     And sets a "max_fee" of 25 "xem"
-    When a node with a fee multiplier of 2 processes the transaction 
-    Then the node accepts the transaction 
+    When a node with a fee multiplier of 2 processes the transaction
+    Then the node accepts the transaction
     And her "xem" balance is deducted by 20 units
 
   Scenario: An account announced a valid transaction and sets max fee too low
     Given Alice announced a valid transaction of size 10 bytes
     And sets a "max_fee" of 10 "xem"
-    When a node with a fee multiplier of 2 processes the transaction 
-    Then the node rejects the transaction 
+    When a node with a fee multiplier of 2 processes the transaction
+    Then the node rejects the transaction
     And her "xem" balance stays intact
 
   Scenario: valid transaction not accepted by any node due to low max fee
