@@ -14,6 +14,12 @@ Feature: Announce a transaction
     When Alice announces the transaction to a "MAIN_NET" node
     Then she should receive a confirmation message
 
+  Scenario: An account announced a valid transaction (max_fee) 
+    Given Alice announced a valid transaction of size 10 bytes willing to pay 25 xem
+    When a node with a fee multiplier of 2 processes the transaction
+    Then the node accepts the transaction
+    And her "xem" balance is deducted by 20 units
+
   Scenario Outline: An account tries to announce a transaction with an invalid deadline
     Given Alice defined a transaction with a deadline of <deadline> hours
     And she signed the transaction
@@ -70,27 +76,18 @@ Feature: Announce a transaction
     When Alice announces the transaction to a "MAIN_NET" node
     Then she should receive the error "Failure_Multisig_Operation_Not_Permitted_By_Account"
 
-  Scenario: An account announced a valid transaction
-    Given Alice announced a valid transaction of size 10 bytes
-    And sets a "max_fee" of 25 "xem"
-    When a node with a fee multiplier of 2 processes the transaction
-    Then the node accepts the transaction
-    And her "xem" balance is deducted by 20 units
-
-  Scenario: An account announced a valid transaction and sets max fee too low
-    Given Alice announced a valid transaction of size 10 bytes
-    And sets a "max_fee" of 10 "xem"
+  Scenario: A node rejects a transaction because the max_fee value is too low
+    Given Alice announced a valid transaction of size 10 bytes willing to pay 10 xem
     When a node with a fee multiplier of 2 processes the transaction
     Then the node rejects the transaction
-    And her "xem" balance stays intact
+    And her "xem" balance remains intact
 
-  Scenario: valid transaction not accepted by any node due to low max fee
-    Given Alice announced a valid transaction of size 10 bytes
-    And sets a "max_fee" of 5 "xem"
-    And transaction is not accepted by any node with a fee multiplier of 2
+  Scenario: No node accepts the transaction because the max_fee value is too low
+    Given Alice announced a valid transaction of size 10 bytes willing to pay 5 xem
+    And all the nodes have set the fee multiplier to 2
     When the transaction deadline is reached
-    Then the transaction is dropped
-    And her "xem" balance stays intact
+    Then the transaction is rejected
+    And her "xem" balance should remain intact
 
   # Status errors not treated:
   # - Failure_Core_Too_Many_Transactions
