@@ -70,44 +70,27 @@ Feature: Announce a transaction
     When Alice announces the transaction to a "MAIN_NET" node
     Then she should receive the error "Failure_Multisig_Operation_Not_Permitted_By_Account"
 
-  # Status errors not treated:
-  # - Failure_Core_Too_Many_Transactions
-
-  #Fee Behaviour
   Scenario: An account announced a valid transaction
-    Given Alice announced a valid transaction of 10 "xem" to a "MAIN_NET" node with a "fee_multiplier" of 2
+    Given Alice announced a valid transaction of size 10 bytes
     And sets a "max_fee" of 25 "xem"
-    When the node process the transaction to include it in a block
-    Then the node accepts the transaction // Note: transaction::size * block::"fee_multiplier" should be less or equal than "max_fee"
-    And her "xem" balance is deducted in units
+    When a node with a fee multiplier of 2 processes the transaction 
+    Then the node accepts the transaction 
+    And her "xem" balance is deducted by 20 units
 
-  Scenario: An account announced a valid transaction and sets a max fee less than than effective fee
-    Given Alice announced a valid transaction of 10 "xem" to a "MAIN_NET" node with a "fee_multiplier" of 2
-    And sets a "max_fee" of 2 "xem"
-    When transaction::size * block::"fee_multiplier" is greater than "max_fee"
-    Then the transaction status will remain unannounced
+  Scenario: An account announced a valid transaction and sets max fee too low
+    Given Alice announced a valid transaction of size 10 bytes
+    And sets a "max_fee" of 10 "xem"
+    When a node with a fee multiplier of 2 processes the transaction 
+    Then the node rejects the transaction 
     And her "xem" balance stays intact
 
-  Scenario: An expired deadline on unconfirmed transaction
-    Given Alice announced a valid transaction of 10 "xem" to a "MAIN_NET" node with a "fee_multiplier" of 1
-    And sets a "max_fee" of 25 "xem"
-    And the deadline expired in its unconfirmed state
-    When the node process the transaction to include it in a block
-    Then the node accepts the transaction // Note: transaction::size * block::"fee_multiplier" should be less or equal than "max_fee"
-    And her "xem" balance is deducted in units
+  Scenario: valid transaction not accepted by any node due to low max fee
+    Given Alice announced a valid transaction of size 10 bytes
+    And sets a "max_fee" of 5 "xem"
+    And transaction is not accepted by any node with a fee multiplier of 2
+    When the transaction deadline is reached
+    Then the transaction is dropped
+    And her "xem" balance stays intact
 
-  Scenario: An account announced a transaction with an expired deadline
-    Given Alice announced 3 hours ago a transaction of 10 "xem" to a "MAIN_NET" node with a "fee_multiplier" of 1
-    And with a deadline of 2 hours
-    And sets a "max_fee" of 25 "xem"
-    And transaction::size * block::"fee_multiplier" should be less or equal than "max_fee"
-    When the transaction status is Failed due to error "Failure_Core_Past_Deadline"
-    Then her "xem" balance stays intact
-
-  Scenario: An account announced a transaction with an invalid signature
-    Given Alice annouced a transaction of 10 "xem" to a "MAIN_NET" node with a "fee_multiplier" of 1
-    And uses an invalid or random signature
-    And sets a "max_fee" of 25 "xem"
-    And transaction::size * block::"fee_multiplier" should be less or equal than "max_fee"
-    When the transaction status is Failed due to error "Failure_Signature_Not_Verifiable"
-    Then her "xem" balance stays intact
+  # Status errors not treated:
+  # - Failure_Core_Too_Many_Transactions
