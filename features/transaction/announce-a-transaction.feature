@@ -14,7 +14,7 @@ Feature: Announce a transaction
     When Alice announces the transaction to a "MAIN_NET" node
     Then she should receive a confirmation message
 
-  Scenario: An account announced a valid transaction (max_fee) 
+  Scenario: An account announced a valid transaction (max_fee)
     Given Alice announced a valid transaction of size 10 bytes willing to pay 25 xem
     When a node with a fee multiplier of 2 processes the transaction
     Then the node accepts the transaction
