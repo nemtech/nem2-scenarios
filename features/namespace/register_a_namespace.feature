@@ -97,7 +97,6 @@ Feature: Register a namespace
   # - Failure_Namespace_Already_Active
   # - Failure_Namespace_Max_Children_Exceeded
 
-  # receipt behavior
   Scenario Outline: Alice wants to check her xem balance after registering a namespace
     Given Alice registered a namespace named <name> for <time> seconds
     And she received a confirmation message

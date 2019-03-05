@@ -121,7 +121,6 @@ Feature: Prevent receiving transactions from undesired addresses
       | bo                                             | Failure_Core_Invalid_Address |
       | MAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 | Failure_Core_Wrong_Network   |
 
-  # Receipts Behavior
   Scenario: Alice wants to get the state change of blocking address transaction
     Given Alice blocks the receiving transactions from certain address
     When Alice wants to get the state change of the her address blocking transaction

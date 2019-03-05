@@ -25,7 +25,6 @@ Feature: Harvest a block
     When she tries to harvest a block
     Then she should receive the error "Failure_Core_Block_Harvester_Ineligible"
 
-    # Receipt Behavior
     Given Alice wants to see her resulting fees after harvesting a block
     And she is running a node
     And she is has 10000 xem in her account

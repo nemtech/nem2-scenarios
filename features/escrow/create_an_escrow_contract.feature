@@ -173,7 +173,6 @@ Feature: Create an escrow contract
     When she publishes the contract
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  # Receipts Behavior
   Scenario: Alice wants to see if every sender participant recevied a notification after publishing contract
     Given Alice defined the following escrow :
       | sender | recipient | type          | data             |

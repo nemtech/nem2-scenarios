@@ -72,7 +72,6 @@ Feature: Announce a transaction
 # Status errors not treated:
 # - Failure_Core_Too_Many_Transactions
 
-#Receipt Behavior
   Scenario: Alice wants to get the state change of transaction
     Given Alice sends a valid transaction to the "MAIN_NET" node
     When Alice wants to get the state change of the her Transfer transaction

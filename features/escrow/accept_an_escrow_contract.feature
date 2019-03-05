@@ -91,7 +91,6 @@ Feature: Accept an escrow contract
     When Alice accepts it
     Then she should receive the error "Failure_LockHash_Inactive_Hash"
 
-  # Receipts Behavior
   Scenario: Alice and Bob wants to see her xem balance after concluding escrow contract
     Given Alice sent Bob 20 "xem"
     And Bob locked 10 "xem" to guarantee the contract concludes in less than 2 days

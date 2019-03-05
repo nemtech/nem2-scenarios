@@ -101,7 +101,6 @@ Feature: Register an asset
     When Alice registers an asset for 2 seconds
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  # # Receipt Behavior
   Scenario: Alice wants to get her XEM balance after registering an expiring asset
     Given Alice registered an expiring asset for <seconds> seconds
     And she became the owner of the new expiring asset

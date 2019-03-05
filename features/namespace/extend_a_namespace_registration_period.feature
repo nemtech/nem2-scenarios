@@ -62,7 +62,6 @@ Feature: Extend a namespace registration period
     When  Alice extends the registration of the namespace named "alice" for 1 day
     Then  she should receive the error "Failure_Core_Insufficient_Balance"
 
-  # receipt behavior
   Scenario Outline: Alice wants to check her xem balance after extending a namespace registration period
     Given "Alice" registered the namespace "alice" for a week
     And she extended the registration of the namespace named "alice" for <time> seconds

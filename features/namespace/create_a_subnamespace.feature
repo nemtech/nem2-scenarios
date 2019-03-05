@@ -69,7 +69,6 @@ Feature: Create a subnamespace
   # Status errors not treated:
   # - Failure_Namespace_Max_Children_Exceeded
 
-  # Receipt Behavior
   Scenario: Alice wants to check her xem balance after creating a subnamespace
     Given Alice registered the namespace "one" for a week
     And she created a subnamespace named "one.two"

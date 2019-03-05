@@ -82,7 +82,6 @@ Feature: Prevent sending transactions by type
     When Alice blocks sending "ACCOUNT_PROPERTIES_ENTITY_TYPE" transactions
     Then she should receive the error "Failure_Property_Modification_Not_Allowed"
 
-#Receipt Behavior
   Scenario: Alice wants to get the state change of blocking transaction type
     Given Alice blocks sending transactions with certain transaction types
     When Alice wants to get the state change of the her transaction type blocking transaction

@@ -251,7 +251,6 @@ Feature: Exchange assets across different blockchains
   # Status errors not treated:
   # - Failure_LockSecret_Invalid_Hash_Algorithm
 
-#Receipts Behavior
   Scenario: An Account wants to check their balance after locking an asset
     Given Alice locked an asset "alice.token" on to the blockchain
     And wants to check her balance after locking the asset
