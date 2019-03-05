@@ -128,14 +128,3 @@ Feature: Create a multisignature contract
 
   # Status errors not treated:
   # - Failure_Multisig_Modify_Unsupported_Modification_Type
-
-  #  Receipts Behavior
-  Scenario: Alice wants to get the state change of M-of-N multisig contract
-    Given Alice published the multisig contract
-    When Alice wants to get the state change of the multisig contract
-    Then Alice should get the "confirmed" status of the multisig contract
-
-  Scenario: Alice wants to get the state change of a multi-level multisignature contract
-    Given Alice added a new multisignature contract cosignatory
-    When Alice wants to get the state change of the  multi-level multisig contract
-    Then Alice should get the "confirmed" status of the multi-level sig contract

@@ -79,19 +79,3 @@ Feature: Alter an asset supply
   # Status errors not treated:
   # - Failure_Mosaic_Invalid_Supply_Change_Direction
   # - Failure_Mosaic_Modification_No_Changes
-
-  # Receipt Behavior
-  Scenario: Alice wants to get the asset balance after altering supply
-    Given Alice "<direction>" the asset supply in <amount> units
-    When Alice want to get asset balance after <direction> asset supply
-    Then Alice should see asset balance is "<direction>" by <amount> in her account
-
-  Scenario: Alice wants to get the asset balance after altering supply to surpass maximum and minimum asset supply
-    Given Alice "<direction>" the asset supply by <amount> units beyond supply limit
-    When Alice want to get asset balance after <direction> asset supply
-    Then Alice should receive the error "<error>"
-
-  Scenario: Alice wants to get the asset balance after altering supply without doing any changes
-    Given Alice "<direction>" the asset supply by 0 units
-    When Alice want to get asset balance after <direction> asset supply
-    Then Alice should receive the error "<error>"

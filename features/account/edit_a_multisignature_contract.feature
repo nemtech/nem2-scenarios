@@ -18,7 +18,6 @@ Feature: Edit a multisignature contract
       | tablet      |
     Then "Alice" should receive a confirmation message
     And "tablet" is a cosignatory of the multisignature contract
-  # transaction_Group
 
   Scenario: A cosignatory accepts the addition of another cosignatory to the multisignature contract
     Given Alice created the following 2 of 2 multisignature contract:
@@ -29,7 +28,6 @@ Feature: Edit a multisignature contract
     When "phone" accepts the addition
     Then "Alice" should receive a confirmation message
     And "tablet" is a cosignatory of the multisignature contract
-  # transaction_Group
 
   Scenario: A cosignatory account removes another cosignatory from the multisignature contract
     Given Alice created the following 2 of 2 multisignature contract:
@@ -40,7 +38,6 @@ Feature: Edit a multisignature contract
     Then "Alice" should receive a confirmation message
     And "phone" is not a cosignatory of the multisignature contract
     And the multisignature contract still requires "computer" signature
-  # transaction_Group
 
   Scenario: A cosignatory account removes itself from the multisignature contract
     Given Alice created the following 2 of 2 multisignature contract:
@@ -50,7 +47,6 @@ Feature: Edit a multisignature contract
     When "computer" removes "computer" from the multisignature cosignatories
     Then "Alice" should receive a confirmation message
     And "computer" is not a cosignatory of the multisignature contract
-  # transaction_Group
 
   Scenario: A cosignatory account accepts removing another cosignatory from the multisignature contract
     Given Alice created the following 2 of 2 multisignature contract:
@@ -63,7 +59,6 @@ Feature: Edit a multisignature contract
     Then "Alice" should receive a confirmation message
     And "phone" is not a cosignatory of the multisignature contract
     And the multisignature contract still requires "computer" signature
-  # transaction_Group
 
   Scenario: All cosignatories are removed from the multisignature contract
     Given Alice created the following 1 of 2 multisignature contract:
@@ -73,7 +68,6 @@ Feature: Edit a multisignature contract
     When "computer" removes all cosignatories
     Then "Alice" should receive a confirmation message
     And the multisignature contract should become a regular account
-  # transaction_Group
 
   Scenario Outline: A cosignatory tries to set an invalid minimum of cosignatures to approve a transaction
     Given Alice created the following 1 of 2 multisignature contract:
@@ -196,34 +190,3 @@ Feature: Edit a multisignature contract
     And Alice created a 1 of 1 multisignature contract
     When she adds "phone" as a cosignatory
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
-
-#Receipts
-  Scenario: Alice wants to get state change after cosignatory adds another cosignatory to multisig contract
-    Given "computer" added "tablet" to the multisignature
-    When "Alice" wants to get the state change after "tablet" is added as cosignatory
-    Then "Alice" should get the "confirmed" status after adding another cosignatory to multisig contract
-
-  Scenario: Alice wants to get state change after cosignatory is accepted into multisig contract
-    Given "phone" accepted the addition of "tablet" to the multisignature contract
-    When "Alice" wants to get the state change after "tablet" is added as cosignatory
-    Then "Alice" should get the "confirmed" status after "phone" accepted addition
-
-  Scenario: Alice wants to get state change after a cosignatory is removed from a multisig contract
-    Given "phone" is removed as cosignatory from the multisig contract
-    When "Alice" wants to get state change after "phone" is removed from multisig contract
-    Then "Alice" should get the "confirmed" status after "phone" is removed from multisig contract
-
-  Scenario: Alice wants to get state change after cosignatory removes itself from a multisig contract
-    Given "computer" removed "computer" from the multisig contract
-    When "Alice" wants to get state change after "computer" is removed from multisig contract
-    Then "Alice" should get the "confirmed" status after "computer" is removed
-
-  Scenario: Alice wants to get state change after cosignatory accepts removing another cosignatory from a multisig contract
-    Given "phone" accepted proposal by "computer" to remove "tablet" as multisig cosignatory
-    When "Alice" wants to get state change after "tablet" is removed as cosignatory
-    Then "Alice" should get the "confirmed" status after "tablet" is removed
-
-  Scenario: Alice wants to get state change after all cosignatories are removed from multisig contract
-    Given All cosignatories are removed from the multisig contract by "computer"
-    When "Alice" wants to get state change after all cosignatories are removed
-    Then "Alice" should get the "confirmed" status after all cosignatories are removed
