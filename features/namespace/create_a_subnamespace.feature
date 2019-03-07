@@ -66,13 +66,13 @@ Feature: Create a subnamespace
     When Alice creates a subnamespace named "alice.subnamespace"
     Then she should receive the error "Failure_Core_Insufficient_Balance"
 
-  # Status errors not treated:
-  # - Failure_Namespace_Max_Children_Exceeded
-
-  Scenario: Alice wants to check her xem balance after creating a subnamespace
+  Scenario: Alice wants to get how many xem costed creating a subnamespace
     Given Alice registered the namespace "one" for a week
     And she created a subnamespace named "one.two"
     When Alice wants to check her xem balance after creating namespace and subnamespace
     And She received a confirmation message
     And She became the owner of the subnamespace "one.two"
     Then She should see that her xem balance has decrease by 10 units
+
+  # Status errors not treated:
+  # - Failure_Namespace_Max_Children_Exceeded

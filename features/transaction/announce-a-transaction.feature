@@ -89,10 +89,5 @@ Feature: Announce a transaction
     Then the transaction is rejected
     And her "xem" balance should remain intact
 
-  Scenario: Alice wants to get the state change of transaction
-    Given Alice sends a valid transaction to the "MAIN_NET" node
-    When Alice wants to get the state change of the her Transfer transaction
-    Then Alice should get the "confirmed" status of the Transfer transaction
-
   # Status errors not treated:
   # - Failure_Core_Too_Many_Transactions

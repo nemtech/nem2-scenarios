@@ -141,28 +141,7 @@ Feature: Send an asset
     Then she should receive the error "Failure_Property_Signer_Address_Interaction_Not_Allowed"
     And her "concert.ticket" balance should remain intact
 
-  # RECEIPTS BEHAVIOR
-  Scenario: Alice wants to get the mosaic ID of an aliased mosaic for a transaction to Bob
-    Given "Alice" sent <amount> "event.organizer" to "Bob"
-    When "Alice" wants to get "event.organizer" mosaic ID for this transaction
-    Then "Alice" should get "0dc67fbe1cad29e5"
-
-  Scenario: Alice wants to get the mosaic ID of an aliased mosaic for transaction to herself
-    Given "Alice" sent 1 "concert.ticket" to "Alice"
-    When "Alice" wants to get "concert.ticket" mosaic ID for this transaction
-    Then "Alice" should get "0dc67fbe1cad29e3"
-
-  Scenario: Ticket vendor wants to get mosaic ID of aliased mosaic for transaction to another account
-    Given "Ticket Vendor" sent 1 "event.organizer" to "Bob"
-    When "Ticket Vendor" wants to get "event.organizer" mosaic ID for this transaction
-    Then "Ticket Vendor" should get "0dc67fbe1cad29e5"
-
-  Scenario: Alice wants to get mosaic ID of aliased mosaic for transaction to Ticket vendor
+  Scenario: Alice wants to get the mosaicId of the aliased mosaic used in a given transaction
     Given "Alice" sent 1 "event.organizer" to "Ticket vendor"
-    When  "Alice" wants to get "event.organizer" mosaic ID for transaction to ticket vendor
+    When "Alice" wants to get "event.organizer" mosaic ID for the previous transaction
     Then "Alice" should get "0dc67fbe1cad29e5"
-
-  Scenario: Alice wants to get mosaic ID for two aliased mosaics for transaction to Bob
-    Given "Alice" sent 1 "concert.ticket" and 2 "reward.point" to "Bob"
-    When "Alice wants to get "event.organizer" and "reward.point" mosaic ID for this transaction
-    Then "Alice" should get "0dc67fbe1cad29e5" and "0dc67fbe1cad29e4"

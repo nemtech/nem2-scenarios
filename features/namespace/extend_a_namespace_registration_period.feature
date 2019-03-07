@@ -62,7 +62,7 @@ Feature: Extend a namespace registration period
     When  Alice extends the registration of the namespace named "alice" for 1 day
     Then  she should receive the error "Failure_Core_Insufficient_Balance"
 
-  Scenario Outline: Alice wants to check her xem balance after extending a namespace registration period
+  Scenario Outline: Alice wants to get how many xem costed extending a namespace
     Given "Alice" registered the namespace "alice" for a week
     And she extended the registration of the namespace named "alice" for <time> seconds
     And she received the confirmation message
@@ -75,12 +75,3 @@ Feature: Extend a namespace registration period
       | 15   | 0.1  |
       | 20   | 0.2  |
       | 30   | 0.2  |
-
-  Scenario: Alice wants to check her xem balance after extending a namespace registration period and its under redemption period
-    Given "Alice" registered the namespace "alice" for a week
-    And the namespace is now under redemption period
-    And she extended the registration the namespace named "alice" for 1 day
-    And she received the confirmation message
-    When "Alice" wants to check her xem balance
-    And the namespace registration period is extended for at least 1 day
-    Then "Alice" should find her xem balance decreased by 576 units

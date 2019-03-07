@@ -81,26 +81,3 @@ Feature: Prevent sending transactions by type
   Scenario: An account tries to block a transaction with "ACCOUNT_PROPERTIES_ENTITY_TYPE" type
     When Alice blocks sending "ACCOUNT_PROPERTIES_ENTITY_TYPE" transactions
     Then she should receive the error "Failure_Property_Modification_Not_Allowed"
-
-  Scenario: Alice wants to get the state change of blocking transaction type
-    Given Alice blocks sending transactions with certain transaction types
-    When Alice wants to get the state change of the her transaction type blocking transaction
-    Then Alice should get the "confirmed" status of the transaction type blocking transaction
-
-  Scenario: Alice wants to get the state change of filtering transaction type
-    Given Alice specifies to only send transactions with certain transaction types
-    When Alice wants to get the state change of the transaction type filter transaction
-    Then Alice should get the "confirmed" status of the transaction type filter transaction
-
-  Scenario: Alice wants to get the state change of unblocking a transaction type
-    Given Alice unblocks "TRANSFER"
-    And keeps "REGISTER_NAMESPACE" blocked
-    When Alice wants to get the state change of her transaction type unblock transaction
-    Then Alice should get the "confirmed" status of the transaction type unblock transaction
-
-  Scenario: Alice wants to get the state change of remove transaction type transaction
-    Given Alice only allows receiving from "TRANSFER"
-    And she removes "TRANSFER" from allowed addresses
-    And "REGISTER_NAMESPACE" should remain allowed
-    When Alice wants to get the state change of the transaction type removal transaction
-    Then Alice should get the "confirmed" status of the transaction type removal transaction

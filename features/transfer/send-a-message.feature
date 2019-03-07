@@ -60,18 +60,3 @@ Feature: Send a message
     Given Bob blocked receiving transactions from Alice
     When "Alice" sends "Hello" to "Bob"
     Then she should receive the error "Failure_Property_Signer_Address_Interaction_Not_Allowed"
-
-  # Receipt Behavior
-  Scenario: Alice wants to see if recipient received her message
-    Given Alice sent "<message>" to "<recipient>"
-    And she received a confirmation message
-    When Alice wants to see if recipient received her message
-    And the "<recipient>" had received the message "<message>"
-    Then Alice should see that "<recipient>" has received "<message>"
-
-  Scenario: Alice wants to see if recipient received encrypted message
-    Given Alice sent the encrypted message "Hello" to "Bob"
-    And she received a confirmation message
-    And Bob received the encrypted message
-    When Alice wants to check if Bob is the only one capable of reading the original message
-    Then Alice should see that Bob is the only one capable of reading the original message

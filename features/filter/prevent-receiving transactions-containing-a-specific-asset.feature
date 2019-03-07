@@ -103,20 +103,3 @@ Feature: Prevent receiving transactions containing a specific asset
     Given Alice blocks the receiving transactions containing specific assets
     When Alice wants to get the state change of the her blocking transaction
     Then Alice should get the "confirmed" status of the blocking transaction
-
-  Scenario: Alice wants to get the state change of filtering transactions
-    Given Alice specifies to only receive transactions containing specific assets
-    When Alice wants to get the state change of the filter transaction
-    Then Alice should get the "confirmed" status of the filter transaction
-
-  Scenario: Alice wants to get the state change of unblocking an asset
-    Given Alice unblocks "ticket" asset
-    And keeps "voucher" asset blocked
-    When Alice wants to get the state change of her unblock transaction
-    Then Alice should get the "confirmed" status of the unblock transaction
-
-  Scenario: Alice wants to get the state change of remove asset transaction
-    Given Alice only allows receiving "ticket" asset
-    And she removes "ticket" assets from allowed assets
-    When Alice wants to get the state change of the asset removal transaction
-    Then Alice should get the "confirmed" status of the asset removal transaction

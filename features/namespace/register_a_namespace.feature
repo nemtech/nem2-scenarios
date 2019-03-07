@@ -90,14 +90,7 @@ Feature: Register a namespace
     When "Alice" registers the namespace named "alice" for 1 day
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  # Status errors not treated:
-  # - Failure_Namespace_Invalid_Namespace_Type
-  # - Failure_Namespace_Name_Id_Mismatch
-  # - Failure_Namespace_Id_Mismatch
-  # - Failure_Namespace_Already_Active
-  # - Failure_Namespace_Max_Children_Exceeded
-
-  Scenario Outline: Alice wants to check her xem balance after registering a namespace
+  Scenario Outline: Alice wants to get how many xem costed registering a namespace
     Given Alice registered a namespace named <name> for <time> seconds
     And she received a confirmation message
     And she became the owner of the new namespace <name>
@@ -110,3 +103,10 @@ Feature: Register a namespace
       | test1 | 15   | 0.1  |
       | test1 | 20   | 0.2  |
       | test2 | 30   | 0.2  |
+
+  # Status errors not treated:
+  # - Failure_Namespace_Invalid_Namespace_Type
+  # - Failure_Namespace_Name_Id_Mismatch
+  # - Failure_Namespace_Id_Mismatch
+  # - Failure_Namespace_Already_Active
+  # - Failure_Namespace_Max_Children_Exceeded
