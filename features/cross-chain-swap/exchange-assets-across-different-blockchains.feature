@@ -251,38 +251,79 @@ Feature: Exchange assets across different blockchains
   # Status errors not treated:
   # - Failure_LockSecret_Invalid_Hash_Algorithm
 
-  Scenario: An Account wants to check their balance after locking an asset
-    Given Alice locked an asset "alice.token" on to the blockchain
-    And wants to check her balance after locking the asset
-    When Alice checks her asset balance
-    Then she should see asset balance is reduced by 10 units
+  Scenario: An Account wants to check if assets are locked
+    Given Alice derived the secret from the seed using "SHA_512"
+    And "Alice" locked the following asset units using the previous secret:
+      | amount | asset       | recipient | network | days |
+      | 10     | alice.token | Bob       | MIJIN   | 96   |
+    When she checks if the locked mosaics for the previous transaction have been locked
+    Then she should get a positive response with:
+      | amount | asset       | sender |
+      | 10     | alice.token | Alice  |
 
-  Scenario: An account wants to check their balance after announcing the secret proof transaction
-    Given "Bob" locked 10 "bob.token" on the "MAIN_NET"
+  Scenario Outline: An account wants to check if lock was proven after exchange of assets across different blockchains concludes
+    Given Alice derived the secret from the seed using "SHA_512"
+    And "Alice" locked the following asset units using the previous secret:
+      | amount | asset       | recipient | network | days |
+      | 10     | alice.token | Bob       | MIJIN   | 96   |
+    And "Bob" locked the following asset units using the previous secret:
+      | amount | asset     | recipient | network  | days |
+      | 10     | bob.token | Alice     | MAIN_NET | 84   |
     And "Alice" proves knowing the secret's seed in "MAIN_NET"
-    And <signer> proves knowing the secret's seed in "MIJIN"
-    When Alice checks her asset balance
-    Then she should have 10 more "bob.token" units in her account
+    And "<signer>" proves knowing the secret's seed in "MIJIN"
+    When she checks if the lock mosaics from the previous transactions have been proven
+    Then "Alice" should get a positive response with:
+      | amount | asset     | sender | network  |
+      | 10     | bob.token | Bob    | MAIN_NET |
+    And "Bob" should get a positive response with:
+      | amount | asset       | sender | network |
+      | 10     | alice.token | Alice  | MIJIN   |
 
-  Scenario: An account to check asset balance after uncocncluded exchange of asset because second participant didnt lock the asset
-    Given Alice locked 10 "alice.token" units to send to "Bob"
-    And Bob did not lock his assets
-    And it has been 96 hours
-    When Alice checks her "alice.token" balance
-    Then the locked 10 "alice.token" units should be back in her account
+    Examples:
+      | signer |
+      | Alice  |
+      | Bob    |
+      | Carol  |
 
-  Scenario: Account checks account balance after unconcluded exchange because first participant didnt prove to know the secret seed
-    Given Alice locked 10 "alice.token" on the "MIJIN" to send to "Bob"
-    And Bob locked 10 "bob.token" on the "MAIN_NET" to send to "Alice"
-    And Alice  decides not to prove to know the secret's seed
-    When Bob checks his "bob.token" balance after 84 hours
-    And Alice checks her "alice.token" balance after 96 hours
-    Then the locked 10 "bob.token" units should be back in Bob account
-    And the locked 10 "alice.token" units hould be back in Alice account
+  Scenario: An account wants to check if assets are locked when second participant did not lock the assets
+    Given Alice derived the secret from the seed using "SHA_512"
+    And "Alice" locked the following asset units using the previous secret:
+      | amount | asset       | recipient | network | hours |
+      | 10     | alice.token | Bob       | MIJIN   | 96    |
+    And "Bob" decides not locking the assets
+    When she checks if the lock mosaics from the previous transaction have been proven
+    Then "Alice" should get a positive response with:
+      | amount | asset       | recipient | network | hours |
+      | 10     | alice.token | Alice     | MIJIN   | 96    |
 
-  Scenario: Account checks account balance after unconcluded exchange because second participant didnt prove to know the secret seed
-    Given Alice locked 10 "alice.token" on the "MIJIN" to send to "Bob"
-    And Alice locked 10 "bob.token" on the "MAIN_NET" to send to "Alice"
-    And Bob decides not to prove to know the secret's seed
-    And Alice checks her "alice.token" balance after 84 hours
-    And the locked 10 "alce.token" units should be back in Alice's account
+  Scenario: An account wants to check if lock was proven after first participant didnt prove to know secret seed
+    Given Alice derived the secret from the seed using "SHA_512"
+    And "Alice" locked the following asset units using the previous secret:
+      | amount | asset       | recipient | network | hours |
+      | 10     | alice.token | Bob       | MIJIN   | 96    |
+    And "Bob" locked the following asset units using the previous secret:
+      | amount | asset     | recipient | network  | hours |
+      | 10     | bob.token | Alice     | MAIN_NET | 84    |
+    And "Alice" decides not to prove to know the secret's seed
+    When "Alice" wants to check if locked mosaics from previous transaction have been proven
+    Then "Alice" should get a positive response with:
+      | amount | asset       | network | hours |
+      | 10     | alice.token | MIJIN   | 96    |
+    And "Bob" should get a positive response with:
+      | amount | asset     | network  | hours |
+      | 10     | bob.token | MAIN_NET | 84    |
+
+  Scenario: An account wants to check if lock was proven after second participant didnt prove secret seed
+    Given Alice derived the secret from the seed using "SHA_512"
+    And "Alice" locked the following asset units using the previous secret:
+      | amount | asset       | recipient | network | hours |
+      | 10     | alice.token | Bob       | MIJIN   | 96    |
+    And "Bob" locked the following asset units using the previous secret:
+      | amount | asset     | recipient | network  | hours |
+      | 10     | bob.token | Alice     | MAIN_NET | 84    |
+    And Alice proved knowing the secret's seed in "MAIN_NET" receiving 10 bob.token
+    And "Bob" decides not to prove to know the secret's seed
+    When "Alice" wants to check if locked mosaics from previous transaction have been proven
+    Then "Alice" should get a positive response with:
+      | amount | asset       | network | hours |
+      | 10     | alice.token | MIJIN   | 84    |
