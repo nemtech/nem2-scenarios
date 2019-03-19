@@ -248,9 +248,6 @@ Feature: Exchange assets across different blockchains
     When "Alice" proved knowing the secret's seed in "MAIN_NET"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  # Status errors not treated:
-  # - Failure_LockSecret_Invalid_Hash_Algorithm
-
   Scenario: An Account wants to check if assets are locked
     Given Alice derived the secret from the seed using "SHA_512"
     And "Alice" locked the following asset units using the previous secret:
@@ -261,69 +258,27 @@ Feature: Exchange assets across different blockchains
       | amount | asset       | sender |
       | 10     | alice.token | Alice  |
 
-  Scenario Outline: An account wants to check if lock was proven after exchange of assets across different blockchains concludes
+  Scenario: An account wants to check if a lock was proved
     Given Alice derived the secret from the seed using "SHA_512"
-    And "Alice" locked the following asset units using the previous secret:
-      | amount | asset       | recipient | network | days |
-      | 10     | alice.token | Bob       | MIJIN   | 96   |
-    And "Bob" locked the following asset units using the previous secret:
-      | amount | asset     | recipient | network  | days |
-      | 10     | bob.token | Alice     | MAIN_NET | 84   |
-    And "Alice" proves knowing the secret's seed in "MAIN_NET"
-    And "<signer>" proves knowing the secret's seed in "MIJIN"
-    When she checks if the lock mosaics from the previous transactions have been proven
-    Then "Alice" should get a positive response with:
-      | amount | asset     | sender | network  |
-      | 10     | bob.token | Bob    | MAIN_NET |
-    And "Bob" should get a positive response with:
-      | amount | asset       | sender | network |
-      | 10     | alice.token | Alice  | MIJIN   |
+    And "Alice" locked the following asset units using the previous secret:	
+      | amount | asset       | recipient | network | hours |	      
+      | 10     | alice.token | Bob       | MIJIN   | 2     |	    
+    And Bob proved knowing the secret's seed in "MIJIN"    
+    When Alice checks if the previous transaction has been proved
+    Then she should get a positive response with:
+     | amount | asset       | recipient | 
+     | 10     | alice.token | Bob       |
 
-    Examples:
-      | signer |
-      | Alice  |
-      | Bob    |
-      | Carol  |
-
-  Scenario: An account wants to check if assets are locked when second participant did not lock the assets
+  Scenario: An account wants to check if a lock expired
     Given Alice derived the secret from the seed using "SHA_512"
-    And "Alice" locked the following asset units using the previous secret:
-      | amount | asset       | recipient | network | hours |
-      | 10     | alice.token | Bob       | MIJIN   | 96    |
-    And "Bob" decides not locking the assets
-    When she checks if the lock mosaics from the previous transaction have been proven
-    Then "Alice" should get a positive response with:
-      | amount | asset       | recipient | network | hours |
-      | 10     | alice.token | Alice     | MIJIN   | 96    |
+    And "Alice" locked the following asset units using the previous secret:	
+      | amount | asset       | recipient | network | hours |	      
+      | 10     | alice.token | Bob      | MIJIN    | 2     |	    
+    And the lock expires
+    When Alice checks if the previous transaction has expired
+    Then she should get a positive response with:
+     | amount | asset       | recipient | 
+     | 10     | alice.token | Alice     |
 
-  Scenario: An account wants to check if lock was proven after first participant didnt prove to know secret seed
-    Given Alice derived the secret from the seed using "SHA_512"
-    And "Alice" locked the following asset units using the previous secret:
-      | amount | asset       | recipient | network | hours |
-      | 10     | alice.token | Bob       | MIJIN   | 96    |
-    And "Bob" locked the following asset units using the previous secret:
-      | amount | asset     | recipient | network  | hours |
-      | 10     | bob.token | Alice     | MAIN_NET | 84    |
-    And "Alice" decides not to prove to know the secret's seed
-    When "Alice" wants to check if locked mosaics from previous transaction have been proven
-    Then "Alice" should get a positive response with:
-      | amount | asset       | network | hours |
-      | 10     | alice.token | MIJIN   | 96    |
-    And "Bob" should get a positive response with:
-      | amount | asset     | network  | hours |
-      | 10     | bob.token | MAIN_NET | 84    |
-
-  Scenario: An account wants to check if lock was proven after second participant didnt prove secret seed
-    Given Alice derived the secret from the seed using "SHA_512"
-    And "Alice" locked the following asset units using the previous secret:
-      | amount | asset       | recipient | network | hours |
-      | 10     | alice.token | Bob       | MIJIN   | 96    |
-    And "Bob" locked the following asset units using the previous secret:
-      | amount | asset     | recipient | network  | hours |
-      | 10     | bob.token | Alice     | MAIN_NET | 84    |
-    And Alice proved knowing the secret's seed in "MAIN_NET" receiving 10 bob.token
-    And "Bob" decides not to prove to know the secret's seed
-    When "Alice" wants to check if locked mosaics from previous transaction have been proven
-    Then "Alice" should get a positive response with:
-      | amount | asset       | network | hours |
-      | 10     | alice.token | MIJIN   | 84    |
+# Status errors not treated:
+# - Failure_LockSecret_Invalid_Hash_Algorithm

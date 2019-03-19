@@ -98,8 +98,3 @@ Feature: Prevent receiving transactions containing a specific asset
   # - Failure_Property_Modify_Unsupported_Modification_Type
   # - Failure_Property_Modification_Type_Invalid
   # - Failure_Property_Value_Invalid
-
-  Scenario: Alice wants to get the state change of blocking transactions
-    Given Alice blocks the receiving transactions containing specific assets
-    When Alice wants to get the state change of the her blocking transaction
-    Then Alice should get the "confirmed" status of the blocking transaction

@@ -120,14 +120,3 @@ Feature: Prevent receiving transactions from undesired addresses
       | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H  | Failure_Core_Invalid_Address |
       | bo                                             | Failure_Core_Invalid_Address |
       | MAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 | Failure_Core_Wrong_Network   |
-
-  Scenario: Alice wants to get the state change of filtering address transactions
-    Given Alice specifies to only receive transactions from certain addresses
-    When Alice wants to get the state change of the address filter transaction
-    Then Alice should get the "confirmed" status of the address filter transaction
-
-  Scenario: Alice wants to get the state change of unblocking an address
-    Given Alice unblocks "Bob"
-    And keeps "Carol" blocked
-    When Alice wants to get the state change of her address unblock transaction
-    Then Alice should get the "confirmed" status of the address unblock transaction

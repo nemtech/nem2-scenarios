@@ -65,10 +65,8 @@ Feature: Extend a namespace registration period
   Scenario Outline: Alice wants to get how many xem costed extending a namespace
     Given "Alice" registered the namespace "alice" for a week
     And she extended the registration of the namespace named "alice" for <time> seconds
-    And she received the confirmation message
-    When "Alice" wants to check her xem balance
-    And the namespace registration period was exteneded for at least <time> seconds
-    Then "Alice" should find her xem balance has decrease by <cost> units
+    When she checks how much cost extending the namespace
+    Then she should get that extending the namespace cost "<cost>" xem
 
     Examples:
       | time | cost |

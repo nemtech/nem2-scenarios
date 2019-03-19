@@ -92,11 +92,8 @@ Feature: Register a namespace
 
   Scenario Outline: Alice wants to get how many xem costed registering a namespace
     Given Alice registered a namespace named <name> for <time> seconds
-    And she received a confirmation message
-    And she became the owner of the new namespace <name>
-    And it should be registered for at least <time> seconds
-    When Alice wants to check her xem balance
-    Then Alice should find that her xem balance has decreased by <cost> units
+    When she checks how much cost registering the namespace
+    Then she should get that register the namespace cost "<cost>" xem
 
     Examples:
       | name  | time | cost |
