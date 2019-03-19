@@ -60,7 +60,7 @@ Feature: Create a subnamespace
     Then she should receive the error "Failure_Namespace_Parent_Unknown"
     And her xem balance should remain intact
 
- Scenario: An account tries to exceed the maximum number of subnamespaces
+  Scenario: An account tries to exceed the maximum number of subnamespaces
     Given Alice registered the namespace "alice" for one week
     And Alice created 500 subnamespaces under "alice" namespace
     When Alice creates a subnamespace named "one.501"
@@ -78,6 +78,6 @@ Feature: Create a subnamespace
     And she created a subnamespace named "one.two"
     When she checks how much cost to register the subnamespace
     Then she should see get registering the subnamespace cost 10 xem
-  
-# Status errors not treated:
+
+  # Status errors not treated:
   # - Failure_Namespace_Max_Children_Exceeded

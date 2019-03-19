@@ -260,25 +260,25 @@ Feature: Exchange assets across different blockchains
 
   Scenario: An account wants to check if a lock was proved
     Given Alice derived the secret from the seed using "SHA_512"
-    And "Alice" locked the following asset units using the previous secret:	
-      | amount | asset       | recipient | network | hours |	      
-      | 10     | alice.token | Bob       | MIJIN   | 2     |	    
-    And Bob proved knowing the secret's seed in "MIJIN"    
+    And "Alice" locked the following asset units using the previous secret:
+      | amount | asset       | recipient | network | hours |
+      | 10     | alice.token | Bob       | MIJIN   | 2     |
+    And Bob proved knowing the secret's seed in "MIJIN"
     When Alice checks if the previous transaction has been proved
     Then she should get a positive response with:
-     | amount | asset       | recipient | 
+     | amount | asset       | recipient |
      | 10     | alice.token | Bob       |
 
   Scenario: An account wants to check if a lock expired
     Given Alice derived the secret from the seed using "SHA_512"
-    And "Alice" locked the following asset units using the previous secret:	
-      | amount | asset       | recipient | network | hours |	      
-      | 10     | alice.token | Bob      | MIJIN    | 2     |	    
+    And "Alice" locked the following asset units using the previous secret:
+      | amount | asset       | recipient | network | hours |
+      | 10     | alice.token | Bob       | MIJIN    | 2    |
     And the lock expires
     When Alice checks if the previous transaction has expired
     Then she should get a positive response with:
-     | amount | asset       | recipient | 
+     | amount | asset       | recipient |
      | 10     | alice.token | Alice     |
 
-# Status errors not treated:
-# - Failure_LockSecret_Invalid_Hash_Algorithm
+  # Status errors not treated:
+  # - Failure_LockSecret_Invalid_Hash_Algorithm
