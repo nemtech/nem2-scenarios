@@ -90,6 +90,7 @@ Feature: Register an asset
     When Alice registers an asset for 1 day
     Then she should receive the error "Failure_Core_Insufficient_Balance"
 
+  # Account filters
   Scenario: An account tries to register an asset but has not allowed sending "MOSAIC_DEFINITION" transactions
     Given Alice only allowed sending "TRANSFER" transactions
     When Alice registers an asset for 2 seconds
@@ -100,31 +101,25 @@ Feature: Register an asset
     When Alice registers an asset for 2 seconds
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  #Mosaic ones
-  Scenario: An account tries to get the ID of expired asset
-    Given Alice registered an asset for <seconds> seconds
-    And the asset expires
-    When Alice checks if the asset has expired
-    Then she should get the asset's ID
+  # Receipts
+  Scenario: An account wants to know when the asset expired
+    Given an asset that Alice has registered has expired
+    When Alice checks when the asset expired
+    Then she should get an estimated time reference
 
-  Scenario: An account checks if the assets have been registered
-    Given Alice wants to check if the asset is registered
-    When Alice registers an asset "alice.token"
-    And receives a confirmation message
-    Then should get a positive response with:
-      | amount | asset       | sender |
-      | 50     | alice.token | Alice  |
+  Scenario: Alice wants to get the cost of registering an asset
+    Given Alice registered the asset "alice.token"
+    When Alice checks how much cost registering the asset
+    Then she should get that registering the asset cost "50" xem
 
-  Scenario: An account checks its balance after sending a levied asset
-    Given Alice wants to check her balance after sending a levied asset to Bob
-    When Alice sends 10 units of the levied asset
-    And receives a confirmation message
-    Then her asset balance is deducted by 10 units and the imposed levy
-# Status errors not treated:
-# - Failure_Mosaic_Invalid_Name
-# - Failure_Mosaic_Name_Id_Mismatch
-# - Failure_Mosaic_Id_Mismatch
-# - Failure_Mosaic_Parent_Id_Conflict
-# - Failure_Mosaic_Invalid_Property
-# - Failure_Mosaic_Invalid_Flags
-# - Failure_Mosaic_Invalid_Id
+  # Status errors not treated:
+  # - Failure_Mosaic_Invalid_Name
+  # - Failure_Mosaic_Name_Id_Mismatch
+  # - Failure_Mosaic_Id_Mismatch
+  # - Failure_Mosaic_Parent_Id_Conflict
+  # - Failure_Mosaic_Invalid_Property
+  # - Failure_Mosaic_Invalid_Flags
+  # - Failure_Mosaic_Invalid_Id
+
+  # Receipts not treated:
+  # - Mosaic_Levy

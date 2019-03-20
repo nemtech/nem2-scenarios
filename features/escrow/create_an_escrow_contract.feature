@@ -173,35 +173,29 @@ Feature: Create an escrow contract
     When she publishes the contract
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  #Hashlock
-  Scenario: An account wants to check if funds have been locked
+  # Receipts
+  Scenario: An account wants to check if some funds were locked
     Given Alice defined a valid escrow contract
-    And "Alice" locked the following asset units:
-      | amount | asset       | recipient | network | hours |
-      | 10     | alice.token | Bob       | MIJIN   | 2     |
+    And "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
     When she checks if the locked mosaics for the previous transaction have been locked
     Then she should get a positive response with:
       | amount | asset       | sender |
-      | 10     | alice.token | Alice  |
+      | 10     | xem         | Alice  |
 
-  Scenario: An account wants to check if locked funds are returned after successful aggregate transaction
+  Scenario: An account wants to check if the escrow contract completed
     Given Alice defined a valid escrow contract
-    And "Alice" locked the following asset units:
-      | amount | asset       | recipient | network | hours |
-      | 10     | alice.token | Bob       | MIJIN   | 2     |
-    And the Aggregate transaction was successful
-    When she checks if the locked mosaics have been returned to her balance
+    And "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
+    And  the escrow contract concludes successfully
+    When she checks if the contract has concluded
     Then she should get a positive response with:
       | amount | asset       | sender |
-      | 10     | alice.token | Alice  |
+      | 10     | xem         | Alice  |
 
-  Scenario: An account wants to check if locked funds are returned after lock hash expires
+  Scenario: An account wants to check if the lock expired
     Given Alice defined a valid escrow contract
-    And "Alice" locked the following asset units:
-      | amount | asset       | recipient | network | hours |
-      | 10     | alice.token | Bob       | MIJIN   | 2     |
-    And the lock hash expires
-    When she checks if the locked mosaics have been returned to her balance
+    And "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
+    And the lock expires
+    When she checks if the lock has expired
     Then she should get a positive response with:
-      | amount | asset       | sender |
-      | 10     | alice.token | Alice  |
+      | amount | asset       | sender             |
+      | 10     | xem         | sink_account       |

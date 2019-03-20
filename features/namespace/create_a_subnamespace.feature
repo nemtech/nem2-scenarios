@@ -73,11 +73,9 @@ Feature: Create a subnamespace
     When Alice creates a subnamespace named "alice.subnamespace"
     Then she should receive the error "Failure_Core_Insufficient_Balance"
 
-  Scenario: Alice wants to get how many xem costed creating a subnamespace
+  # Receipts
+  Scenario: Alice wants to get the cost of creating a subnamespace
     Given Alice registered the namespace "one" for a week
     And she created a subnamespace named "one.two"
     When she checks how much cost to register the subnamespace
     Then she should see get registering the subnamespace cost 10 xem
-
-  # Status errors not treated:
-  # - Failure_Namespace_Max_Children_Exceeded

@@ -80,6 +80,7 @@ Feature: Register a namespace
     When Alice registers a namespace named "alice" for 1 day
     Then she should receive the error "Failure_Core_Insufficient_Balance"
 
+  # Account filters
   Scenario: An account tries to register a namespace but has not allowed sending "REGISTER_NAMESPACE" transactions
     Given Alice only allowed sending "TRANSFER" transactions
     When "Alice" registers the namespace named "alice" for 1 day
@@ -90,10 +91,11 @@ Feature: Register a namespace
     When "Alice" registers the namespace named "alice" for 1 day
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  Scenario Outline: Alice wants to get how many xem costed registering a namespace
+  # Receipts
+  Scenario Outline: Alice wants to get the cost of registering a namespace
     Given Alice registered a namespace named <name> for <time> seconds
     When she checks how much cost registering the namespace
-    Then she should get that register the namespace cost "<cost>" xem
+    Then she should get that registering the namespace cost "<cost>" xem
 
     Examples:
       | name  | time | cost |
@@ -101,12 +103,11 @@ Feature: Register a namespace
       | test1 | 20   | 0.2  |
       | test2 | 30   | 0.2  |
 
-#Namespace_expired
-  Scenario: An account tries to get the ID of expired namespace
+  Scenario: An account tries to get if a namespace expired
     Given Alice registers a namespace named <name> for <time> seconds
     And the namespace expires
-    When Alice checks if the namespace has expired
-    Then she should get the namespace's ID
+    When Alice checks if the previous namespace expired
+    Then she should get an estimated time reference
 
   # Status errors not treated:
   # - Failure_Namespace_Invalid_Namespace_Type
@@ -114,3 +115,4 @@ Feature: Register a namespace
   # - Failure_Namespace_Id_Mismatch
   # - Failure_Namespace_Already_Active
   # - Failure_Namespace_Max_Children_Exceeded
+
