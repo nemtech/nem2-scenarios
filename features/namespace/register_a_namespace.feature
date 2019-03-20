@@ -101,6 +101,13 @@ Feature: Register a namespace
       | test1 | 20   | 0.2  |
       | test2 | 30   | 0.2  |
 
+#Namespace_expired
+  Scenario: An account tries to get the ID of expired namespace
+    Given Alice registers a namespace named <name> for <time> seconds
+    And the namespace expires
+    When Alice checks if the namespace has expired
+    Then she should get the namespace's ID
+
   # Status errors not treated:
   # - Failure_Namespace_Invalid_Namespace_Type
   # - Failure_Namespace_Name_Id_Mismatch

@@ -103,9 +103,9 @@ Feature: Link a namespace to an address
     Then she should receive the error "<error>"
 
     Examples:
-      |network     | address                                        | error                         |
-      | MIJIN_TEST | SAIBV5                                         | Failure_Core_Invalid_Address  |
-      | MAIN_NET   | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 | Failure_Core_Invalid_Network  |
+      | network    | address                                        | error                        |
+      | MIJIN_TEST | SAIBV5                                         | Failure_Core_Invalid_Address |
+      | MAIN_NET   | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 | Failure_Core_Invalid_Network |
 
   Scenario: An account tries to link a namespace to an address but has not allowed sending "ADDRESS_ALIAS" transactions
     Given Alice registered the namespace "bob"
@@ -130,3 +130,9 @@ Feature: Link a namespace to an address
     And Alice blocked sending "ADDRESS_ALIAS" transactions
     When Alice unlinks the namespace "bob" from the address "SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
+
+  #Aliased address resolution
+  Scenario: An account tries to get the address of aliased namespace
+    Given Alice registered a namespace "Bob" to address "SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5"
+    When Alice tries to get the resolved address of "Bob"
+    Then she should be able to get the resolved address

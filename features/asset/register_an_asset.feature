@@ -20,10 +20,10 @@ Feature: Register an asset
     And her xem balance should decrease in 50 units
 
     Examples:
-      |seconds|
-      | 15    |
-      | 20    |
-      | 30    |
+      | seconds |
+      | 15      |
+      | 20      |
+      | 30      |
 
   Scenario: An account registers a non-expiring asset
     When Alice registers a non-expiring asset
@@ -37,11 +37,11 @@ Feature: Register an asset
     And her xem balance should remain intact
 
     Examples:
-      | seconds    |
-      | 0          |
-      | -1         |
-      | 1          |
-      | 40000000000|
+      | seconds     |
+      | 0           |
+      | -1          |
+      | 1           |
+      | 40000000000 |
 
   Scenario: An account tries to register an asset but already owns 999 different assets
     Given Alice is the owner of 999 assets
@@ -100,11 +100,31 @@ Feature: Register an asset
     When Alice registers an asset for 2 seconds
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  # Status errors not treated:
-  # - Failure_Mosaic_Invalid_Name
-  # - Failure_Mosaic_Name_Id_Mismatch
-  # - Failure_Mosaic_Id_Mismatch
-  # - Failure_Mosaic_Parent_Id_Conflict
-  # - Failure_Mosaic_Invalid_Property
-  # - Failure_Mosaic_Invalid_Flags
-  # - Failure_Mosaic_Invalid_Id
+  #Mosaic ones
+  Scenario: An account tries to get the ID of expired asset
+    Given Alice registered an asset for <seconds> seconds
+    And the asset expires
+    When Alice checks if the asset has expired
+    Then she should get the asset's ID
+
+  Scenario: An account checks if the assets have been registered
+    Given Alice wants to check if the asset is registered
+    When Alice registers an asset "alice.token"
+    And receives a confirmation message
+    Then should get a positive response with:
+      | amount | asset       | sender |
+      | 50     | alice.token | Alice  |
+
+  Scenario: An account checks its balance after sending a levied asset
+    Given Alice wants to check her balance after sending a levied asset to Bob
+    When Alice sends 10 units of the levied asset
+    And receives a confirmation message
+    Then her asset balance is deducted by 10 units and the imposed levy
+# Status errors not treated:
+# - Failure_Mosaic_Invalid_Name
+# - Failure_Mosaic_Name_Id_Mismatch
+# - Failure_Mosaic_Id_Mismatch
+# - Failure_Mosaic_Parent_Id_Conflict
+# - Failure_Mosaic_Invalid_Property
+# - Failure_Mosaic_Invalid_Flags
+# - Failure_Mosaic_Invalid_Id
