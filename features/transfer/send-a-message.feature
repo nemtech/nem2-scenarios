@@ -14,9 +14,9 @@ Feature: Send a message
     And the "<recipient>" should receive the message "<message>"
 
     Examples:
-      |message| recipient                                      |
-      | Hello | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 |
-      | Hello | Bob                                            |
+      | message | recipient                                      |
+      | Hello   | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 |
+      | Hello   | Bob                                            |
 
   Scenario Outline: An account tries to send a message to an invalid account
 
@@ -24,10 +24,10 @@ Feature: Send a message
     Then she should receive the error "<error>"
 
     Examples:
-      |message| recipient                                     | error                             |
-      | Hello | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H | Failure_Core_Invalid_Address      |
-      | Hello | bo                                            | Failure_Core_Invalid_Address      |
-      | Hello | MAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5| Failure_Core_Wrong_Network	     |
+      | message | recipient                                      | error                        |
+      | Hello   | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H  | Failure_Core_Invalid_Address |
+      | Hello   | bo                                             | Failure_Core_Invalid_Address |
+      | Hello   | MAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 | Failure_Core_Wrong_Network   |
 
   Scenario: An account  tries to send a message to another account but the message is too large
 

@@ -103,10 +103,11 @@ Feature: Link a namespace to an address
     Then she should receive the error "<error>"
 
     Examples:
-      |network     | address                                        | error                         |
-      | MIJIN_TEST | SAIBV5                                         | Failure_Core_Invalid_Address  |
-      | MAIN_NET   | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 | Failure_Core_Invalid_Network  |
+      | network    | address                                        | error                        |
+      | MIJIN_TEST | SAIBV5                                         | Failure_Core_Invalid_Address |
+      | MAIN_NET   | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 | Failure_Core_Invalid_Network |
 
+  # Account filters
   Scenario: An account tries to link a namespace to an address but has not allowed sending "ADDRESS_ALIAS" transactions
     Given Alice registered the namespace "bob"
     And Alice only allowed sending "TRANSFER" transactions

@@ -24,3 +24,16 @@ Feature: Harvest a block
     Given Alice has 9999 xem in her account
     When she tries to harvest a block
     Then she should receive the error "Failure_Core_Block_Harvester_Ineligible"
+
+  Scenario: Alice wants to see her resulting fees after harvesting a block
+    Given Alice is running a node
+    And Alice account has harvested a block
+    When she checks the fees obtained
+    Then Alice should be able to see the resulting fees
+
+  Scenario: Alice wants to see her resulting fees after harvesting a block using a remote account
+    Given Alice delegated her account importance to "Bob"
+    And "Bob" is running the node
+    And Alice has 10000 xem in her account
+    When she checks the fees obtained
+    Then Alice should be able to see the resulting fees

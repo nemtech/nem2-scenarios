@@ -18,10 +18,10 @@ Feature: Extend a namespace registration period
     And her xem balance should decrease in <cost> units
 
     Examples:
-      | time  | cost |
-      | 15    | 0.1  |
-      | 20    | 0.2  |
-      | 30    | 0.2  |
+      | time | cost |
+      | 15   | 0.1  |
+      | 20   | 0.2  |
+      | 30   | 0.2  |
 
   Scenario Outline: An account tries to extend a namespace registration for an invalid period
     Given "Alice" registered the namespace "alice" for a week
@@ -61,3 +61,16 @@ Feature: Extend a namespace registration period
     And   she has spent all her xem
     When  Alice extends the registration of the namespace named "alice" for 1 day
     Then  she should receive the error "Failure_Core_Insufficient_Balance"
+
+  # Receipts
+  Scenario Outline: Alice wants to get the cost of extending a namespace
+    Given "Alice" registered the namespace "alice" for a week
+    And she extended the registration of the namespace named "alice" for <time> seconds
+    When she checks how much cost extending the namespace
+    Then she should get that extending the namespace cost "<cost>" xem
+
+    Examples:
+      | time | cost |
+      | 15   | 0.1  |
+      | 20   | 0.2  |
+      | 30   | 0.2  |

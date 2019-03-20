@@ -5,41 +5,41 @@ Feature: Prevent receiving transactions containing a specific asset
 
   Background:
     Given the following assets are registered and active:
-    |asset  |
-    |ticket |
-    |voucher|
-    |xem    |
+      | asset   |
+      | ticket  |
+      | voucher |
+      | xem     |
     And an account can only define up to 512 mosaic filters
 
   Scenario: An account blocks receiving transactions containing a specific asset
     When Alice blocks receiving transactions containing the following assets:
-      | asset              |
-      | ticket             |
-      | voucher            |
+      | asset   |
+      | ticket  |
+      | voucher |
     Then she should receive a confirmation message
     And receiving the stated assets should be blocked
 
   Scenario: An account allows only receiving transactions containing a specific asset
     When Alice only allows receiving transactions containing type:
-      | asset              |
-      | xem                |
+      | asset |
+      | xem   |
     Then she should receive a confirmation message
     And  receiving the stated assets should be allowed
 
   Scenario: An account unblocks an asset
     Given Alice blocked receiving transactions containing the following assets:
-      | asset              |
-      | ticket             |
-      | voucher            |
+      | asset   |
+      | ticket  |
+      | voucher |
     When Alice unblocks "ticket"
     Then she should receive a confirmation message
     And receiving "voucher" assets should remain blocked
 
   Scenario: An account removes an asset from the allowed assets
     Given Alice only allowed receiving "ticket" assets
-      | asset              |
-      | ticket             |
-      | voucher            |
+      | asset   |
+      | ticket  |
+      | voucher |
     When Alice removes "ticket" from the allowed assets
     Then she should receive a confirmation message
     And only receiving "voucher" assets should remain allowed

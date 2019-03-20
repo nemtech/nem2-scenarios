@@ -17,10 +17,10 @@ Feature: Alter an asset supply
 
     Examples:
       | property         | direction | amount |
-      | supply-mutable   | increase  |  5     |
-      | supply-immutable | increase  |  5     |
-      | supply-mutable   | decrease  |  20    |
-      | supply-immutable | decrease  |  20    |
+      | supply-mutable   | increase  | 5      |
+      | supply-immutable | increase  | 5      |
+      | supply-mutable   | decrease  | 20     |
+      | supply-immutable | decrease  | 20     |
 
   Scenario Outline: An account tries to alter an asset supply surpassing the maximum or minimum asset supply limit
     Given Alice has registered a <property> asset with an initial supply of 20 units
@@ -29,11 +29,11 @@ Feature: Alter an asset supply
     Then she should receive the error "<error>"
 
     Examples:
-      | property         | direction | amount      | error                          |
-      | supply-mutable   | increase  | 9000000000  | Failure_Mosaic_Supply_Exceeded |
-      | supply-immutable | increase  | 9000000000  | Failure_Mosaic_Supply_Exceeded |
-      | supply-mutable   | decrease  | 21          | Failure_Mosaic_Supply_Negative |
-      | supply-immutable | decrease  | 21          | Failure_Mosaic_Supply_Negative |
+      | property         | direction | amount     | error                          |
+      | supply-mutable   | increase  | 9000000000 | Failure_Mosaic_Supply_Exceeded |
+      | supply-immutable | increase  | 9000000000 | Failure_Mosaic_Supply_Exceeded |
+      | supply-mutable   | decrease  | 21         | Failure_Mosaic_Supply_Negative |
+      | supply-immutable | decrease  | 21         | Failure_Mosaic_Supply_Negative |
 
   Scenario Outline: An account tries to alter an asset supply without doing any changes
     Given Alice has registered a <property> asset with an initial supply of 20 units

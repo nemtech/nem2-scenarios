@@ -106,17 +106,17 @@ Feature: Prevent receiving transactions from undesired addresses
     Then she should receive the error "<error>"
 
     Examples:
-      | address                                       | error                             |
-      | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H | Failure_Core_Invalid_Address      |
-      | bo                                            | Failure_Core_Invalid_Address      |
-      | MAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5| Failure_Core_Wrong_Network        |
+      | address                                        | error                        |
+      | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H  | Failure_Core_Invalid_Address |
+      | bo                                             | Failure_Core_Invalid_Address |
+      | MAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 | Failure_Core_Wrong_Network   |
 
   Scenario Outline: An account tries only allow transactions from an invalid address
     When Alice only allows receiving transactions from "<address>"
     Then she should receive the error "<error>"
 
     Examples:
-      | address                                       | error                             |
-      | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H | Failure_Core_Invalid_Address      |
-      | bo                                            | Failure_Core_Invalid_Address      |
-      | MAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5| Failure_Core_Wrong_Network        |
+      | address                                        | error                        |
+      | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H  | Failure_Core_Invalid_Address |
+      | bo                                             | Failure_Core_Invalid_Address |
+      | MAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 | Failure_Core_Wrong_Network   |

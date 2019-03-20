@@ -21,10 +21,10 @@ Feature: Accept an escrow contract
     And "Bob" has 1 "concert.ticket"
     And "Carol" has 20 "euros"
     And the following contract is pending to be accepted by Bob:
-      | sender | recipient | type          | data            |
-      | Alice  | Bob       | send-an-asset | 18 euros        |
-      | Bob    | Alice     | send-an-asset | 1 concert.ticket|
-      | Carol  | Alice     | send-an-asset | 20 euros        |
+      | sender | recipient | type          | data             |
+      | Alice  | Bob       | send-an-asset | 18 euros         |
+      | Bob    | Alice     | send-an-asset | 1 concert.ticket |
+      | Carol  | Alice     | send-an-asset | 20 euros         |
     When every sender participant accepts it
     Then every sender participant should receive a confirmation notification
     And the swap of assets should conclude
@@ -39,22 +39,22 @@ Feature: Accept an escrow contract
   Scenario: An account required to accept the escrow contract is a multisiginature contract
     Given every sender participant who was notified to accept an escrow contract has accepted it except Alice
     And "Alice" is a 2 of 2 multisignature contract with the following cosignatories:
-      |cosignatories|
-      | phone       |
-      | computer    |
+      | cosignatories |
+      | phone         |
+      | computer      |
     When Alice accepts it with both participants
     Then every sender participant should receive a confirmation notification
 
   Scenario: An account required to accept the escrow contract is a multi-level multisiginature contract
     Given every sender participant who was notified to accept an escrow contract has accepted it except Alice
     And "Alice" is a 2 of 2 multisignature contract with the following cosignatories:
-      |cosignatories|
-      | phone       |
-      | computer    |
+      | cosignatories |
+      | phone         |
+      | computer      |
     And "Computer" is a 1 of 2 multisignature contract with the following cosignatories:
-      |cosignatories|
-      | nemapp      |
-      | nembrowser  |
+      | cosignatories |
+      | nemapp        |
+      | nembrowser    |
     When "phone" accepts it
     And "nemapp" accepts it
     And "nembrowser" accepts it
@@ -64,9 +64,9 @@ Feature: Accept an escrow contract
     # It applies to any restriction (e.g. Account properties filters)
     Given Alice does not own 1 concert.ticket
     And the following contract is pending to be accepted by Bob:
-      | sender | recipient | type          | data            |
-      | Alice  | Bob       | send-an-asset | 1 concert.ticket|
-      | Bob    | Alice     | send-an-asset | 20 euros        |
+      | sender | recipient | type          | data             |
+      | Alice  | Bob       | send-an-asset | 1 concert.ticket |
+      | Bob    | Alice     | send-an-asset | 20 euros         |
     When "Bob" accepts it
     Then every sender participant should receive the error "Failure_Core_Insufficient_Balance"
     And every sender participant balance should remain intact

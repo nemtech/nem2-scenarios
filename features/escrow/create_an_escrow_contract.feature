@@ -13,28 +13,28 @@ Feature: Create an escrow contract
 
   Scenario: An account creates an escrow contract
     Given Alice defined the following escrow contract:
-    | sender | recipient | type          | data            |
-    | Alice  | Bob       | send-an-asset | 1 concert.ticket|
-    | Bob    | Alice     | send-an-asset | 20 euros        |
+      | sender | recipient | type          | data             |
+      | Alice  | Bob       | send-an-asset | 1 concert.ticket |
+      | Bob    | Alice     | send-an-asset | 20 euros         |
     And "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
     When she publishes the contract
     Then every sender participant should receive a notification to accept the contract
 
   Scenario: An account creates an escrow contract adding a new participant
     Given Alice defined the following escrow contract:
-      | sender  | recipient | type          | data            |
-      | Alice   | Bob       | send-an-asset | 1 concert.ticket|
-      | Bob     | Exchange  | send-an-asset | 20 xem          |
-      | Exchange| Alice     | send-an-asset | 20 euros        |
+      | sender   | recipient | type          | data             |
+      | Alice    | Bob       | send-an-asset | 1 concert.ticket |
+      | Bob      | Exchange  | send-an-asset | 20 xem           |
+      | Exchange | Alice     | send-an-asset | 20 euros         |
     And "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
     When she publishes the contract
     Then every sender participant should receive a notification to accept the contract
 
   Scenario: An account creates an escrow contract signed by all the participants
     Given Alice defined the following escrow contract:
-      | sender | recipient | type          | data            |
-      | Alice  | Bob       | send-an-asset | 1 concert.ticket|
-      | Bob    | Alice     | send-an-asset | 20 euros        |
+      | sender | recipient | type          | data             |
+      | Alice  | Bob       | send-an-asset | 1 concert.ticket |
+      | Bob    | Alice     | send-an-asset | 20 euros         |
     And every sender accepts the contract
     When she publishes the contract
     Then every sender participant should receive a confirmation notification
@@ -42,9 +42,9 @@ Feature: Create an escrow contract
 
   Scenario: An account creates an escrow contract using other types of transactions
     Given Alice defined the following escrow contract:
-      | sender  | type                             | data                      |
-      | Alice   | register-a-namespace             | alice                     |
-      |  Bob    | create-a-multisignature-contract | 1-of-1, cosignatory:alice |
+      | sender | type                             | data                      |
+      | Alice  | register-a-namespace             | alice                     |
+      | Bob    | create-a-multisignature-contract | 1-of-1, cosignatory:alice |
     And "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
     When she publishes the contract
     Then every sender participant should receive a notification to accept the contract
@@ -127,10 +127,10 @@ Feature: Create an escrow contract
     And her xem balance should remain intact
 
     Examples:
-      |duration|
-      | -1     |
-      | 0      |
-      | 3      |
+      | duration |
+      | -1       |
+      | 0        |
+      | 3        |
 
   Scenario: An account tries to create an escrow contract but does not have 10 xem
     Given Alice defined a valid escrow contract
@@ -140,9 +140,9 @@ Feature: Create an escrow contract
 
   Scenario: An account tries to create an escrow already signed by the participants but at least one has not signed it
     Given Alice defined the following escrow contract:
-      | sender | recipient | type          | data            |
-      | Alice  | Bob       | send-an-asset | 1 concert.ticket|
-      | Bob    | Alice     | send-an-asset | 20 euros        |
+      | sender | recipient | type          | data             |
+      | Alice  | Bob       | send-an-asset | 1 concert.ticket |
+      | Bob    | Alice     | send-an-asset | 20 euros         |
     And "Alice" accepts the contract
     When she publishes the contract
     Then she should receive the error "Failure_Aggregate_Missing_Cosigners"
@@ -172,3 +172,30 @@ Feature: Create an escrow contract
     And  "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
     When she publishes the contract
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
+
+  # Receipts
+  Scenario: An account wants to check if some funds were locked
+    Given Alice defined a valid escrow contract
+    And "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
+    When she checks if the locked mosaics for the previous transaction have been locked
+    Then she should get a positive response with:
+      | amount | asset       | sender |
+      | 10     | xem         | Alice  |
+
+  Scenario: An account wants to check if the escrow contract completed
+    Given Alice defined a valid escrow contract
+    And "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
+    And  the escrow contract concludes successfully
+    When she checks if the contract has concluded
+    Then she should get a positive response with:
+      | amount | asset       | sender |
+      | 10     | xem         | Alice  |
+
+  Scenario: An account wants to check if the lock expired
+    Given Alice defined a valid escrow contract
+    And "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
+    And the lock expires
+    When she checks if the lock has expired
+    Then she should get a positive response with:
+      | amount | asset       | sender             |
+      | 10     | xem         | sink_account       |

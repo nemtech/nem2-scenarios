@@ -1,7 +1,7 @@
 Feature: Edit a multisignature contract
   As Alice,
   I want to edit a multisignature contract,
-  so that I have multi factor-authentication up-to-date.
+  so that I have multi-factor authentication up-to-date.
 
   Background:
     Given the maximum number of cosignatories per multisignature contract is 10
