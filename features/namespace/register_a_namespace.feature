@@ -115,4 +115,3 @@ Feature: Register a namespace
   # - Failure_Namespace_Id_Mismatch
   # - Failure_Namespace_Already_Active
   # - Failure_Namespace_Max_Children_Exceeded
-
