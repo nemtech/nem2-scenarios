@@ -6,7 +6,7 @@ Feature: Announce a transaction
   Background:
     Given Alice has an account in MAIN_NET
     And the maximum transaction lifetime is 1 day
-    And the native currency mosaic is "xem"
+    And the native currency asset is "xem"
 
   Scenario: Alice announces a valid transaction
     Given Alice defined a valid transaction

@@ -141,14 +141,3 @@ Feature: Send an asset
     When "Alice" sends 1 "concert.ticket" to "Bob"
     Then she should receive the error "Failure_Property_Signer_Address_Interaction_Not_Allowed"
     And "Alice" concert.ticket" balance should remain intact
-
-  # Receipts
-  Scenario: An account tries to get the address of an aliased recipient in a given transaction
-    Given "Alice" sent 1 "event.organizer" to "ticket_vendor"
-    When "Alice" wants to get the recipient address for the previous transaction
-    Then "Alice" should get "SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5"
-
-  Scenario: Alice wants to get the mosaicId of the aliased mosaic used in a given transaction
-    Given "Alice" sent 1 "event.organizer" to "ticket_vendor"
-    When "Alice" wants to get "event.organizer" mosaic ID for the previous transaction
-    Then "Alice" should get "0dc67fbe1cad29e5"

@@ -172,30 +172,3 @@ Feature: Create an escrow contract
     And  "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
     When she publishes the contract
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
-
-  # Receipts
-  Scenario: An account wants to check if some funds were locked
-    Given Alice defined a valid escrow contract
-    And "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
-    When she checks if the locked mosaics for the previous transaction have been locked
-    Then she should get a positive response with:
-      | amount | asset       | sender |
-      | 10     | xem         | Alice  |
-
-  Scenario: An account wants to check if the escrow contract completed
-    Given Alice defined a valid escrow contract
-    And "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
-    And  the escrow contract concludes successfully
-    When she checks if the contract has concluded
-    Then she should get a positive response with:
-      | amount | asset       | sender |
-      | 10     | xem         | Alice  |
-
-  Scenario: An account wants to check if the lock expired
-    Given Alice defined a valid escrow contract
-    And "Alice" locked 10 "xem" to guarantee that the contract will conclude in less than 2 days
-    And the lock expires
-    When she checks if the lock has expired
-    Then she should get a positive response with:
-      | amount | asset       | sender             |
-      | 10     | xem         | sink_account       |

@@ -91,24 +91,6 @@ Feature: Register a namespace
     When "Alice" registers the namespace named "alice" for 1 day
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  # Receipts
-  Scenario Outline: Alice wants to get the cost of registering a namespace
-    Given Alice registered a namespace named <name> for <time> seconds
-    When she checks how much cost registering the namespace
-    Then she should get that registering the namespace cost "<cost>" xem
-
-    Examples:
-      | name  | time | cost |
-      | test1 | 15   | 0.1  |
-      | test1 | 20   | 0.2  |
-      | test2 | 30   | 0.2  |
-
-  Scenario: An account tries to get if a namespace expired
-    Given Alice registers a namespace named <name> for <time> seconds
-    And the namespace expires
-    When Alice checks if the previous namespace expired
-    Then she should get an estimated time reference
-
   # Status errors not treated:
   # - Failure_Namespace_Invalid_Namespace_Type
   # - Failure_Namespace_Name_Id_Mismatch
