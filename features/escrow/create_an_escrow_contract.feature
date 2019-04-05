@@ -40,6 +40,41 @@ Feature: Create an escrow contract
     Then every sender participant should receive a confirmation notification
     And the swap of assets should conclude
 
+  Scenario: An account tries to create an escrow already signed by the participants (multisig cosignatory)
+    Given Bob is a 2-of-2 multisig contract with cosignatories:
+      | cosignatory |
+      | Computer    |
+      | Phone       |
+    And Alice defined the following escrow contract:
+      | sender | recipient | type          | data             |
+      | Alice  | Bob       | send-an-asset | 1 concert.ticket |
+      | Bob    | Alice     | send-an-asset | 20 euros         |
+    And "Alice" accepts the contract
+    And "Phone" accepts the contract
+    And "Computer" accepts the contract
+    When she publishes the contract
+    And the swap of assets should conclude
+
+  Scenario: An account tries to create an escrow already signed by the participants (mlma cosignatory)
+    Given Bob is a 2-of-2 multisig contract with cosignatories:
+      | cosignatory |
+      | Computer    |
+      | Phone       |
+    And Computer is a 2-of-2 multisig contract with cosignatories:
+      | cosignatory |
+      | Browser     |
+      | App         |
+    And Alice defined the following escrow contract:
+      | sender | recipient | type          | data             |
+      | Alice  | Bob       | send-an-asset | 1 concert.ticket |
+      | Bob    | Alice     | send-an-asset | 20 euros         |
+    And "Alice" accepts the contract
+    And "Phone" accepts the contract
+    And "Browser" accepts the contract
+    And "App" accepts the contract
+    When she publishes the contract
+    And the swap of assets should conclude
+
   Scenario: An account creates an escrow contract using other types of transactions
     Given Alice defined the following escrow contract:
       | sender | type                             | data                      |
@@ -144,6 +179,39 @@ Feature: Create an escrow contract
       | Alice  | Bob       | send-an-asset | 1 concert.ticket |
       | Bob    | Alice     | send-an-asset | 20 euros         |
     And "Alice" accepts the contract
+    When she publishes the contract
+    Then she should receive the error "Failure_Aggregate_Missing_Cosigners"
+
+  Scenario: An account tries to create an escrow already signed by the participants but at least one has not signed it (multisig cosignatory)
+    Given Bob is a 2-of-2 multisig contract with cosignatories:
+      | cosignatory |
+      | Computer    |
+      | Phone       |
+    And Alice defined the following escrow contract:
+      | sender | recipient | type          | data             |
+      | Alice  | Bob       | send-an-asset | 1 concert.ticket |
+      | Bob    | Alice     | send-an-asset | 20 euros         |
+    And "Alice" accepts the contract
+    And "Phone" accepts the contract
+    When she publishes the contract
+    Then she should receive the error "Failure_Aggregate_Missing_Cosigners"
+
+  Scenario: An account tries to create an escrow already signed by the participants but at least one has not signed it (mlma cosignatory)
+    Given Bob is a 2-of-2 multisig contract with cosignatories:
+      | cosignatory |
+      | Computer    |
+      | Phone       |
+    And Computer is a 2-of-2 multisig contract with cosignatories:
+      | cosignatory |
+      | Browser     |
+      | App         |
+    And Alice defined the following escrow contract:
+      | sender | recipient | type          | data             |
+      | Alice  | Bob       | send-an-asset | 1 concert.ticket |
+      | Bob    | Alice     | send-an-asset | 20 euros         |
+    And "Alice" accepts the contract
+    And "Phone" accepts the contract
+    And "Browser" accepts the contract
     When she publishes the contract
     Then she should receive the error "Failure_Aggregate_Missing_Cosigners"
 

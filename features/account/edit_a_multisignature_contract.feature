@@ -132,7 +132,7 @@ Feature: Edit a multisignature contract
     When "phone" adds "Alice" as a cosignatory of the multisignature
     Then "Alice" should receive the error "Failure_Multisig_Modify_Loop"
 
-  Scenario: A cosignatory tries to add another cosignatory where the multisig contract is a cosignatory.
+  Scenario: A cosignatory tries to add another cosignatory where the multisignature contract is a cosignatory.
     Given Alice is cosignatory of a deposit multisignature contract
     And Alice created the following 1 of 1 multisignature contract:
       | cosignatory |
@@ -164,28 +164,28 @@ Feature: Edit a multisignature contract
     Given Alice created the following 1 of 1 multisignature contract:
       | cosignatory |
       | phone       |
-    When "phone" removes "tablet" from the multisig contract
+    When "phone" removes "tablet" from the multisignature contract
     Then "Alice" should receive the error "Failure_Multisig_Modify_Not_A_Cosigner"
 
   Scenario: A cosignatory tries to add and remove the same account as cosignatory at the same time
     Given Alice created the following 1 of 1 multisignature contract:
       | cosignatory |
       | phone       |
-    When "phone" adds and removes "tablet" from the multisig contract
+    When "phone" adds and removes "tablet" from the multisignature contract
     Then "Alice" should receive the error "Failure_Multisig_Modify_Account_In_Both_Sets"
 
   Scenario: An account tries to exceed three levels of nested multisignature contracts
-    Given Alice has created a multisignature with three levels of multisig cosignatories
+    Given Alice has created a multisignature with three levels of multisignature cosignatories
     When she adds a new multisignature contract cosignatory to the third level
     Then she should receive the error "Failure_Multisig_Modify_Max_Multisig_Depth"
 
-  Scenario: An account tries to edit a multisig contract but has not allowed sending "MODIFY_MULTISIG_ACCOUNT" transactions
+  Scenario: An account tries to edit a multisignature contract but has not allowed sending "MODIFY_MULTISIG_ACCOUNT" transactions
     Given Alice only allowed sending "TRANSFER" transactions
     And Alice created a 1 of 1 multisignature contract
     When she adds "phone" as a cosignatory
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  Scenario: An account tries to create a multisig contract but has blocked sending "MODIFY_MULTISIG_ACCOUNT" transactions
+  Scenario: An account tries to create a multisignature contract but has blocked sending "MODIFY_MULTISIG_ACCOUNT" transactions
     Given Alice blocked sending "MODIFY_MULTISIG_ACCOUNT" transactions
     And Alice created a 1 of 1 multisignature contract
     When she adds "phone" as a cosignatory
