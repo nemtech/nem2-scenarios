@@ -185,7 +185,7 @@ Feature: Edit a multisignature contract
     When she adds "phone" as a cosignatory
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
 
-  Scenario: An account tries to create a multisignature contract but has blocked sending "MODIFY_MULTISIG_ACCOUNT" transactions
+  Scenario: An account tries to edit a multisignature contract but has blocked sending "MODIFY_MULTISIG_ACCOUNT" transactions
     Given Alice blocked sending "MODIFY_MULTISIG_ACCOUNT" transactions
     And Alice created a 1 of 1 multisignature contract
     When she adds "phone" as a cosignatory

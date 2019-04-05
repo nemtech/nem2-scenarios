@@ -173,7 +173,7 @@ Feature: Create an escrow contract
     When Alice locks 10 "xem" to guarantee that the contract will conclude in less than <duration> days
     Then she should receive the error "Failure_Core_Insufficient_Balance"
 
-  Scenario: An account tries to create an escrow already signed by the participants but at least one has not signed it
+  Scenario: An account tries to create an escrow already signed but is not signed by every participant
     Given Alice defined the following escrow contract:
       | sender | recipient | type          | data             |
       | Alice  | Bob       | send-an-asset | 1 concert.ticket |
@@ -182,7 +182,7 @@ Feature: Create an escrow contract
     When she publishes the contract
     Then she should receive the error "Failure_Aggregate_Missing_Cosigners"
 
-  Scenario: An account tries to create an escrow already signed by the participants but at least one has not signed it (multisig cosignatory)
+  Scenario: An account tries to create an escrow already signed but is not signed by every participant (multisig cosignatory)
     Given Bob is a 2-of-2 multisig contract with cosignatories:
       | cosignatory |
       | Computer    |
@@ -196,7 +196,7 @@ Feature: Create an escrow contract
     When she publishes the contract
     Then she should receive the error "Failure_Aggregate_Missing_Cosigners"
 
-  Scenario: An account tries to create an escrow already signed by the participants but at least one has not signed it (mlma cosignatory)
+  Scenario: An account tries to create an escrow already signed but is not signed by every participant (mlma cosignatory)
     Given Bob is a 2-of-2 multisig contract with cosignatories:
       | cosignatory |
       | Computer    |
