@@ -1,14 +1,14 @@
 Feature: Prevent receiving transactions containing a specific asset
   As Alice,
-  I only want to receive "xem" assets
+  I only want to receive "cat.currency" assets
   So that I can ensure I don't own assets unrelated with my activity
 
   Background:
     Given the following assets are registered and active:
-      | asset   |
-      | ticket  |
-      | voucher |
-      | xem     |
+      | asset            |
+      | ticket           |
+      | voucher          |
+      | cat.currency     |
     And an account can only define up to 512 mosaic filters
 
   Scenario: An account blocks receiving transactions containing a specific asset
@@ -21,8 +21,8 @@ Feature: Prevent receiving transactions containing a specific asset
 
   Scenario: An account allows only receiving transactions containing a specific asset
     When Alice only allows receiving transactions containing type:
-      | asset |
-      | xem   |
+      | asset          |
+      | cat.currency   |
     Then she should receive a confirmation message
     And  receiving the stated assets should be allowed
 

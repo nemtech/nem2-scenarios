@@ -6,7 +6,7 @@ Feature: Announce a transaction
   Background:
     Given Alice has an account in MAIN_NET
     And the maximum transaction lifetime is 1 day
-    And the native currency asset is "xem"
+    And the native currency asset is "cat.currency"
 
   Scenario: Alice announces a valid transaction
     Given Alice defined a valid transaction
@@ -15,10 +15,10 @@ Feature: Announce a transaction
     Then she should receive a confirmation message
 
   Scenario: An account announced a valid transaction (max_fee)
-    Given Alice announced a valid transaction of size 10 bytes willing to pay 25 xem
+    Given Alice announced a valid transaction of size 10 bytes willing to pay 25 cat.currency
     When a node with a fee multiplier of 2 processes the transaction
     Then the node accepts the transaction
-    And her "xem" balance is deducted by 20 units
+    And her "cat.currency" balance is deducted by 20 units
 
   Scenario Outline: An account tries to announce a transaction with an invalid deadline
     Given Alice defined a transaction with a deadline of <deadline> hours
@@ -77,17 +77,17 @@ Feature: Announce a transaction
     Then she should receive the error "Failure_Multisig_Operation_Not_Permitted_By_Account"
 
   Scenario: A node rejects a transaction because the max_fee value is too low
-    Given Alice announced a valid transaction of size 10 bytes willing to pay 10 xem
+    Given Alice announced a valid transaction of size 10 bytes willing to pay 10 cat.currency
     When a node with a fee multiplier of 2 processes the transaction
     Then the node rejects the transaction
-    And her "xem" balance remains intact
+    And her "cat.currency" balance remains intact
 
   Scenario: No node accepts the transaction because the max_fee value is too low
-    Given Alice announced a valid transaction of size 10 bytes willing to pay 5 xem
+    Given Alice announced a valid transaction of size 10 bytes willing to pay 5 cat.currency
     And all the nodes have set the fee multiplier to 2
     When the transaction deadline is reached
     Then the transaction is rejected
-    And her "xem" balance should remain intact
+    And her "cat.currency" balance should remain intact
 
   # Status errors not treated:
   # - Failure_Core_Too_Many_Transactions

@@ -4,17 +4,18 @@ Feature: Accept an escrow contract
   so that I give my explicit approval to change my account state.
 
   Background:
-    Given an escrow contract is active up to 2 days
+    Given the native currency asset is "cat.currency"
+    And an escrow contract is active up to 2 days
     And the mean block generation time is 15 seconds
 
   Scenario: An escrow contract concludes
-    Given Bob has asked Alice for 20 xem
-    And "Alice" has 20 "xem"
-    And Bob locked 10 "xem" to guarantee that the contract concludes in less than 2 days
+    Given Bob has asked Alice for 20 cat.currency
+    And "Alice" has 20 "cat.currency"
+    And Bob locked 10 "cat.currency" to guarantee that the contract concludes in less than 2 days
     When Alice accepts it
     Then every sender participant should receive a confirmation notification
-    And "Bob" should receive 30 "xem"
-    And "Alice" "xem" balance should have decreased in 20 units
+    And "Bob" should receive 30 "cat.currency"
+    And "Alice" "cat.currency" balance should have decreased in 20 units
 
   Scenario: An escrow contract concludes and the future state makes the swap possible
     Given Alice does not have any euros
@@ -30,11 +31,11 @@ Feature: Accept an escrow contract
     And the swap of assets should conclude
 
   Scenario: An account accepts an escrow contract but not all participants have accepted it
-    Given Bob has asked Alice and Carol for 20 xem
-    And Bob locked 10 "xem" to guarantee that the contract concludes in less than 2 days
+    Given Bob has asked Alice and Carol for 20 cat.currency
+    And Bob locked 10 "cat.currency" to guarantee that the contract concludes in less than 2 days
     And Alice accepted the escrow contract
     Then Carol should accept the escrow contract
-    And Alice xem balance should have not decreased
+    And Alice "cat.currency" balance should have not decreased
 
   Scenario: An account required to accept the escrow contract is a multisiginature contract
     Given every sender participant who was notified to accept an escrow contract has accepted it except Alice

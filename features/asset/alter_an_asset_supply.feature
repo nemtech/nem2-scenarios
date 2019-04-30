@@ -6,7 +6,7 @@ Feature: Alter an asset supply
   Background:
     Given the mean block generation time is 15 seconds
     And the maximum asset supply is 9000000000
-    And Alice has 10000000 xem in her account
+    And Alice has 10000000 "cat.currency" in her account
 
   Scenario Outline: An account alters an asset supply
     Given Alice has registered a <property> asset with an initial supply of 20 units

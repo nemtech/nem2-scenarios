@@ -34,12 +34,12 @@ Feature: Send an asset
     When "Alice" sends  1 "concert.ticket" to "Alice"
     Then "Alice" should receive a confirmation message
     And "Alice" should receive 1 "concert.ticket"
-    And "Alice" concert.ticket" balance should remain intact
+    And "Alice" "concert.ticket" balance should remain intact
 
   Scenario Outline: An account tries to send an asset to an invalid account
     When "Alice" sends 1 "concert.ticket" to "<recipient>"
     Then she should receive the error "<error>"
-    And "Alice" concert.ticket" balance should remain intact
+    And "Alice" "concert.ticket" balance should remain intact
 
     Examples:
       | recipient                                      | error                        |
@@ -50,13 +50,13 @@ Feature: Send an asset
   Scenario Outline: An account tries to send assets that does not have
     When "Alice" sends <amount> "<asset>" to "Bob"
     Then she should receive the error "<error>"
-    And "Alice" <asset>" balance should remain intact
+    And "Alice" "<asset>" balance should remain intact
 
     Examples:
       | amount | asset          | error                             |
       | -1     | concert.ticket | Failure_Core_Insufficient_Balance |
       | 1      | unknown.ticket | Failure_Mosaic_Expired            |
-      | 1      | xem            | Failure_Core_Insufficient_Balance |
+      | 1      | cat.currency   | Failure_Core_Insufficient_Balance |
       | 105    | concert.ticket | Failure_Core_Insufficient_Balance |
 
   Scenario Outline: An account tries to split an asset that can't be split
@@ -90,7 +90,7 @@ Feature: Send an asset
     When "Alice" sends 1 "concert.ticket" and 2 "reward.point" to "Bob"
     Then she should receive a confirmation message
     And "Bob" should receive 1 "concert.ticket" and 2 "reward.point"
-    And  "Alice" concert.ticket" balance should decrease in 1 unit(s)
+    And  "Alice" "concert.ticket" balance should decrease in 1 unit(s)
     And  "Alice" reward.point" balance should decrease in 2 unit(s)
 
   Scenario Outline: An account tries to send multiple assets to another account but at least one of the attached assets can't be sent
@@ -107,37 +107,37 @@ Feature: Send an asset
       | 1      | reward.point    | Failure_Transfer_Out_Of_Order_Mosaics |
 
   Scenario: An account tries to send an asset to another account but the second account does not allow this asset
-    Given Bob only allowed receiving "xem"
+    Given Bob only allowed receiving "cat.currency"
     When "Alice" sends 1 "concert.ticket" to "Bob"
     Then she should receive the error "Failure_Property_Mosaic_Transfer_Not_Allowed"
-    And "Alice" concert.ticket" balance should remain intact
+    And "Alice" "concert.ticket" balance should remain intact
 
   Scenario: An account tries to send an asset to another account but the second account has blocked this asset
-    Given Bob blocked receiving "xem"
+    Given Bob blocked receiving "cat.currency"
     When "Alice" sends 1 "concert.ticket" to "Bob"
     Then she should receive the error "Failure_Property_Mosaic_Transfer_Not_Allowed"
-    And "Alice" concert.ticket" balance should remain intact
+    And "Alice" "concert.ticket" balance should remain intact
 
   Scenario: An account tries to send an asset to another account but has not allowed sending "TRANSFER" transactions
     Given Alice only allowed sending "REGISTER_NAMESPACE" transactions
     When "Alice" sends 1 "concert.ticket" to "Bob"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
-    And "Alice" concert.ticket" balance should remain intact
+    And "Alice" "concert.ticket" balance should remain intact
 
   Scenario: An account tries to send an asset to another account but has blocked sending "TRANSFER" transactions
     Given Alice blocked sending "TRANSFER" transactions
     When "Alice" sends 1 "concert.ticket" to "Bob"
     Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
-    And "Alice" concert.ticket" balance should remain intact
+    And "Alice" "concert.ticket" balance should remain intact
 
   Scenario: An account tries to send an asset to another account but the second account does not allow it
     Given Bob only allowed receiving transactions from Carol's address
     When "Alice" sends 1 "concert.ticket" to "Bob"
     Then she should receive the error "Failure_Property_Signer_Address_Interaction_Not_Allowed"
-    And "Alice" concert.ticket" balance should remain intact
+    And "Alice" "concert.ticket" balance should remain intact
 
   Scenario: An account tries to send an asset to another account but the second account blocked it
     Given Bob blocked receiving transactions from Alice's address"
     When "Alice" sends 1 "concert.ticket" to "Bob"
     Then she should receive the error "Failure_Property_Signer_Address_Interaction_Not_Allowed"
-    And "Alice" concert.ticket" balance should remain intact
+    And "Alice" "concert.ticket" balance should remain intact

@@ -148,7 +148,7 @@ Feature: Exchange assets across different blockchains
       | LAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 | Failure_Core_Wrong_Network   |
 
   Scenario: An account tries to lock assets but the recipient does not allow this asset
-    Given Bob only allowed receiving "xem" assets
+    Given Bob only allowed receiving "cat.currency" assets
     And Alice derived the secret from the seed using "SHA_512"
     When "Alice" locks the following asset units using the previous secret:
       | amount | asset       | recipient | network | hours |
