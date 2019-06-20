@@ -124,6 +124,13 @@ Feature: Link a namespace to an asset
     When Alice unlinks the namespace "token" from the address "0dc67fbe1cad29e3"
     Then she should receive the error "Failure_Namespace_Alias_Unlink_Data_Inconsistency"
 
+  Scenario: An account tries to link an expired namespace to an asset
+    Given Alice registered the namespace "token"
+    And "token" has expired
+    When Alice links the namespace "token" to the asset "0dc67fbe1cad29e3"
+    Then she should receive the error "Failure_Namespace_Expired"
+
+    # Account filters
   Scenario: An account tries to link a namespace to an asset but has not allowed sending "MOSAIC_ALIAS" transactions
     Given Alice registered the namespace "token"
     And she registered the asset "0dc67fbe1cad29e3"

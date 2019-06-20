@@ -5,6 +5,8 @@ Feature: Send a message
 
   Background:
     Given the mean block generation time is 15 seconds
+    And "Alice" has the address "SCA7ZS2B7DEEBGU3THSILYHCRUR32YYE55ZBLYA2"
+    And "Bob" has the address "SDVR3U7IFFBOFWEFL653EIWGW4RC3Q27EZXGVA2F"
     And the maximum message length is 1024
 
   Scenario Outline: An account sends a message to another account

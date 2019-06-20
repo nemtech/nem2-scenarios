@@ -5,14 +5,15 @@ Feature: Send an asset
 
   Background:
     Given the mean block generation time is 15 seconds
+    And "Alice" has the address "SCA7ZS2B7DEEBGU3THSILYHCRUR32YYE55ZBLYA2"
+    And "Bob" has the address "SDVR3U7IFFBOFWEFL653EIWGW4RC3Q27EZXGVA2F"
     And "ticket_vendor" has the address "SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5"
     And "ticket_vendor" has registered the following assets:
       | id               | alias           | transferable | supply | divisibility |
       | 0dc67fbe1cad29e3 | concert.ticket  | true         | 1000   | 0            |
       | 0dc67fbe1cad29e4 | reward.point    | false        | 1000   | 2            |
       | 0dc67fbe1cad29e5 | event.organizer | true         | 1000   | 0            |
-
-    And Alice has the following assets in her account:
+    And "Alice" account has the following assets:
       | asset           | amount |
       | concert.ticket  | 100    |
       | reward.point    | 100    |

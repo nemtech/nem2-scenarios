@@ -107,6 +107,12 @@ Feature: Link a namespace to an address
       | MIJIN_TEST | SAIBV5                                         | Failure_Core_Invalid_Address |
       | MAIN_NET   | SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5 | Failure_Core_Invalid_Network |
 
+  Scenario: An account tries to link an expired namespace to an address
+    Given Alice registered the namespace "bob"
+    And "bob" has expired
+    When Alice links the namespace "bob" to the address "SAIBV5-BKEVGJ-IZQ4RP-224TYE-J3ZIUL-WDHUTI-X3H5"
+    Then she should receive the error "Failure_Namespace_Expired"
+
   # Account filters
   Scenario: An account tries to link a namespace to an address but has not allowed sending "ADDRESS_ALIAS" transactions
     Given Alice registered the namespace "bob"
