@@ -4,7 +4,7 @@
 
 Catapult behavior validation using scenarios.
 
-These scenarios are being automated at [nem2-e2e-tests](https://github.com/nemtech/nem2-e2e-tests) repository.
+These scenarios are being automated on [nem2-e2e-tests][nem2-e2e-tests] repository.
 
 ## Requirements
 
@@ -48,3 +48,4 @@ Licensed under the [Apache License 2.0](LICENSE)
 [self]: https://github.com/nemtech/nem2-scenarios
 [docs]: https://nemtech.github.io/
 [issues]: https://github.com/nemtech/nem2-scenarios/issues
+[nem2-e2e-tests]: https://github.com/nemtech/nem2-e2e-tests
