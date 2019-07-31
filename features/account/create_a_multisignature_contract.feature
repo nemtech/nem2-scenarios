@@ -1,3 +1,4 @@
+@not-implemented
 Feature: Create a multisignature contract
   As Alice,
   I want to create a multisignature contract between my phone and my computer,
@@ -117,14 +118,13 @@ Feature: Create a multisignature contract
     And Alice defined a 1 of 1 multisignature contract
     And she added "phone" as a cosignatory
     When she publishes the contract
-    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"
 
   Scenario: An account tries to create a multisignature contract but has blocked sending "MODIFY_MULTISIG_ACCOUNT" transactions
     Given Alice blocked sending "MODIFY_MULTISIG_ACCOUNT" transactions
     And Alice defined a 1 of 1 multisignature contract
     And she added "phone" as a cosignatory
     When she publishes the contract
-    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"
 
-  # Status errors not treated:
-  # - Failure_Multisig_Modify_Unsupported_Modification_Type
+  # Todo: Test Failure_RestrictionAccount_Address_Interaction_Not_Allowed for multisig accounts cosignatories.

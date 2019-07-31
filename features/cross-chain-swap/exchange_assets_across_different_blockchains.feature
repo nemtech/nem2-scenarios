@@ -1,3 +1,4 @@
+@not-implemented
 Feature: Exchange assets across different blockchains
   As Alice,
   I want to exchange assets with Bob across different blockchains,
@@ -153,7 +154,7 @@ Feature: Exchange assets across different blockchains
     When "Alice" locks the following asset units using the previous secret:
       | amount | asset       | recipient | network | hours |
       | 10     | alice.token | Bob       | MIJIN   | 96    |
-    Then she should receive the error "Failure_Property_Mosaic_Transfer_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Mosaic_Transfer_Not_Allowed"
 
   Scenario: An account tries to lock assets but the recipient has blocked this asset
     Given Bob blocked receiving "alice.token" assets
@@ -161,7 +162,7 @@ Feature: Exchange assets across different blockchains
     When "Alice" locks the following asset units using the previous secret:
       | amount | asset       | recipient | network | hours |
       | 10     | alice.token | Bob       | MIJIN   | 96    |
-    Then she should receive the error "Failure_Property_Mosaic_Transfer_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Mosaic_Transfer_Not_Allowed"
 
   Scenario: An account tries to lock assets but the recipient account does not allow receiving transactions from it
     Given Bob only allowed receiving transactions from Carol
@@ -169,7 +170,7 @@ Feature: Exchange assets across different blockchains
     When "Alice" locks the following asset units using the previous secret:
       | amount | asset       | recipient | network | hours |
       | 10     | alice.token | Bob       | MIJIN   | 96    |
-    Then she should receive the error "Failure_Property_Signer_Address_Interaction_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Address_Interaction_Not_Allowed"
 
   Scenario: An account tries to lock assets but the recipient has blocked it
     Given Bob blocked receiving transactions from Alice
@@ -177,7 +178,7 @@ Feature: Exchange assets across different blockchains
     When "Alice" locks the following asset units using the previous secret:
       | amount | asset       | recipient | network | hours |
       | 10     | alice.token | Bob       | MIJIN   | 96    |
-    Then she should receive the error "Failure_Property_Signer_Address_Interaction_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Address_Interaction_Not_Allowed"
 
   Scenario: An account tries to lock assets but has not allowed sending "LOCK_SECRET" transactions
     Given Alice only allowed sending "TRANSFER" transactions
@@ -185,7 +186,7 @@ Feature: Exchange assets across different blockchains
     When "Alice" locks the following asset units using the previous secret:
       | amount | asset       | recipient | network | hours |
       | 10     | alice.token | Bob       | MIJIN   | 96    |
-    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"
 
   Scenario: An account tries to lock assets but has blocked sending "LOCK_SECRET" transactions
     Given Alice blocked sending "LOCK_SECRET" transactions
@@ -193,7 +194,7 @@ Feature: Exchange assets across different blockchains
     When "Alice" locks the following asset units using the previous secret:
       | amount | asset       | recipient | network | hours |
       | 10     | alice.token | Bob       | MIJIN   | 96    |
-    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"
 
   Scenario: An account tries to prove knowing a secret's seed that has not been used
     Given Alice derived the secret from the seed using "SHA_512"
@@ -230,6 +231,7 @@ Feature: Exchange assets across different blockchains
     When Alice proves knowing the secret's seed in "MIJIN" selecting "Keccak" as the hashing algorithm
     Then she should receive the error "Failure_LockSecret_Hash_Algorithm_Mismatch"
 
+  # Account Restrictions
   Scenario: An account tries to unlock assets but has not allowed sending "SECRET_PROOF" transactions
     Given Alice only allowed sending "SECRET_PROOF" transactions
     And Bob derived the secret from the seed using "SHA_512"
@@ -237,7 +239,7 @@ Feature: Exchange assets across different blockchains
       | amount | asset     | recipient | network  | hours |
       | 10     | bob.token | Alice     | MAIN_NET | 84    |
     When "Alice" proved knowing the secret's seed in "MAIN_NET"
-    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"
 
   Scenario: An account tries to unlock assets but has blocked sending "SECRET_PROOF" transactions
     Given Alice blocked sending "SECRET_PROOF" transactions
@@ -246,7 +248,4 @@ Feature: Exchange assets across different blockchains
       | amount | asset     | recipient | network  | hours |
       | 10     | bob.token | Alice     | MAIN_NET | 84    |
     When "Alice" proved knowing the secret's seed in "MAIN_NET"
-    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
-
-  # Status errors not treated:
-  # - Failure_LockSecret_Invalid_Hash_Algorithm
+    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"

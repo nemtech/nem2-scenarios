@@ -1,3 +1,4 @@
+@not-implemented
 Feature: Accept an escrow contract
   As Alice,
   I want to accept an escrow contract,

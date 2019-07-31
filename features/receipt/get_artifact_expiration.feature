@@ -1,3 +1,4 @@
+@not-implemented
 Feature: Get artifact expiration
   As Alice
   I want to know when a namespace or asset expired

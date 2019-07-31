@@ -5,77 +5,68 @@ Feature: Alter an asset supply
 
   Background:
     Given the mean block generation time is 15 seconds
-    And the maximum asset supply is 9000000000
+    And the maximum asset supply is 9000000000000000
     And Alice has 10000000 "cat.currency" in her account
 
+  @bvt
   Scenario Outline: An account alters an asset supply
-    Given Alice has registered a <property> asset with an initial supply of 20 units
-    And she still owns 20 units
-    When Alice decides to "<direction>" the asset supply in <amount> units
-    Then she should receive a confirmation message
-    And the balance of the asset in her account should "<direction>" in <amount> units
+    Given Alice has registered a supply <supply-mutability> asset with an initial supply of 20 units
+    When Alice decides to <direction> the asset supply in <amount> units
+    Then the balance of the asset in her account should <direction> in <amount> units
 
     Examples:
-      | property         | direction | amount |
-      | supply-mutable   | increase  | 5      |
-      | supply-immutable | increase  | 5      |
-      | supply-mutable   | decrease  | 20     |
-      | supply-immutable | decrease  | 20     |
+      | supply-mutability | direction | amount |
+      | mutable           | increase  | 5      |
+      | immutable         | increase  | 5      |
+      | mutable           | decrease  | 20     |
+      | immutable         | decrease  | 20     |
 
-  Scenario Outline: An account tries to alter an asset supply surpassing the maximum or minimum asset supply limit
-    Given Alice has registered a <property> asset with an initial supply of 20 units
-    And she still owns 20 units
-    When Alice decides to "<direction>" the asset supply in <amount> units
+  @bvt
+  Scenario Outline: An account tries to alter an asset supply incorrectly
+    Given Alice has registered an asset with an initial supply of 20 units
+    When Alice accidentally <direction> the asset supply in <amount> units
     Then she should receive the error "<error>"
 
     Examples:
-      | property         | direction | amount     | error                          |
-      | supply-mutable   | increase  | 9000000000 | Failure_Mosaic_Supply_Exceeded |
-      | supply-immutable | increase  | 9000000000 | Failure_Mosaic_Supply_Exceeded |
-      | supply-mutable   | decrease  | 21         | Failure_Mosaic_Supply_Negative |
-      | supply-immutable | decrease  | 21         | Failure_Mosaic_Supply_Negative |
+      | direction | amount           | error                                       |
+      | increase  | 9000000000000000 | Failure_Mosaic_Supply_Exceeded              |
+      | decrease  | 21               | Failure_Mosaic_Supply_Negative              |
+      | increase  | 0                | Failure_Mosaic_Invalid_Supply_Change_Amount |
 
-  Scenario Outline: An account tries to alter an asset supply without doing any changes
-    Given Alice has registered a <property> asset with an initial supply of 20 units
-    And she still owns 20 units
-    When Alice decides to "<direction>" the asset supply in 0 units
-    Then she should receive the error "Failure_Mosaic_Invalid_Supply_Change_Amount"
+  Scenario: An account tries to alter the supply of a supply mutable asset but does not own all the units
+    Given Alice has registered a supply mutable asset with an initial supply of 20 units
+    And she transfer 10 units to another account
+    When Alice decides to increase the asset supply in 2 units
+    Then the balance of the asset in her account should increase in 2 units
 
-    Examples:
-      | property         | direction |
-      | supply-mutable   | increase  |
-      | supply-immutable | increase  |
-      | supply-mutable   | decrease  |
-      | supply-immutable | decrease  |
-
-  Scenario Outline: An account tries to alter the supply of a supply immutable asset but does not own all the units
-    Given Alice has registered a "supply-immutable" asset with an initial supply of 20 units
-    And she still owns 10 units
-    When Alice decides to "<direction>" the asset supply in 2 units
+  Scenario: An account tries to alter the supply of a supply non-mutable asset but does not own all the units
+    Given Alice has registered a supply immutable asset with an initial supply of 20 units
+    And she transfer 10 units to another account
+    When Alice tries to increase the asset supply in 2 units
     Then she should receive the error "Failure_Mosaic_Supply_Immutable"
 
-    Examples:
-      | direction |
-      | increase  |
-      | decrease  |
+  Scenario: An account tries to alter the supply of an expired asset
+    Given Alice has registered expiring asset for 1 block
+    When Alice tries to increase the asset supply in 2 units
+    Then she should receive the error "Failure_Mosaic_Expired"
 
+  @not-implemented
   Scenario: An account tries to alter a non-changeable asset property
     Given Alice has registered an asset with divisibility 6
     When Alice changes the divisibility to 5
     Then she should receive the error "Failure_Mosaic_Modification_Disallowed"
 
+  # Account Restrictions
+  @not-implemented
   Scenario: An account tries to alter an asset supply but has not allowed sending "MOSAIC_SUPPLY_CHANGE" transactions
     Given Alice only allowed sending "TRANSFER" transactions
     And Alice has registered a "supply-mutable" asset with an initial supply of 20 units
     When Alice decides to "increase" the asset supply in 5 units
-    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"
 
+  @not-implemented
   Scenario: An account tries to alter an asset supply but has blocked sending "MOSAIC_SUPPLY_CHANGE" transactions
     Given Alice blocked sending "MOSAIC_DEFINITION" transactions
     And Alice has registered a "supply-mutable" asset with an initial supply of 20 units
     When Alice decides to "increase" the asset supply in 5 units
-    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
-
-  # Status errors not treated:
-  # - Failure_Mosaic_Invalid_Supply_Change_Direction
-  # - Failure_Mosaic_Modification_No_Changes
+    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"

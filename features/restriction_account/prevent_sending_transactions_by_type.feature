@@ -1,3 +1,4 @@
+@not-implemented
 Feature: Prevent sending transactions by type
   As Alice
   I want to prevent sending assets from my account
@@ -51,33 +52,33 @@ Feature: Prevent sending transactions by type
   Scenario: An account unblocks a not blocked transaction type
     Given Alice blocked sending "TRANSFER" transactions
     When Alice unblocks "REGISTER_NAMESPACE"
-    Then she should receive the error "Failure_Property_Modification_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Modification_Not_Allowed"
 
   Scenario: An account removes a transaction type that does not exist in the allowed transaction types
     Given Alice blocked sending "TRANSFER" transactions
     When Alice removes "REGISTER_NAMESPACE" from the allowed transaction types
-    Then she should receive the error "Failure_Property_Modification_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Modification_Not_Allowed"
 
   Scenario: An account tries only to  allow sending transactions with a given type when it has blocked types
     Given Alice blocked sending "TRANSFER" transactions
     When Alice only allows sending "REGISTER_NAMESPACE" transactions
-    Then she should receive the error "Failure_Property_Modification_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Modification_Not_Allowed"
 
   Scenario: An account tries to block sending transactions with a given type when it has allowed types
     Given Alice only allowed sending "TRANSFER" transactions
     When Alice blocks sending "REGISTER_NAMESPACE" transactions
-    Then she should receive the error "Failure_Property_Modification_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Modification_Not_Allowed"
 
   Scenario: An account tries to block a transaction type twice
     Given Alice blocked sending "TRANSFER" transactions
     When Alice blocks sending "TRANSFER" transactions
-    Then she should receive the error "Failure_Property_Modification_Redundant"
+    Then she should receive the error "Failure_RestrictionAccount_Modification_Redundant"
 
   Scenario: An account tries to allow a transaction type twice
     Given Alice only allowed sending "TRANSFER" transactions
     When Alice only allows sending "TRANSFER" transactions
-    Then she should receive the error "Failure_Property_Modification_Redundant"
+    Then she should receive the error "Failure_RestrictionAccount_Modification_Redundant"
 
   Scenario: An account tries to block a transaction with "ACCOUNT_PROPERTIES_ENTITY_TYPE" type
     When Alice blocks sending "ACCOUNT_PROPERTIES_ENTITY_TYPE" transactions
-    Then she should receive the error "Failure_Property_Modification_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Modification_Not_Allowed"
