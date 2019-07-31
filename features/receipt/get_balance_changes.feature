@@ -1,3 +1,4 @@
+@not-implemented
 Feature: Get balance changes
   As Alice
   I want to know why my balance has changed
@@ -80,6 +81,3 @@ Feature: Get balance changes
     Then she should get a positive response with:
       | amount | asset       | recipient |
       | 10     | alice.token | Alice     |
-
-  # Errors not treated:
-  # Failure_Chain_Block_Inconsistent_Receipts_Hash

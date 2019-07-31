@@ -1,3 +1,4 @@
+@not-implemented
 Feature: Edit a multisignature contract
   As Alice,
   I want to edit a multisignature contract,
@@ -179,14 +180,15 @@ Feature: Edit a multisignature contract
     When she adds a new multisignature contract cosignatory to the third level
     Then she should receive the error "Failure_Multisig_Modify_Max_Multisig_Depth"
 
+  # Account Restrictions
   Scenario: An account tries to edit a multisignature contract but has not allowed sending "MODIFY_MULTISIG_ACCOUNT" transactions
     Given Alice only allowed sending "TRANSFER" transactions
     And Alice created a 1 of 1 multisignature contract
     When she adds "phone" as a cosignatory
-    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"
 
   Scenario: An account tries to edit a multisignature contract but has blocked sending "MODIFY_MULTISIG_ACCOUNT" transactions
     Given Alice blocked sending "MODIFY_MULTISIG_ACCOUNT" transactions
     And Alice created a 1 of 1 multisignature contract
     When she adds "phone" as a cosignatory
-    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"

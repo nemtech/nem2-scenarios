@@ -1,3 +1,4 @@
+@not-implemented
 Feature: Get the alias resolution for a given transaction
   As Alice
   I want to get the real identifier of the account or asset used in a transaction

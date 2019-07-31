@@ -1,3 +1,4 @@
+@not-implemented
 Feature: Get balance transfers
   As Alice
   I want to know why my balance was decrease
@@ -40,6 +41,3 @@ Feature: Get balance transfers
       | 15   | 1    |
       | 20   | 2    |
       | 30   | 2    |
-
-  # Receipts not treated:
-  # - Mosaic_Levy

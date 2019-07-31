@@ -1,3 +1,4 @@
+@not-implemented
 Feature: Create an escrow contract
   As Alice,
   I want to create an escrow contract between different participants,
@@ -216,28 +217,29 @@ Feature: Create an escrow contract
     When she publishes the contract
     Then she should receive the error "Failure_Aggregate_Missing_Cosigners"
 
+  # Account Restrictions
   Scenario: An account tries to lock assets but has not allowed sending "LOCK_HASH" transactions
     Given Alice only allowed sending "TRANSFER" transactions
     And Alice defined a valid escrow contract
     When "Alice" locks 10 "cat.currency" to guarantee that the contract will conclude in less than 2 days
-    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"
 
   Scenario: An account tries to create an escrow contract but has blocked sending "LOCK_HASH" transactions
     Given Alice blocked sending "LOCK_HASH" transactions
     And Alice defined a valid escrow contract
     When "Alice" locks 10 "cat.currency" to guarantee that the contract will conclude in less than 2 days
-    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"
 
   Scenario: An account tries to create an escrow contract but has not allowed sending "AGGREGATE" transactions
     Given Alice defined a valid escrow contract
     And "Alice" locked 10 "cat.currency" to guarantee that the contract will conclude in less than 2 days
     And Alice only allowed sending "TRANSFER" transactions
     When she publishes the contract
-    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"
 
   Scenario: An account tries to create an escrow contract but has blocked sending "AGGREGATE" transactions
     Given Alice blocked sending "AGGREGATE" transactions
     And Alice defined a valid escrow contract
     And  "Alice" locked 10 "cat.currency" to guarantee that the contract will conclude in less than 2 days
     When she publishes the contract
-    Then she should receive the error "Failure_Property_Transaction_Type_Not_Allowed"
+    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"

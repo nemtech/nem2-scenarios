@@ -4,6 +4,8 @@
 
 Catapult behavior validation using scenarios.
 
+These scenarios are being automated on [nem2-e2e-tests][nem2-e2e-tests] repository.
+
 ## Requirements
 
 * Node.js
@@ -35,14 +37,15 @@ Feel free to start an issue or create a pull request. Check [CONTRIBUTING](CONTR
 We use GitHub issues for tracking bugs and have limited bandwidth to address them.
 Please, use the following available resources to get help:
 
-- [nem developer center][docs]
+- [NEM Developer Center][docs]
 - If you found a bug, [open a new issue][issues]
 
 ## License
 
-Copyright (c) 2018 NEM
+Copyright (c) 2018-present NEM
 Licensed under the [Apache License 2.0](LICENSE)
 
 [self]: https://github.com/nemtech/nem2-scenarios
 [docs]: https://nemtech.github.io/
 [issues]: https://github.com/nemtech/nem2-scenarios/issues
+[nem2-e2e-tests]: https://github.com/nemtech/nem2-e2e-tests
