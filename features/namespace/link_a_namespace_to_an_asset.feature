@@ -97,7 +97,6 @@ Feature: Link a namespace to an asset
     When Bob tries to unlink the namespace "token" from the asset "Y"
     Then she should receive the error "Failure_Namespace_Owner_Conflict"
 
-
   Scenario: An account tries to link a namespace it does not own to an asset
     Given Bob registered the namespace "bob"
     And Alice registered the asset "X"

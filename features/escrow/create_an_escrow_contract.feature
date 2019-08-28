@@ -1,4 +1,3 @@
-@not-implemented
 Feature: Create an escrow contract
   As Alice,
   I want to create an escrow contract between different participants,

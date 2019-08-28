@@ -1,4 +1,3 @@
-@not-implemented
 Feature: Edit a multisignature contract
   As Alice,
   I want to edit a multisignature contract,

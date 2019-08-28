@@ -1,4 +1,3 @@
-@not-implemented
 Feature: Create a multisignature contract
   As Alice,
   I want to create a multisignature contract between my phone and my computer,
