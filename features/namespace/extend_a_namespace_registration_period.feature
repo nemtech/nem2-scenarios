@@ -22,7 +22,7 @@ Feature: Extend a namespace registration period
     Examples:
       | duration | cost |
       | 10       | 10   |
-      | 20        | 20   |
+      | 20       | 20   |
 
   Scenario: An account tries to extend a namespace registration period and this is under grace period
     Given Alice registered the namespace named "aliceexp" for 6 block
