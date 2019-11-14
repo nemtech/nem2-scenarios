@@ -2,8 +2,7 @@ Feature: Register a namespace
   As Alice
   I want to register a namespace
   So that I can organize and name assets easily.
-
-  Background:
+  
     Given the native currency asset is "cat.currency"
     And registering a namespace costs 1 "cat.currency" per block
     And the mean block generation time is 15 seconds
@@ -27,8 +26,8 @@ Feature: Register a namespace
   Scenario Outline: An account registers a namespace
     When Alice registers a namespace named "<name>" for <duration> block
     Then she should receive a confirmation message
-    And she should become the owner of the new namespace <name> for least <duration> block
-    And her "cat.currency" balance should decrease in <cost> units
+    And Alice should become the owner of the new namespace <name> for least <duration> block
+    And Alice pays fee in <cost> units
 
     Examples:
       | name  | duration | cost |
@@ -38,18 +37,18 @@ Feature: Register a namespace
   Scenario Outline: An account tries to register a namespace with an invalid duration
     When Alice tries to registers a namespace named "alice" for <duration> block
     Then she should receive the error "<error>"
-    And her "cat.currency" balance should remain intact
+    And Alice "cat.currency" balance should remain intact
 
     Examples:
       | duration    | error                                         |
-      | 0           | Failure_Namespace_Eternal_After_Nemesis_Block |
-      | -1          | Failure_Namespace_Invalid_Duration            |
-      | 40000000000 | Failure_Namespace_Invalid_Duration            |
+      | 0           | FAILURE_NAMESPACE_ETERNAL_AFTER_NEMESIS_BLOCK |
+      | -1          | FAILURE_NAMESPACE_INVALID_DURATION            |
+      | 40000000000 | FAILURE_NAMESPACE_INVALID_DURATION            |
 
   Scenario Outline: An account tries to register a namespace with an invalid name
     When Alice tries to registers a namespace named "<name>" for 6 block
-    Then she should receive the error "Failure_Namespace_Invalid_Name"
-    And her "cat.currency" balance should remain intact
+    Then she should receive the error "FAILURE_NAMESPACE_INVALID_NAME"
+    And Alice "cat.currency" balance should remain intact
 
     Examples:
       | name                                                              |
@@ -59,36 +58,23 @@ Feature: Register a namespace
 
   Scenario: An account tries to register a namespace with a reserved name
     When Alice tries to registers a namespace named "xem" for 6 block
-    Then she should receive the error "Failure_Namespace_Root_Name_Reserved"
-    And her "cat.currency" balance should remain intact
+    Then she should receive the error "FAILURE_NAMESPACE_ROOT_NAME_RESERVED"
+    And Alice "cat.currency" balance should remain intact
 
   Scenario: An account tries to register a namespace which is already registered by another account
-    Given Bob registers a namespace named "bob" for 5 blocks
-    When Alice tries to registers a namespace named "bob" for 6 block
-    Then she should receive the error "Failure_Namespace_Owner_Conflict"
-    And her "cat.currency" balance should remain intact
+    Given Bob registers a namespace named "bob_name" for 5 blocks
+    When Alice tries to registers a namespace named "bob_name" for 6 block
+    Then she should receive the error "FAILURE_NAMESPACE_OWNER_CONFLICT"
+    And Alice "cat.currency" balance should remain intact
 
   Scenario: An account tries to register a namespace which is already registered by another account during the grace period
-    Given Bob registers a namespace named "bob" for 6 blocks
+    Given Bob registers a namespace named "bob_expired" for 6 blocks
     And the namespace is now under grace period
-    When Alice tries to registers a namespace named "bob" for 6 block
-    Then she should receive the error "Failure_Namespace_Owner_Conflict"
-    And her "cat.currency" balance should remain intact
-
+    When Alice tries to registers a namespace named "bob_expired" for 6 block
+    Then she should receive the error "FAILURE_NAMESPACE_OWNER_CONFLICT"
+    And Alice "cat.currency" balance should remain intact
+  
   Scenario: An account tries to register a namespace but does not have enough funds
     Given Sue has has no "cat.currency"
     When Sue tries to registers a namespace named "sue" for 6 block
-    Then she should receive the error "Failure_Core_Insufficient_Balance"
-
-  # Account Restrictions
-  @not-implemented
-  Scenario: An account tries to register a namespace but has not allowed sending "REGISTER_NAMESPACE" transactions
-    Given Alice only allowed sending "TRANSFER" transactions
-    When "Alice" registers the namespace named "alice" for 1 day
-    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"
-
-  @not-implemented
-  Scenario: An account tries to register a namespace but has blocked sending "REGISTER_NAMESPACE" transactions
-    Given Alice blocked sending "REGISTER_NAMESPACE" transactions
-    When "Alice" registers the namespace named "alice" for 1 day
-    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"
+    Then she should receive the error "FAILURE_CORE_INSUFFICIENT_BALANCE"

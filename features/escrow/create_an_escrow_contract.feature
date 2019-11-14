@@ -3,7 +3,7 @@ Feature: Create an escrow contract
   I want to create an escrow contract between different participants,
   so that there is no need to trust in each other.
 
-  Background:
+
     Given the native currency asset is "cat.currency"
     And the maximum number of participants per escrow contract is 15
     And the maximum number of transactions per escrow contract is 1000
@@ -78,17 +78,26 @@ Feature: Create an escrow contract
     When Alice publishes the contract
     Then every sender participant should receive a notification to accept the contract
 
+  Scenario: An account creates an escrow contract which fails and balance of all accounts remain the same
+    Given Alice defined the following bonded escrow contract:
+      | type           | sender   | recipient | data             |
+      | send-an-asset  | Alice    | Bob       | 20 cat.currency  |
+      | send-an-asset  | Sue      | Alice     | 200 unknown      |
+    And Alice published the bonded contract
+    And "Sue" accepts the transaction
+    When the hash lock expires
+    Then Bob balance should remain intact
+    And Sue balance should remain intact
+    And Alice "cat.currency" balance should decrease in 10 units
+
   Scenario: An account creates an escrow contract where one participant have insufficient balance
     Given Alice defined the following bonded escrow contract:
       | type           | sender   | recipient | data             |
-      | send-an-asset  | Alice    | Bob       | 10 cat.currency  |
+      | send-an-asset  | Alice    | Bob       | 20 cat.currency  |
       | send-an-asset  | Sue      | Alice     | 200 unknown      |
     And Alice published the bonded contract
     When "Sue" accepts the transaction
     Then she should receive the error "Failure_Core_Insufficient_Balance"
-    And Alice balance should remain intact
-    And Sue balance should remain intact
-    And Bob balance should remain intact
 
   Scenario: An account tries to create an escrow contract with too many transactions
     Given Alice defined an escrow contract involving more than 1000 transactions
@@ -102,7 +111,7 @@ Feature: Create an escrow contract
 
   Scenario: An account tries to create an empty escrow contract
     Given Alice defined the following bonded escrow contract:
-      | type  | sender | data   |
+    | type  | sender | data   |
     When she publishes the contract
     Then she should receive the error "Failure_Aggregate_No_Transactions"
 
@@ -113,7 +122,8 @@ Feature: Create an escrow contract
       | create-a-multisignature-contract | Bob    | 1-of-1, cosignatory:alice |
     And Alice locks 10 "cat.currency" to guarantee that the contract will conclude 1 block
     When she publishes the contract
-    Then she should receive the error "Failure_Hash_Lock_Inactive_Hash"
+    Then she should receive the error "FAILURE_LOCKHASH_INACTIVE_HASH"
+    And Alice "cat.currency" balance should decrease by 10 units
 
   Scenario: An account tries to create an escrow contract but the lock already exists
     Given Alice defined the following bonded escrow contract:
@@ -122,7 +132,7 @@ Feature: Create an escrow contract
       | send-an-asset  | Bob      | Sue       | 2 cat.currency   |
     And Alice locks 10 "cat.currency" to guarantee that the contract will conclude 5 blocks
     When Alice tries to lock 10 "cat.currency" to guarantee that the contract will conclude 1 blocks
-    Then she should receive the error "Failure_Hash_Lock_Hash_Exists"
+    Then she should receive the error "Failure_Hash_Lock_Already_Hash_Exists"
 
     Given Alice defined the following bonded escrow contract:
       | type           | sender   | recipient | data             |
@@ -138,7 +148,7 @@ Feature: Create an escrow contract
       | send-an-asset  | Bob      | Sue       | 2 cat.currency   |
     When Alice tries to lock 10 "tickets" to guarantee that the contract will conclude 6 blocks
     Then she should receive the error "Failure_Hash_Lock_Invalid_Mosaic_Amount"
-    And her "cat.currency" balance should remain intact
+    And Alice "cat.currency" balance should remain intact
 
   Scenario Outline: An account tries to create an escrow an escrow but the amount is not equal to 10 cat.currency
     Given Alice defined the following bonded escrow contract:
@@ -147,7 +157,7 @@ Feature: Create an escrow contract
       | send-an-asset  | Bob      | Sue       | 2 cat.currency   |
     When Alice tries to lock <amount> "cat.currency" to guarantee that the contract will conclude 6 blocks
     Then she should receive the error "Failure_Hash_Lock_Invalid_Mosaic_Amount"
-    And her "cat.currency" balance should remain intact
+    And Alice "cat.currency" balance should remain intact
     Examples:
       | amount |
       | -1     |
@@ -161,7 +171,7 @@ Feature: Create an escrow contract
       | send-an-asset  | Bob      | Sue       | 2 cat.currency   |
     When Alice tries to lock 10 "cat.currency" to guarantee that the contract will conclude <duration> blocks
     Then she should receive the error "Failure_Hash_Lock_Invalid_Duration"
-    And her "cat.currency" balance should remain intact
+    And Alice "cat.currency" balance should remain intact
 
     Examples:
       | duration |
@@ -223,34 +233,3 @@ Feature: Create an escrow contract
     And "Browser" accepts the contract
     When she publishes the contract
     Then she should receive the error "Failure_Aggregate_Missing_Cosigners"
-
-  # Account Restrictions
-  @not-implemented
-  Scenario: An account tries to lock assets but has not allowed sending "LOCK_HASH" transactions
-    Given Alice only allowed sending "TRANSFER" transactions
-    And Alice defined a valid escrow contract
-    When "Alice" locks 10 "cat.currency" to guarantee that the contract will conclude in less than 2 days
-    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"
-
-  @not-implemented
-  Scenario: An account tries to create an escrow contract but has blocked sending "LOCK_HASH" transactions
-    Given Alice blocked sending "LOCK_HASH" transactions
-    And Alice defined a valid escrow contract
-    When "Alice" locks 10 "cat.currency" to guarantee that the contract will conclude in less than 2 days
-    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"
-
-  @not-implemented
-  Scenario: An account tries to create an escrow contract but has not allowed sending "AGGREGATE" transactions
-    Given Alice defined a valid escrow contract
-    And "Alice" locked 10 "cat.currency" to guarantee that the contract will conclude in less than 2 days
-    And Alice only allowed sending "TRANSFER" transactions
-    When she publishes the contract
-    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"
-
-  @not-implemented
-  Scenario: An account tries to create an escrow contract but has blocked sending "AGGREGATE" transactions
-    Given Alice blocked sending "AGGREGATE" transactions
-    And Alice defined a valid escrow contract
-    And  "Alice" locked 10 "cat.currency" to guarantee that the contract will conclude in less than 2 days
-    When she publishes the contract
-    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"

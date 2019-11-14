@@ -1,10 +1,9 @@
-@not-implemented
+@bvt
 Feature: Get balance changes
   As Alice
   I want to know why my balance has changed
   If I have not received or sent any asset recently
 
-  Background:
     Given the native currency asset is "cat.currency"
     And an escrow contract requires to lock at least 10 "cat.currency" to guarantee that the it will conclude
 
@@ -24,60 +23,50 @@ Feature: Get balance changes
 
   # HashLock
   Scenario: An account wants to check if some funds were locked
-    Given Alice defined a valid escrow contract
-    And "Alice" locked 10 "cat.currency" to guarantee that the contract will conclude in less than 2 days
+    Given Alice defined the following bonded escrow contract:
+      | type           | sender   | recipient | data             |
+      | send-an-asset  | Alice    | Tom       | 1 cat.currency   |
+      | send-an-asset  | Bob      | Sue       | 2 cat.currency   |
+    And Alice locks 10 "cat.currency" to guarantee that the contract will conclude 5 blocks
     When she checks if the locked mosaics for the previous transaction have been locked
-    Then she should get a positive response with:
-      | amount | asset          | sender |
-      | 10     | cat.currency   | Alice  |
+    Then Alice should have 10 "cat.currency" sent from her account
 
   Scenario: An account wants to check if the escrow contract completed
-    Given Alice defined a valid escrow contract
-    And "Alice" locked 10 "cat.currency" to guarantee that the contract will conclude in less than 2 days
-    And  the escrow contract concludes successfully
+    Given Alice created a 1 of 2 multisignature contract called "deposit" with 1 required for removal with cosignatories:
+      | cosignatory |
+      | Tom         |
+      | phone       |
     When she checks if the contract has concluded
-    Then she should get a positive response with:
-      | amount | asset | sender |
-      | 10     | cat.currency   | Alice  |
+    Then Alice should get 10 "cat.currency" returned to her account
 
   Scenario: An account wants to check if the lock expired
-    Given Alice defined a valid escrow contract
-    And "Alice" locked 10 "cat.currency" to guarantee that the contract will conclude in less than 2 days
-    And the lock expires
+    Given Alice defined the following bonded escrow contract:
+      | type           | sender   | recipient | data             |
+      | send-an-asset  | Alice    | Tom       | 1 cat.currency   |
+      | send-an-asset  | Bob      | Sue       | 2 cat.currency   |
+    And Alice locks 10 "cat.currency" to guarantee that the contract will conclude 1 blocks
+    And the hash lock expires
     When she checks if the lock has expired
-    Then she should get a positive response with:
-      | amount | asset | sender       |
-      | 10     | cat.currency   | sink_account |
+    Then harvesting account should get 10 "cat.currency" from the hash lock
+    And Alice "cat.currency" balance should decrease by 10 units
 
   # SecretLock
   Scenario: An account wants to check if assets are locked
-    Given Alice derived the secret from the seed using "SHA_512"
-    And "Alice" locked the following asset units using the previous secret:
-      | amount | asset       | recipient | network | days |
-      | 10     | alice.token | Bob       | MIJIN   | 96   |
-    When she checks if the locked mosaics for the previous transaction have been locked
-    Then she should get a positive response with:
-      | amount | asset       | sender |
-      | 10     | alice.token | Alice  |
+    Given Alice derived the secret from the seed using "SHA3_256"
+    And Alice locked 10 "cat.currency" for Tom on the network for 5 blocks
+    When she checks if the locked mosaics for the previous secret transaction have been locked
+    Then Alice should have 10 "cat.currency" in the secret lock
 
   Scenario: An account wants to check if a lock was proved
-    Given Alice derived the secret from the seed using "SHA_512"
-    And "Alice" locked the following asset units using the previous secret:
-      | amount | asset       | recipient | network | hours |
-      | 10     | alice.token | Bob       | MIJIN   | 2     |
-    And Bob proved knowing the secret's seed in "MIJIN"
+    Given Alice derived the secret from the seed using "SHA3_256"
+    And Alice locked 10 "cat.currency" for Tom on the network for 5 blocks
+    And Tom proved knowing the secret's seed on the network
     When Alice checks if the previous transaction has been proved
-    Then she should get a positive response with:
-      | amount | asset       | recipient |
-      | 10     | alice.token | Bob       |
+    Then Alice can verify that Tom receive 10 "cat.currency"
 
   Scenario: An account wants to check if a lock expired
-    Given Alice derived the secret from the seed using "SHA_512"
-    And "Alice" locked the following asset units using the previous secret:
-      | amount | asset       | recipient | network | hours |
-      | 10     | alice.token | Bob       | MIJIN   | 2     |
-    And the lock expires
+    Given Alice derived the secret from the seed using "SHA3_256"
+    And Alice locked 10 "cat.currency" for Tom on the network for 1 block
+    And the secret lock expires
     When Alice checks if the previous transaction has expired
-    Then she should get a positive response with:
-      | amount | asset       | recipient |
-      | 10     | alice.token | Alice     |
+    Then Alice should have 10 "cat.currency" return from the secret lock
