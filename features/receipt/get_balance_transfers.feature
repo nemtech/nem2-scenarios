@@ -38,4 +38,3 @@ Feature: Get balance transfers
       | duration | cost |
       | 7        | 7    |
       | 9        | 9    |
-

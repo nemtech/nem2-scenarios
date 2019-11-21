@@ -1,4 +1,3 @@
-
 Feature: Create a subnamespace
   As Alice
   I want to create a subnamespace
@@ -35,7 +34,7 @@ Feature: Create a subnamespace
     When Bob tries to creates a subnamespace named "alicetoo.subnamespace"
     Then she should receive the error "FAILURE_NAMESPACE_OWNER_CONFLICT"
     And Bob "cat.currency" balance should remain intact
-    
+
   Scenario: An account tries to create a subnamespace and exceeds the number of allowed nested levels
     Given Alice registered the namespace named "one" for 10 blocks
     When Alice tries to creates a subnamespace "one.two.three.four" which is too deep

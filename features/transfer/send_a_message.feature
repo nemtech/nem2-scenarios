@@ -12,7 +12,7 @@ Feature: Send a message
     When Alice sends "<message>" to "<recipient>"
     Then she should receive a confirmation message
     And the "<recipient>" should receive the message "<message>"
- 
+
     Examples:
       | message | recipient    |
       | Hello   | Sue          |

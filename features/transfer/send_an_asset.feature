@@ -3,7 +3,7 @@ Feature: Send an asset
   I want to send 1 concert ticket to Bob
   So that he can attend the event.
 
-Background: Create assets for transfer.
+  Background: Create assets for transfer.
     Given Alice registered the asset "X"
     And Alice registered the asset "Y"
 
@@ -87,7 +87,7 @@ Background: Create assets for transfer.
 
   @bvt
   Scenario: An account tries to send an expired asset
-  Given Alice has registered expiring asset "A" for 2 blocks
-  And the asset is now expired
-  When Alice transfer 1 asset to Bob
-  Then she should receive the error "Failure_Core_Insufficient_Balance"
+    Given Alice has registered expiring asset "A" for 2 blocks
+    And the asset is now expired
+    When Alice transfer 1 asset to Bob
+    Then she should receive the error "Failure_Core_Insufficient_Balance"

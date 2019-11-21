@@ -1,4 +1,4 @@
-  Feature: Extend a namespace registration period
+Feature: Extend a namespace registration period
   As Alice
   I want to extend the namespace registration
   So that I can continue organizing and naming assets.

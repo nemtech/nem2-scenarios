@@ -1,4 +1,3 @@
-
 Feature: Link a namespace to an address
   As Alice,
   I want to link a namespace to an address,

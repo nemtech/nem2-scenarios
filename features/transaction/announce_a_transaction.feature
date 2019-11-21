@@ -26,7 +26,6 @@ Feature: Announce a transaction
       | 0        | FAILURE_CORE_PAST_DEADLINE   |
       | -1       | FAILURE_CORE_PAST_DEADLINE   |
 
-
   Scenario: An unconfirmed transaction deadline expires
     When Alice announce valid transaction which expires in unconfirmed status
     Then she should receive a confirmation message
@@ -39,7 +38,7 @@ Feature: Announce a transaction
   Scenario: An account tries to announce an already announced transaction
     Given Alice registered the asset "X"
     When Alice sends 2 asset "X" to Bob
-    When Alice announces same the transaction
+    And Alice announces same the transaction
     Then she should receive the error "FAILURE_HASH_ALREADY_EXISTS"
 
   Scenario: An account tries to announce a transaction with an invalid network

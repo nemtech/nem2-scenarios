@@ -2,7 +2,7 @@ Feature: Register a namespace
   As Alice
   I want to register a namespace
   So that I can organize and name assets easily.
-  
+
     Given the native currency asset is "cat.currency"
     And registering a namespace costs 1 "cat.currency" per block
     And the mean block generation time is 15 seconds
@@ -73,7 +73,7 @@ Feature: Register a namespace
     When Alice tries to registers a namespace named "bob_expired" for 6 block
     Then she should receive the error "FAILURE_NAMESPACE_OWNER_CONFLICT"
     And Alice "cat.currency" balance should remain intact
-  
+
   Scenario: An account tries to register a namespace but does not have enough funds
     Given Sue has has no "cat.currency"
     When Sue tries to registers a namespace named "sue" for 6 block

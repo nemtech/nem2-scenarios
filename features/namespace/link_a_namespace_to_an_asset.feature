@@ -1,5 +1,3 @@
-
-
 Feature: Link a namespace to an asset
   As Alice,
   I want to link a namespace to an asset,
@@ -72,7 +70,7 @@ Feature: Link a namespace to an asset
   Scenario: An account tries to link a namespace twice to an asset
     Given Alice registered the namespace "token"
     And Alice registered the asset "X"
-    Given Alice links the namespace "token" to the asset "X"
+    And Alice links the namespace "token" to the asset "X"
     When Alice tries to link the namespace "token" to the asset "X"
     Then she should receive the error "FAILURE_NAMESPACE_ALIAS_ALREADY_EXISTS"
 
