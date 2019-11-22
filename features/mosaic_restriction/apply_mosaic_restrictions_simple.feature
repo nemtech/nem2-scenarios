@@ -13,7 +13,7 @@ Feature: Apply global restrictions on mosaics
       | exp.currency     |
     And Bobby has at least 1 exp.currency balance
 
-  Scenario: 1. An account that doesn't pass the restriction cannot transact with the mosaic
+  Scenario: An account that doesn't pass the restriction cannot transact with the mosaic
     Given Alex creates a following restriction
      | Mosaic           | Restriction Key     |  Restriction value    |   Restriction Type     |
      | exp.currency     | can_hold            |  1                    |   EQ                   |
@@ -23,7 +23,7 @@ Feature: Apply global restrictions on mosaics
     When Bobby tries to send 1 asset "exp.currency" to Carol
     Then Bobby should receive an error "......."
 
-  Scenario: 2. An account that passes the restriction should be able to transact with the mosaic
+  Scenario: An account that passes the restriction should be able to transact with the mosaic
     Given Alex creates a following restriction
       | Mosaic           | Restriction Key     |  Restriction value    |   Restriction Type     |
       | exp.currency     | can_hold            |  1                    |   EQ                   |
@@ -33,18 +33,18 @@ Feature: Apply global restrictions on mosaics
     When Bobby tries to send 1 asset "exp.currency" to Carol
     Then Carol should receive 1 of asset "exp.currency"
 
-  Scenario: 3. An account that doesn't pass multiple restriction cannot transact with the mosaic
+  Scenario: An account that doesn't pass multiple restriction cannot transact with the mosaic
     Given Alex creates a following restriction
       | Mosaic           | Restriction Key     |  Restriction value    |   Restriction Type     |
       | exp.currency     | can_hold            |  1                    |   EQ                   |
-      | exp.currency     | can_share           |  2                    |   EQ
+      | exp.currency     | can_share           |  2                    |   EQ                   |
     And Alex makes a modification to the mosiac restriction
       | restriction key       | restriction value       |
       | can_hold              |         0               |
     When Bobby tries to send 1 asset "exp.currency" to Carol
     Then Bobby should receive an error
 
-  Scenario: 4. An account that passes multiple restrictions can interact with the mosaic
+  Scenario: An account that passes multiple restrictions can interact with the mosaic
     Given Alex creates a following restrictions
       | Mosaic           | Restriction Key     |  Restriction value    |   Restriction Type     |
       | exp.currency     | can_hold            |  1                    |   EQ                   |
@@ -56,7 +56,7 @@ Feature: Apply global restrictions on mosaics
     When Bobby tries to send 1 asset "exp.currency" to Carol
     Then Carol should receive 1 of asset "exp.currency"
 
-  Scenario: 5. An account that cannot pass the right restriction cannot do the corresponding transaction with mosaic
+  Scenario: An account that cannot pass the right restriction cannot do the corresponding transaction with mosaic
     Given Alex creates a following restrictions
       | Mosaic           | Restriction Key     |  Restriction value    |   Restriction Type     |
       | exp.currency     | can_hold            |  1                    |   EQ                   |

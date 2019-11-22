@@ -99,20 +99,20 @@ Feature: Apply global restrictions on a mosaic
 #    **************** Address restrictions **************
 #    This scenario is not clear
   Scenario: 7. Verify integrity when one of multiple restrictions is removed
-    As Alex when I enforce multiple global restrictions on an asset
+    Given Alex enforces multiple global restrictions on an asset
     And Bobby does not pass both the restrictions
     And Alex removes one global restriction
     Then Bobby should be able to transact only without first restriction
 
   Scenario: 8. Verify multiple accounts that pass the restrictions are able to interact
-    As Alex I enforce a restriction on a mosaic
+    Given Alex enforces a restriction on a mosaic
     And Bobby and Carol pass the restriction
     Then Bobby and Carol should be able to transact with the mosaic
 
   Scenario: 9. Verify that multiple accounts that do not pass the restrictions are not able to interact among themselves
-  As Alex I enforce a restriction on a mosaic
-   And Bobby passes the restriction
-   And Carol does not pass the restriction
-   Then Bobby should not be able to transact with Carol with the mosaic
+    Given Alex enforces a restriction on a mosaic
+    And Bobby passes the restriction
+    And Carol does not pass the restriction
+    Then Bobby should not be able to transact with Carol with the mosaic
 
 #    One scenario for each restriction type? (There are 7 restriction types)
