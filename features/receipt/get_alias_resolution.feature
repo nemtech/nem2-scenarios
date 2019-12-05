@@ -112,6 +112,3 @@ Feature: Get the alias resolution for a given transaction
     When "Alice" wants to get the mosaic identifier for the transaction with index "1" and subindex "4"
     Then the mosaic id should be "7cdf3b117a3c40cc"
     And the block "6" should have 4 mosaic resolution statements
-
-
-
