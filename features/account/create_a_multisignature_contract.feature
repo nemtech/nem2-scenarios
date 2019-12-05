@@ -22,8 +22,8 @@ Feature: Create a multisignature contract
       | 1               | 2              |
       | 2               | 1              |
 
-    @bvt
- Scenario Outline: An account tries to create a multisignature contract, setting an invalid values
+  @bvt
+  Scenario Outline: An account tries to create a multisignature contract, setting an invalid values
     Given Alice defined a <minimumApproval> of 2 multisignature contract called "tom" with <minimumRemoval> required for removal with cosignatories:
       | cosignatory |
       | phone       |
@@ -72,7 +72,7 @@ Feature: Create a multisignature contract
     Given Bob is cosignatory of 5 multisignature contracts
     And Alice defined a 1 of 2 multisignature contract called "tom5" with 1 required for removal with cosignatories:
       | cosignatory |
-      | Bob         |    
+      | Bob         |
       | phone       |
     And Alice published the bonded contract
     When all the required cosignatories sign the transaction
@@ -89,11 +89,11 @@ Feature: Create a multisignature contract
     Given Alice created a 1 of 2 multisignature contract called "deposit" with 1 required for removal with cosignatories:
       | cosignatory |
       | Tom         |
-      | phone       | 
+      | phone       |
     And Alice defined a 1 of 2 multisignature contract called "Tom" with 1 required for removal with cosignatories:
       | cosignatory |
       | deposit     |
-      | phone       | 
+      | phone       |
     And Alice published the bonded contract
     When all the required cosignatories sign the transaction
     Then she should receive the error "FAILURE_MULTISIG_LOOP"
@@ -118,7 +118,7 @@ Feature: Create a multisignature contract
     And Alice defined a 1 of 2 multisignature contract called "level2" with 1 required for removal with cosignatories:
       | cosignatory |
       | level       |
-      | phone       | 
+      | phone       |
     And Alice published the bonded contract
     When all the required cosignatories sign the transaction
     Then the multisignature contract should become a 2 level multisignature contract

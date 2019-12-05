@@ -8,7 +8,7 @@ Feature: Prevent sending transactions by type
       | Alex  |
       | Bobby |
       | Carol |
-    Given the following transaction types are available:
+    And the following transaction types are available:
       | TRANSFER                       |
       | REGISTER_NAMESPACE             |
       | ACCOUNT_PROPERTIES_ENTITY_TYPE |
@@ -65,7 +65,6 @@ Feature: Prevent sending transactions by type
     And Bobby should receive 1 of asset "cat.currency"
     And Alex "cat.currency" balance should decrease by 1 units
     And Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_OPERATION_TYPE_PROHIBITED"
-
 
   Scenario: An account unblocks a not blocked transaction type
     Given Alex blocks sending transactions of type:

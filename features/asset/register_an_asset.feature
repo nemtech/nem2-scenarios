@@ -1,4 +1,4 @@
- Feature: Register an asset
+Feature: Register an asset
   As Alice
   I want to register an asset
   So that I can send one unit to Bob.
@@ -46,4 +46,3 @@
     Given Sue has spent all her "cat.currency"
     When Sue registers an asset
     Then she should receive the error "FAILURE_CORE_INSUFFICIENT_BALANCE"
-

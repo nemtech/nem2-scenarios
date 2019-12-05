@@ -23,11 +23,11 @@ Feature: Prevent receiving transactions from undesired addresses
     Given Bobby only allowed receiving transactions from:
       | Alex   |
     When Alex sends 1 asset "cat.currency" to Bobby
-      And Carol tries to send 1 asset "cat.currency" to Bobby
+    And Carol tries to send 1 asset "cat.currency" to Bobby
     Then Bobby should receive a confirmation message
-      And Bobby should receive 1 of asset "cat.currency"
+    And Bobby should receive 1 of asset "cat.currency"
     And Alex "cat.currency" balance should decrease by 1 unit
-      And Carol should receive the error "Failure_RestrictionAccount_Address_Interaction_Prohibited"
+    And Carol should receive the error "Failure_RestrictionAccount_Address_Interaction_Prohibited"
 
   Scenario: 3. An account unblocks an address
     Given Bobby blocked receiving transactions from:

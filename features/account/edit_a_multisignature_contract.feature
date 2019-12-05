@@ -86,8 +86,8 @@ Feature: Edit a multisignature contract
     Then Alice should receive a confirmation message
     And tom become a regular account
 
- @bvt
- Scenario Outline: A cosignatory updates the minimum approval and removal requirements for a multisignature account
+  @bvt
+  Scenario Outline: A cosignatory updates the minimum approval and removal requirements for a multisignature account
     Given Alice created a 2 of 4 multisignature contract called "tom" with 2 required for removal with cosignatories:
       | cosignatory |
       | computer    |
@@ -132,7 +132,7 @@ Feature: Edit a multisignature contract
       | computer    | remove    |
     When computer publishes the contract
     Then Alice should receive a confirmation message
-    Then she should receive the error "FAILURE_MULTISIG_MIN_SETTING_OUT_OF_RANGE"
+    And she should receive the error "FAILURE_MULTISIG_MIN_SETTING_OUT_OF_RANGE"
 
   Scenario: A cosignatory tries adding twice another cosignatory to the multisignature contract
     Given Alice created a 1 of 2 multisignature contract called "tom" with 1 required for removal with cosignatories:
@@ -183,7 +183,7 @@ Feature: Edit a multisignature contract
       | cosignatory |
       | computer    |
       | phone       |
-    Given Alice created a 1 of 2 multisignature contract called "phone" with 1 required for removal with cosignatories:
+    And Alice created a 1 of 2 multisignature contract called "phone" with 1 required for removal with cosignatories:
       | cosignatory |
       | app         |
       | browser     |
@@ -228,4 +228,3 @@ Feature: Edit a multisignature contract
     And computer published the bonded contract
     When "tablet" accepts the transaction
     Then Alice should receive the error "FAILURE_MULTISIG_ACCOUNT_IN_BOTH_SETS"
-
