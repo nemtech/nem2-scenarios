@@ -66,7 +66,7 @@ Feature: Get the alias resolution for a given transaction
     Given the block "4" stores the following "TRANSFER" transactions:
       | index | sender | recipient       | mosaic            |
       | 1     | Alice  | ticket_vendor_a | 1 event.organizer |
-    Given the block "4" stores the following "AGGREGATE" transactions:
+    And the block "4" stores the following "AGGREGATE" transactions:
       | index | sender | action             | mosaicId         | recipient        |
       | 2     | Alice  | TRANSFER           | event.organizer  | ticket_vendor_a  |
       | 2     | Alice  | TRANSFER           | event.organizer  | ticket_vendor_b  |
@@ -78,7 +78,7 @@ Feature: Get the alias resolution for a given transaction
     Then the mosaic id should be "0dc67fbe1cad29e5"
     And the block "4" should have 1 mosaic resolution statements
 
-  Scenario:  Different aliases have resolutions in the block (AGGREGATE)
+  Scenario: Different aliases have resolutions in the block (AGGREGATE)
     Given the block "5" stores the following "AGGREGATE" transactions:
       | index | sender | action             | mosaicId         | recipient        |
       | 1     | Alice  | TRANSFER           | event.organizer  | ticket_vendor_a  |
