@@ -26,7 +26,7 @@ Feature: Register a namespace
   Scenario Outline: An account registers a namespace
     When Alice registers a namespace named "<name>" for <duration> block
     Then she should receive a confirmation message
-    And Alice should become the owner of the new namespace <name> for least <duration> block
+    And Alice should become the owner of the new namespace "<name>" for least <duration> block
     And Alice pays fee in <cost> units
 
     Examples:

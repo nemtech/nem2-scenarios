@@ -12,7 +12,7 @@ Feature: Link a namespace to an asset
     And Alice can send "token" instead of asset "X" to Bob
 
   @bvt
-  Scenario: An account tries to send an asset using namespace alias to an assest after unlinking it
+  Scenario: An account tries to send an asset using namespace alias after unlinking it
     Given Alice registered the namespace "asset"
     And Alice registered the asset "T"
     And Alice links the namespace "asset" to the asset "T"
@@ -38,7 +38,7 @@ Feature: Link a namespace to an asset
     And Alice can send "alice.token" instead of asset "X" to Bob
 
   @bvt
-  Scenario: An account tries to send an asset using subnamespace alias to an assest after unlinking it
+  Scenario: An account tries to send an asset using subnamespace alias after unlinking it
     Given Alice registered the subnamespace "alice.asset"
     And Alice registered the asset "T"
     And Alice links the namespace "alice.asset" to the asset "T"
