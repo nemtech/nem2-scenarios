@@ -24,9 +24,9 @@ Feature: Prevent receiving transactions containing a specific asset
     And Alex balance should remain intact
 
   Scenario Outline: 2. An account allows receiving transactions containing a specific asset
-    When Bobby allows receiving transactions containing the following assets:
+    Given Bobby allows receiving transactions containing the following assets:
       | <asset> |
-    And Alex sends <amount> asset "<asset>" to Bobby
+    When Alex sends <amount> asset "<asset>" to Bobby
     Then Bobby should receive a confirmation message
     And Bobby should receive <amount> of asset "<asset>"
     And Alex "<asset>" balance should decrease by <amount> units
