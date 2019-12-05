@@ -63,13 +63,18 @@ Feature: Get the alias resolution for a given transaction
     And the block "3" should have 2 mosaic resolution statements
 
   Scenario: Same alias has multiple resolutions in the block (AGGREGATE)
+    Given the block "4" stores the following "TRANSFER" transactions:
+      | index | sender | recipient       | mosaic            |
+      | 1     | Alice  | ticket_vendor_a | 1 event.organizer |
     Given the block "4" stores the following "AGGREGATE" transactions:
       | index | sender | action             | mosaicId         | recipient        |
-      | 1     | Alice  | TRANSFER           | event.organizer  | ticket_vendor_a  |
-      | 1     | Alice  | TRANSFER           | event.organizer  | ticket_vendor_b  |
+      | 2     | Alice  | TRANSFER           | event.organizer  | ticket_vendor_a  |
+      | 2     | Alice  | TRANSFER           | event.organizer  | ticket_vendor_b  |
     When "Alice" wants to get the mosaic identifier for the transaction with index "1" and subindex "1"
     Then the mosaic id should be "0dc67fbe1cad29e5"
-    When "Alice" wants to get the mosaic identifier for the transaction with index "1" and subindex "2"
+    When "Alice" wants to get the mosaic identifier for the transaction with index "2" and subindex "1"
+    Then the mosaic id should be "0dc67fbe1cad29e5"
+    When "Alice" wants to get the mosaic identifier for the transaction with index "2" and subindex "2"
     Then the mosaic id should be "0dc67fbe1cad29e5"
     And the block "4" should have 1 mosaic resolution statements
 
