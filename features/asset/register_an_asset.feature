@@ -3,13 +3,14 @@ Feature: Register an asset
   I want to register an asset
   So that I can send one unit to Bob.
 
-    The native currency asset is "cat.currency"
-    and registering an asset costs 500 "cat.currency".
-    The mean block generation time is 15 seconds
-    and the maximum registration period is 1 year
-    and the maximum asset divisibility is 6
-    and the maximum number of assets an account can have is 1000
-    and the maximum asset supply is 9000000000
+  # Some points to note about an asset
+  # The native currency asset is "cat.currency"
+  # And registering an asset costs 500 "cat.currency".
+  # The mean block generation time is 15 seconds
+  # And the maximum registration period is 1 year
+  # And the maximum asset divisibility is 6
+  # And the maximum number of assets an account can have is 1000
+  # And the maximum asset supply is 9000000000
 
   @bvt
   Scenario Outline: An account registers an expiring asset with valid properties with divisibility

@@ -23,7 +23,7 @@ Feature: Create a multisignature contract
       | 2               | 1              |
 
   @bvt
-  Scenario Outline: An account tries to create a multisignature contract, setting an invalid values
+  Scenario Outline: An account tries to create a multisignature contract, setting invalid values
     Given Alice defined a <minimumApproval> of 2 multisignature contract called "tom" with <minimumRemoval> required for removal with cosignatories:
       | cosignatory |
       | phone       |
