@@ -3,13 +3,13 @@ Feature: Create an escrow contract
   I want to create an escrow contract between different participants,
   so that there is no need to trust in each other.
 
-    Given the native currency asset is "cat.currency"
-    And the maximum number of participants per escrow contract is 15
-    And the maximum number of transactions per escrow contract is 1000
-    And an escrow contract requires to lock at least 10 "cat.currency" to guarantee that the it will conclude
-    And an escrow contract is active up to 2 days
-    And the mean block generation time is 15 seconds
-    And Alice has at least 10 "cat.currency" in her account
+  # Given the native currency asset is "cat.currency"
+  # And the maximum number of participants per escrow contract is 15
+  # And the maximum number of transactions per escrow contract is 1000
+  # And an escrow contract requires to lock at least 10 "cat.currency" to guarantee that the it will conclude
+  # And an escrow contract is active up to 2 days
+  # And the mean block generation time is 15 seconds
+  # And Alice has at least 10 "cat.currency" in her account
 
   Scenario: An account creates an escrow contract
     Given Alice defined the following bonded escrow contract:

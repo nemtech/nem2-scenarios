@@ -3,20 +3,20 @@ Feature: Exchange assets across different blockchains
   I want to exchange assets with Bob across different blockchains,
   so that there is no need to trust in each other.
 
-    Given assets can be locked up to 30 days
-    And the mean block generation time is 15 seconds
-    And the secret seed length should be between 10 and 1000 bytes
-    And the maximum secret lock duration is 30 days
-    And the following hashing algorithms are available:
-      | hash_type |
-      | Sha3_256  |
-      | Keccak    |
-      | Hash_160  |
-      | Hash_256  |
-    And "Alice" owns 999999 "alice:token" units in "MIJIN"
-    And "Alice" owns an account in "MAIN_NET"
-    And "Bob" owns 999999 bob:token units in "MAIN_NET"
-    And "Bob" owns an account in "MIJIN"
+  # Given assets can be locked up to 30 days
+  # And the mean block generation time is 15 seconds
+  # And the secret seed length should be between 10 and 1000 bytes
+  # And the maximum secret lock duration is 30 days
+  # And the following hashing algorithms are available:
+  #   | hash_type  |
+  #   | Sha3_256   |
+  #   | Keccak_256 |
+  #   | Hash_160   |
+  #   | Hash_256   |
+  # And "Alice" owns 999999 "alice:token" units in "MIJIN"
+  # And "Alice" owns an account in "MAIN_NET"
+  # And "Bob" owns 999999 bob:token units in "MAIN_NET"
+  # And "Bob" owns an account in "MIJIN"
 
   @bvt
   Scenario: An account locks assets

@@ -4,10 +4,9 @@ Feature: Accept an escrow contract
   I want to accept an escrow contract,
   so that I give my explicit approval to change my account state.
 
-  Background:
-    Given the native currency asset is "cat.currency"
-    And an escrow contract is active up to 2 days
-    And the mean block generation time is 15 seconds
+  # Given the native currency asset is "cat.currency"
+  # And an escrow contract is active up to 2 days
+  # And the mean block generation time is 15 seconds
 
   Scenario: An escrow contract concludes
     Given Bob has asked Alice for 20 cat.currency
