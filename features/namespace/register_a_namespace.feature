@@ -3,24 +3,25 @@ Feature: Register a namespace
   I want to register a namespace
   So that I can organize and name assets easily.
 
-    Given the native currency asset is "cat.currency"
-    And registering a namespace costs 1 "cat.currency" per block
-    And the mean block generation time is 15 seconds
-    And the maximum registration period is 1 year
-    And the namespace name can have up to 64 characters
-    And the following namespace names are reserved
-      | xem  |
-      | nem  |
-      | user |
-      | org  |
-      | com  |
-      | biz  |
-      | net  |
-      | edu  |
-      | mil  |
-      | gov  |
-      | info |
-    And Alice has 10000000 "cat.currency" in her account
+  # Background information about this feature
+  # Given the native currency asset is "cat.currency"
+  # And registering a namespace costs 1 "cat.currency" per block
+  # And the mean block generation time is 15 seconds
+  # And the maximum registration period is 1 year
+  # And the namespace name can have up to 64 characters
+  # And the following namespace names are reserved
+  #   | xem  |
+  #   | nem  |
+  #   | user |
+  #   | org  |
+  #   | com  |
+  #   | biz  |
+  #   | net  |
+  #   | edu  |
+  #   | mil  |
+  #   | gov  |
+  #   | info |
+  # And Alice has 10000000 "cat.currency" in her account
 
   @bvt
   Scenario Outline: An account registers a namespace

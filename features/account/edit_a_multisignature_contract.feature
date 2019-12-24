@@ -3,6 +3,7 @@ Feature: Edit a multisignature contract
   I want to edit a multisignature contract,
   so that I have multi-factor authentication up-to-date.
 
+  # Background information about this feature
   # Given the maximum number of cosignatories per multisignature contract is 10
   # And the maximum number of multisignature contracts an account can be cosignatory of is 5
   # And  multisignature contracts created have set the minimum number of cosignatures to remove a cosignatory to 1

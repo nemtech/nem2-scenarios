@@ -3,6 +3,7 @@ Feature: Alter an asset supply
   I want to alter an asset supply
   So that it represents the available amount of an item in my shop.
 
+  # Background information about this feature
   # Given the mean block generation time is 15 seconds
   # And the maximum asset supply is 9000000000
   # And Alice has 10000000 "cat.currency" in her account

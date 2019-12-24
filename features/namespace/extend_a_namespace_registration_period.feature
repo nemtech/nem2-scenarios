@@ -3,12 +3,13 @@ Feature: Extend a namespace registration period
   I want to extend the namespace registration
   So that I can continue organizing and naming assets.
 
-    Given the native currency asset is "cat.currency"
-    And extending a namespace registration period costs 1 "cat.currency" per block
-    And the mean block generation time is 15 seconds
-    And the maximum registration period is 1 year
-    And Alice has 10000000 "cat.currency" in her account
-    And the grace period of a namespace is 1 day
+  # Background information about this feature
+  # Given the native currency asset is "cat.currency"
+  # And extending a namespace registration period costs 1 "cat.currency" per block
+  # And the mean block generation time is 15 seconds
+  # And the maximum registration period is 1 year
+  # And Alice has 10000000 "cat.currency" in her account
+  # And the grace period of a namespace is 1 day
 
   @bvt
   Scenario Outline: An account extends a namespace registration period

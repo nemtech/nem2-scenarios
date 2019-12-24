@@ -3,9 +3,10 @@ Feature: Announce a transaction
   I want to announce a transaction
   So that I can alter the state of the blockchain
 
-    Given Alice has an account in MAIN_NET
-    And the maximum transaction lifetime is 1 day
-    And the native currency asset is "cat.currency"
+  # Background information about this feature
+  # Given Alice has an account in MAIN_NET
+  # And the maximum transaction lifetime is 1 day
+  # And the native currency asset is "cat.currency"
 
   @bvt
   Scenario: An account announced a valid transaction (max_fee)

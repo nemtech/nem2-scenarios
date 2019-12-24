@@ -3,6 +3,7 @@ Feature: Register an asset
   I want to register an asset
   So that I can send one unit to Bob.
 
+  # Background information about this feature
   # Some points to note about an asset
   # The native currency asset is "cat.currency"
   # And registering an asset costs 500 "cat.currency".

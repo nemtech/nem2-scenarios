@@ -3,8 +3,9 @@ Feature: Send a message
   I want to send a message to Bob
   So that there is evidence that I have sent the message.
 
-    Given the mean block generation time is 15 seconds
-    And the maximum message length is 1024
+  # Background information about this feature
+  # Given the mean block generation time is 15 seconds
+  # And the maximum message length is 1024
 
   @bvt
   Scenario Outline: An account sends a message to another account

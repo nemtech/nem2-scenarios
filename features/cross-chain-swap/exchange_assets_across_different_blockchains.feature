@@ -3,6 +3,7 @@ Feature: Exchange assets across different blockchains
   I want to exchange assets with Bob across different blockchains,
   so that there is no need to trust in each other.
 
+  # Background information about this feature
   # Given assets can be locked up to 30 days
   # And the mean block generation time is 15 seconds
   # And the secret seed length should be between 10 and 1000 bytes

@@ -4,8 +4,9 @@ Feature: Get balance changes
   I want to know why my balance has changed
   If I have not received or sent any asset recently
 
-    Given the native currency asset is "cat.currency"
-    And an escrow contract requires to lock at least 10 "cat.currency" to guarantee that the it will conclude
+  # Background information about this feature
+    # Given the native currency asset is "cat.currency"
+    # And an escrow contract requires to lock at least 10 "cat.currency" to guarantee that the it will conclude
 
   # Core
   Scenario: Alice wants to see her resulting fees after harvesting a block

@@ -4,12 +4,13 @@ Feature: Get balance transfers
   I want to know why my balance was decrease
   after registering a mosaic or a namespace
 
-    Given the native currency asset is "cat.currency"
-    And creating a namespace costs 1 cat.currency per block
-    And creating a subnamespace costs 100 cat.currency
-    And registering an asset costs 500 cat.currency
-    And the mean block generation time is 15 seconds
-    And Alice has 10000000 "cat.currency" in her account
+  # Background information about this feature
+  # Given the native currency asset is "cat.currency"
+  # And creating a namespace costs 1 cat.currency per block
+  # And creating a subnamespace costs 100 cat.currency
+  # And registering an asset costs 500 cat.currency
+  # And the mean block generation time is 15 seconds
+  # And Alice has 10000000 "cat.currency" in her account
 
   # Mosaic
   Scenario: Alice wants to get the cost of registering an asset

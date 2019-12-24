@@ -3,12 +3,13 @@ Feature: Create a subnamespace
   I want to create a subnamespace
   So that I can organize and name assets.
 
-    Given the native currency asset is "cat.currency"
-    And creating a subnamespace costs 100 cat.currency
-    And the mean block generation time is 15 seconds
-    And the maximum level of nested namespaces is 3
-    And the subnamespace name can have up to 64 characters
-    And Alice has 10000000 "cat.currency" in her account
+  # Background information about this feature
+  # Given the native currency asset is "cat.currency"
+  # And creating a subnamespace costs 100 cat.currency
+  # And the mean block generation time is 15 seconds
+  # And the maximum level of nested namespaces is 3
+  # And the subnamespace name can have up to 64 characters
+  # And Alice has 10000000 "cat.currency" in her account
 
   @bvt
   Scenario: An account creates a subnamespace
@@ -64,3 +65,11 @@ Feature: Create a subnamespace
     Given Bob registered the namespace named "bobs" for 5 blocks
     When Bob tries to create a subnamespace named "bobs.subnamespace"
     Then she should receive the error "FAILURE_CORE_INSUFFICIENT_BALANCE"
+  
+  @not-implemented
+  Scenario: An account tries to exceed the maximum number of subnamespaces
+    Given Alice registered the namespace "alice" for one week
+    And Alice created 500 subnamespaces under "alice" namespace
+    When Alice creates a subnamespace named "one.501"
+    Then she should receive the error "Failure_Namespace_Max_Children_Exceeded"
+    And her "cat.currency" balance should remain intact

@@ -77,6 +77,21 @@ Feature: Prevent sending transactions by type
     And Alex "cat.currency" balance should decrease by 1 units
     And Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_OPERATION_TYPE_PROHIBITED"
 
+  @not-implemented
+  Scenario: An account tries to register an asset but has not allowed sending "MOSAIC_DEFINITION" transactions
+    Given Alex only allows sending transactions of type:
+      | TRANSFER  |
+    When Alex tries to register an asset for 2 seconds
+    Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_TRANSACTION_TYPE_NOT_ALLOWED"
+
+  @not-implemented
+  Scenario: An account tries to register an asset but has blocked sending "MOSAIC_DEFINITION" transactions
+    Given Alex blocks sending transactions of type:
+      | MOSAIC_DEFINITION  |
+      | REGISTER_NAMESPACE |
+    When Alex tries to register an asset for 2 seconds
+    Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_TRANSACTION_TYPE_NOT_ALLOWED"
+
   Scenario: An account unblocks a not blocked transaction type
     Given Alex blocks sending transactions of type:
       | TRANSFER |
