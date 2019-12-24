@@ -91,6 +91,28 @@ Feature: Prevent sending transactions by type
       | REGISTER_NAMESPACE |
     When Alex tries to register an asset for 2 seconds
     Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_TRANSACTION_TYPE_NOT_ALLOWED"
+  
+  @not-implemented
+  Scenario: An account tries to unlock assets but has not allowed sending "SECRET_PROOF" transactions
+    Given Alex only allows sending transactions of type:
+      | SECRET_PROOF  |
+    And Bobby derived the secret from the seed using "SHA_512"
+    And Bobby locked the following asset units using the previous secret:
+      | amount | asset     | recipient | network  | hours |
+      | 10     | bob.token | Alice     | MAIN_NET | 84    |
+    When Alex tries to prove knowing the secret's seed in "MAIN_NET"
+    Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_TRANSACTION_TYPE_NOT_ALLOWED"
+
+  @not-implemented
+  Scenario: An account tries to unlock assets but has blocked sending "SECRET_PROOF" transactions
+    Given Alex blocks sending transactions of type:
+      | SECRET_PROOF  |
+    And Bobby derived the secret from the seed using "SHA_512"
+    And Bobby locked the following asset units using the previous secret:
+      | amount | asset     | recipient | network  | hours |
+      | 10     | bob.token | Alice     | MAIN_NET | 84    |
+    When Alex proved knowing the secret's seed in "MAIN_NET"
+    Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_TRANSACTION_TYPE_NOT_ALLOWED"
 
   Scenario: An account unblocks a not blocked transaction type
     Given Alex blocks sending transactions of type:

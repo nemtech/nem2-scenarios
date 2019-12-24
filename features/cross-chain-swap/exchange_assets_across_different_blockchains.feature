@@ -114,7 +114,7 @@ Feature: Exchange assets across different blockchains
     When Alice tries to prove knowing the secret's seed using "KECCAK_256" as the hashing algorithm
     Then she should receive the error "FAILURE_LOCKSECRET_SECRET_MISMATCH"
 
-    #Restrictions
+  #Restrictions
   Scenario: An account tries to lock assets but the recipient does not allow this asset
     Given Bob only allowed receiving "cat.currency" assets
     And Alice derived the secret from the seed using "SHA_512"
@@ -161,23 +161,4 @@ Feature: Exchange assets across different blockchains
     When "Alice" locks the following asset units using the previous secret:
       | amount | asset       | recipient | network | hours |
       | 10     | alice.token | Bob       | MIJIN   | 96    |
-    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"
-
-  # Account Restrictions
-  Scenario: An account tries to unlock assets but has not allowed sending "SECRET_PROOF" transactions
-    Given Alice only allowed sending "SECRET_PROOF" transactions
-    And Bob derived the secret from the seed using "SHA_512"
-    And "Bob" locked the following asset units using the previous secret:
-      | amount | asset     | recipient | network  | hours |
-      | 10     | bob.token | Alice     | MAIN_NET | 84    |
-    When "Alice" proved knowing the secret's seed in "MAIN_NET"
-    Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"
-
-  Scenario: An account tries to unlock assets but has blocked sending "SECRET_PROOF" transactions
-    Given Alice blocked sending "SECRET_PROOF" transactions
-    And Bob derived the secret from the seed using "SHA_512"
-    And "Bob" locked the following asset units using the previous secret:
-      | amount | asset     | recipient | network  | hours |
-      | 10     | bob.token | Alice     | MAIN_NET | 84    |
-    When "Alice" proved knowing the secret's seed in "MAIN_NET"
     Then she should receive the error "Failure_RestrictionAccount_Transaction_Type_Not_Allowed"
