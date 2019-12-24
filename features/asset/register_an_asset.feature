@@ -29,7 +29,7 @@ Feature: Register an asset
   @bvt
   Scenario: An account registers a non-expiring asset
     When Alice registers a non-expiring asset
-    And Alice should become the owner of the new asset
+    Then Alice should become the owner of the new asset
     And Alice pays fee in 500 units
 
   Scenario Outline: An account tries to register an asset with invalid values
