@@ -3,6 +3,7 @@ Feature: Create an escrow contract
   I want to create an escrow contract between different participants,
   so that there is no need to trust in each other.
 
+  # Background information about this feature
   # Given the native currency asset is "cat.currency"
   # And the maximum number of participants per escrow contract is 15
   # And the maximum number of transactions per escrow contract is 1000
