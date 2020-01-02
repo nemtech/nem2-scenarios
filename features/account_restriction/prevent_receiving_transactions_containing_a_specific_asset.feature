@@ -36,16 +36,32 @@ Feature: Prevent receiving transactions containing a specific asset
       | 10     | cat.currency |
       | 10     | ticket       |
 
-  Scenario: An account unblocks an asset but tries to transfer a blocked asset
+  Scenario: Assets remaining in blocked list after some are unblocked should remain blocked and not be transferable
     Given Bobby blocks receiving transactions containing the following assets:
       | ticket  |
       | voucher |
     When Bobby removes ticket from blocked assets
     And Alex tries to send 1 asset "voucher" to Bobby
-    Then Bobby should receive a confirmation message
-    And Alex should receive the error "Failure_RestrictionAccount_Mosaic_Transfer_Prohibited"
+    Then Alex should receive the error "Failure_RestrictionAccount_Mosaic_Transfer_Prohibited"
 
-  Scenario: An account removes an asset from the allowed assets
+Scenario: A blocked asset when unblocked should be transferable
+    Given Bobby blocks receiving transactions containing the following assets:
+      | ticket  |
+      | voucher |
+    And Bobby removes ticket from blocked assets
+    When Alex tries to send 1 asset "ticket" to Bobby
+    Then Bobby should receive a confirmation message
+    And Bobby should receive 1 of asset "ticket"
+
+  Scenario: An only allowed asset when removed from allowed assets should not be transferable
+    Given Bobby has only allowed receiving the following assets
+      | ticket  |
+      | voucher |
+    And Bobby removes ticket from allowed assets
+    When Alex tries to send 1 asset "ticket" to Bobby
+    Then Alex should receive the error "Failure_RestrictionAccount_Mosaic_Transfer_Prohibited"
+
+  Scenario: Assets remaining in allowed assets after some are removed should be transferable
     Given Bobby has only allowed receiving the following assets
       | ticket  |
       | voucher |
