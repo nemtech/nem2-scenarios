@@ -229,3 +229,5 @@ Feature: Edit a multisignature contract
     And computer published the bonded contract
     When "tablet" accepts the transaction
     Then Alice should receive the error "FAILURE_MULTISIG_ACCOUNT_IN_BOTH_SETS"
+
+  # Moved the Account Restriction scenarios in to the appropriate feature file in account_restrictions folder.

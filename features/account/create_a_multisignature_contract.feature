@@ -144,3 +144,5 @@ Feature: Create a multisignature contract
     And Alice published the bonded contract
     When all the required cosignatories sign the transaction
     Then she should receive the error "FAILURE_MULTISIG_MAX_MULTISIG_DEPTH"
+
+  # Moved the Account Restriction scenarios in to the appropriate feature file in account_restrictions folder.
