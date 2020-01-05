@@ -78,11 +78,26 @@ Feature: Prevent sending transactions by type
     And Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_OPERATION_TYPE_PROHIBITED"
 
   @not-implemented
+  Scenario: An account tries to register a namespace but has not allowed sending "REGISTER_NAMESPACE" transactions
+    Given Alex only allows sending transactions of type:
+      | TRANSFER  |
+    When Alex tries to registers a namespace named "alex_1" for 1 day
+    Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_OPERATION_TYPE_PROHIBITED"
+
+  @not-implemented
+  Scenario: An account tries to register a namespace but has blocked sending "REGISTER_NAMESPACE" transactions
+    Given Alex blocks sending transactions of type:
+      | MOSAIC_DEFINITION  |
+      | REGISTER_NAMESPACE |
+    When Alex tries to registers a namespace named "alex_1" for 1 day
+    Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_OPERATION_TYPE_PROHIBITED"
+
+  @not-implemented
   Scenario: An account tries to register an asset but has not allowed sending "MOSAIC_DEFINITION" transactions
     Given Alex only allows sending transactions of type:
       | TRANSFER  |
     When Alex tries to register an asset for 2 seconds
-    Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_TRANSACTION_TYPE_NOT_ALLOWED"
+    Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_OPERATION_TYPE_PROHIBITED"
 
   @not-implemented
   Scenario: An account tries to register an asset but has blocked sending "MOSAIC_DEFINITION" transactions
@@ -90,7 +105,7 @@ Feature: Prevent sending transactions by type
       | MOSAIC_DEFINITION  |
       | REGISTER_NAMESPACE |
     When Alex tries to register an asset for 2 seconds
-    Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_TRANSACTION_TYPE_NOT_ALLOWED"
+    Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_OPERATION_TYPE_PROHIBITED"
   
   @not-implemented
   Scenario: An account tries to unlock assets but has not allowed sending "SECRET_PROOF" transactions
@@ -101,7 +116,7 @@ Feature: Prevent sending transactions by type
       | amount | asset     | recipient | network  | hours |
       | 10     | bob.token | Alice     | MAIN_NET | 84    |
     When Alex tries to prove knowing the secret's seed in "MAIN_NET"
-    Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_TRANSACTION_TYPE_NOT_ALLOWED"
+    Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_OPERATION_TYPE_PROHIBITED"
 
   @not-implemented
   Scenario: An account tries to unlock assets but has blocked sending "SECRET_PROOF" transactions
@@ -112,7 +127,7 @@ Feature: Prevent sending transactions by type
       | amount | asset     | recipient | network  | hours |
       | 10     | bob.token | Alice     | MAIN_NET | 84    |
     When Alex proved knowing the secret's seed in "MAIN_NET"
-    Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_TRANSACTION_TYPE_NOT_ALLOWED"
+    Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_OPERATION_TYPE_PROHIBITED"
 
   Scenario: An account unblocks a not blocked transaction type
     Given Alex blocks sending transactions of type:
