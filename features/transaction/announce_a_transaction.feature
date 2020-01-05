@@ -58,3 +58,19 @@ Feature: Announce a transaction
     When the transaction deadline is reached
     Then the transaction is rejected
     And Alice "cat.currency" balance should remain intact
+
+  @not-implemented
+  Scenario: The nemesis account tries to announce a transaction
+    Given Alice is the nemesis account
+    And Alice defined a valid transaction
+    And Alice signed the transaction
+    When Alice announces the transaction to a "MAIN_NET" node
+    Then she should receive the error "FAILURE_CORE_NEMESIS_ACCOUNT_SIGNED_AFTER_NEMESIS_BLOCK"
+
+  @not-implemented
+  Scenario: A multisig contract tries to announce a transaction
+    Given Alice is a multisig contract
+    And Alice defined a valid transaction
+    And Alice signed the transaction
+    When Alice announces the transaction to a "MAIN_NET" node
+    Then she should receive the error "FAILURE_MULTISIG_OPERATION_NOT_PERMITTED_BY_ACCOUNT"
