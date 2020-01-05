@@ -108,6 +108,20 @@ Feature: Prevent sending transactions by type
     Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_OPERATION_TYPE_PROHIBITED"
   
   @not-implemented
+  Scenario: An account tries to send an message to another account but has not allowed sending "TRANSFER" transactions
+    Given Alex only allows sending transactions of type:
+      | REGISTER_NAMESPACE  |
+    When Bob tries to send message "Hello" to Alex
+    Then Bob should receive the error "FAILURE_RESTRICTIONACCOUNT_OPERATION_TYPE_PROHIBITED"
+
+  @not-implemented
+  Scenario: An account tries to send a message to another account but has blocked sending "TRANSFER" transactions
+    Given Alex blocks sending transactions of type:
+      | TRANSFER  |
+    When Bob tries to send message "Hello" to Alex
+    Then Bob should receive the error "FAILURE_RESTRICTIONACCOUNT_OPERATION_TYPE_PROHIBITED"
+
+  @not-implemented
   Scenario: An account tries to unlock assets but has not allowed sending "SECRET_PROOF" transactions
     Given Alex only allows sending transactions of type:
       | SECRET_PROOF  |

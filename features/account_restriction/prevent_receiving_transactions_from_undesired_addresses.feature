@@ -93,6 +93,20 @@ Feature: Prevent receiving transactions from undesired addresses
     When Bobby tries to block receiving transactions from Carol
     Then Bobby should receive the error "FAILURE_RESTRICTIONACCOUNT_MODIFICATION_NOT_ALLOWED"
 
+  @not-implemented
+  Scenario: An account tries to send a message to another account but the second account does not allow it
+    Given Bobby only allowed receiving transactions from:
+      | Carol |
+    When Alex tries to send message "Hello" to "Bob"
+    Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_ADDRESS_INTERACTION_PROHIBITED"
+
+  @not-implemented
+  Scenario: An account tries to send a message to another account but the second account blocked it
+    Given Bobby blocked receiving transactions from:
+      | Alex |
+    When Alex tries to send message "Hello" to "Bob"
+    Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_ADDRESS_INTERACTION_PROHIBITED"
+
   Scenario: An account tries to block an address twice
     Given Alex blocked receiving transactions from:
       | Bobby |
