@@ -106,7 +106,7 @@ Feature: Prevent sending transactions by type
       | REGISTER_NAMESPACE |
     When Alex tries to register an asset for 2 seconds
     Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_OPERATION_TYPE_PROHIBITED"
-  
+
   @not-implemented
   Scenario: An account tries to send an message to another account but has not allowed sending "TRANSFER" transactions
     Given Alex only allows sending transactions of type:

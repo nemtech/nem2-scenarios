@@ -42,7 +42,7 @@ Feature: Prevent receiving transactions from undesired addresses
     Then Bobby should receive a confirmation message
     And Bobby should receive 1 of asset "cat.currency"
     And Alex "cat.currency" balance should decrease by 1 unit
-  
+
   Scenario: A blocked account should remain blocked when others are unblocked
     Given Bobby blocked receiving transactions from:
       | Alex  |
@@ -58,8 +58,8 @@ Feature: Prevent receiving transactions from undesired addresses
     And Bobby removes Alex from allowed addresses
     When Alex tries to send 1 asset "cat.currency" to Bobby
     Then Alex should receive the error "FAILURE_RESTRICTIONACCOUNT_ADDRESS_INTERACTION_PROHIBITED"
-  
-  Scenario: An account removes an address from the allowed addresses
+
+  Scenario: An account removes an address from the allowed addresses but should receive transactions from still allowed account
     Given Bobby only allowed receiving transactions from:
       | Alex  |
       | Carol |

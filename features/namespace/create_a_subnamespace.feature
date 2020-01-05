@@ -65,7 +65,7 @@ Feature: Create a subnamespace
     Given Bob registered the namespace named "bobs" for 5 blocks
     When Bob tries to create a subnamespace named "bobs.subnamespace"
     Then she should receive the error "FAILURE_CORE_INSUFFICIENT_BALANCE"
-  
+
   @not-implemented
   Scenario: An account tries to exceed the maximum number of subnamespaces
     Given Alice registered the namespace "alice" for one week
