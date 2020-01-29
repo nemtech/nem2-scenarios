@@ -11,6 +11,6 @@
     "cucumber": "^5.0.2"
   },
   "dependencies": {
-    "gherkin-lint": "^3.3.6"
+    "gherkin-lint": "^3.3.10"
   }
 }

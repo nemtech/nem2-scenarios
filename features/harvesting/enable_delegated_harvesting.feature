@@ -1,4 +1,3 @@
-@not-implemented
 Feature: Enable delegated harvesting
   As Alice
   I want to enable delegated harvesting
@@ -18,7 +17,7 @@ Feature: Enable delegated harvesting
   Scenario: An account tries to enable delegated harvesting twice
     Given Alice delegated his importance to D
     When she enables delegated harvesting delegating her account importance to D
-    Then she should receive the error "Failure_AccountLink_Already_Exists"
+    Then she should receive the error "FAILURE_ACCOUNTLINK_LINK_ALREADY_EXISTS"
 
   Scenario: An account tries to disable delegated harvesting but it was not enabled
     When Alice disables delegating her account importance to D
@@ -27,32 +26,32 @@ Feature: Enable delegated harvesting
   Scenario: An account tries to enable delegated harvesting but the remote account was already linked
     Given Bob delegated his importance to D
     When Alice enables delegated harvesting delegating her account importance to D
-    Then she should receive the error "Failure_AccountLink_Remote_Account_Ineligible"
+    Then she should receive the error "FAILURE_ACCOUNTLINK_REMOTE_ACCOUNT_INELIGIBLE"
 
   Scenario: An account tries to enable delegated harvesting but the remote account owns mosaics
     Given D owns 10 cat.currency
     When Alice enables delegated harvesting delegating her account importance to D
-    Then she should receive the error "Failure_AccountLink_Remote_Account_Ineligible"
+    Then she should receive the error "FAILURE_ACCOUNTLINK_REMOTE_ACCOUNT_INELIGIBLE"
 
   Scenario: An account tries to enable delegated harvesting but the remote account is cosignatory
     Given D is cosignatory of an account
     When Alice enables delegated harvesting delegating her account importance to D
-    Then she should receive the error "Failure_AccountLink_Remote_Account_Ineligible"
+    Then she should receive the error "FAILURE_ACCOUNTLINK_REMOTE_ACCOUNT_INELIGIBLE"
 
   Scenario: An account tries to enable delegated harvesting but the remote account is a multisig
     Given D is a multisig account
     When Alice enables delegated harvesting delegating her account importance to D
-    Then she should receive the error "Failure_AccountLink_Remote_Account_Ineligible"
+    Then she should receive the error "FAILURE_ACCOUNTLINK_REMOTE_ACCOUNT_INELIGIBLE"
 
   Scenario: An account tries to enable delegated harvesting but the remote account has delegated its importance
     Given D has delegated its importance to D2
     When Alice enables delegated harvesting delegating her account importance to D
-    Then she should receive the error "Failure_AccountLink_Remote_Account_Ineligible"
+    Then she should receive the error "FAILURE_ACCOUNTLINK_REMOTE_ACCOUNT_INELIGIBLE"
 
   Scenario: An account tries to disable delegated harvesting from another account
     Given Bob has delegated her account importance to D
     When she disables delegating her account importance to D
-    Then Alice should receive the error "Failure_AccountLink_Unlink_Data_Inconsistency"
+    Then Alice should receive the error "FAILURE_ACCOUNTLINK_INCONSISTENT_UNLINK_DATA"
 
   Scenario: A remote account tries to sign a transaction
     Given Alice has delegated her account importance to D
