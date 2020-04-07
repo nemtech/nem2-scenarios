@@ -1,6 +1,6 @@
 # nem2-scenarios
 
-[![Build Status](https://travis-ci.org/nemtech/nem2-scenarios.svg?branch=master)](https://travis-ci.org/nemtech/nem2-scenarios)
+[![Build Status](https://travis-ci.com/nemtech/nem2-scenarios.svg?branch=master)](https://travis-ci.com/nemtech/nem2-scenarios)
 
 Catapult behavior validation using scenarios.
 
