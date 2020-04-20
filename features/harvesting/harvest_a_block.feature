@@ -1,4 +1,3 @@
-@not-implemented
 Feature: Harvest a block
   As Alice
   I want to harvest a block
